@@ -17,17 +17,28 @@ end)
 
 -- ======================== GLOBAL CONFIGURATION ========================
 local options = {
-	number = true
-	relativenumber = true
+	number = true,
+	relativenumber = true,
 
-	termguicolors = true
-	smartindent = true
-	autoindent = true
-	tabspace = 4
-	smarttabspace = 4
+	termguicolors = true,
+	smartindent = true,
+	autoindent = true,
+	smartcase = true,
+	wrap = false,
+	scrolloff = 8,
+	sidescrolloff = 6,
+	hlsearch = false,
+	incsearch = true,
+	splitright = true,
+	splitbelow = true,
+	undodir = vim.fn.expand('$HOME/.vim/undodir'),
+	undofile = false,
+	swapfile = false,
 }
 
 for conf, val in ipairs(options) do
 	vim.opt[conf] = val
 end
+
+
 
