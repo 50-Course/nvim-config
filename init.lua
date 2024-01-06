@@ -56,7 +56,18 @@ local augroup = vim.api.nvim_create_augroup
 local highlight_text = augroup('TextHighlight', {clear = true })
 autocmd('TextYankPost', {
 	group = highlight_text,
-	command = function()
+	callback = function()
 		vim.highlight.on_yank()
-	end
+
+	end,
+	pattern = '*'
 })
+
+-- ======================== KEYMAPS ========================
+local keymap = vim.keymap
+
+-- Use system clipboards instead of Vim's built-in
+keymap.set({'n', 'v'}, '<leader>y', '"+Y')
+keymap.set({'n', 'v'}, '<leader>d', '"_d')
+keymap.set({'n', 'v'}, '<leader>p', '"_P')
+

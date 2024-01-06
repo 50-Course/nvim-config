@@ -1,0 +1,5 @@
+# gitignore.io
+
+.viminfo
+# for profiling
+nvim.log
