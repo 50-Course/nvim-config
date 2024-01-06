@@ -21,6 +21,23 @@ require('packer').startup(function(use)
 	use 'nvim-treesitter/nvim-treesitter'
 	use 'nvim-treesitter/nvim-treesitter-textobjects'
 
+    -- Fugitive for Git-integration
+    use 'tpope/vim-fugitive'
+
+    -- Extend plugin capabilities by providing 
+    -- high-level apis to extend vim native apis
+    use 'nvim-lua/plenary.nvim'
+
+    -- Java LSP
+    use 'mfussenegger/nvim-jdtls'
+
+    -- Test integration with Vim Test
+    --
+    -- The plugin allows granular control over how vim interacts 
+    -- with test suites and how tests are run.
+    -- See: 
+    use 'vim-test/vim-test'
+
 end)
 
 
@@ -83,7 +100,6 @@ autocmd('BufReadPost', {
         local mark = vim.api.nvim_buf_get_mark(0, '"')
         local line = vim.api.nvim_buf_line_count(0)
 
-        print(vim.inspect(mark))
         if mark[1] > 0 and mark[1] <= line then
             pcall(vim.api.nvim_win_set_cursor, 0, mark)
         end
@@ -115,3 +131,12 @@ keymap.set('n', '<leader>pv', vim.cmd.Ex)
 keymap.set({'i', 'v', 'x'}, 'jk', '<Esc>')
 
 keymap.set('n', 'Q', '<nop>')
+
+--- Git bindings
+keymap.set('n', '<leader>gs', function() vim.cmd [[ Git ]] end)
+
+
+
+-- ======================== PLUGINS CONFIGURATION ========================
+
+
