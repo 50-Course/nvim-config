@@ -1,0 +1,91 @@
+
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.023  000.023: --- NVIM STARTING ---
+000.382  000.359: event init
+000.553  000.171: early init
+000.664  000.111: locale set
+000.758  000.094: init first window
+001.210  000.452: inits 1
+001.236  000.026: window checked
+001.240  000.004: parsing arguments
+001.928  000.077  000.077: require('vim.shared')
+002.049  000.052  000.052: require('vim._meta')
+002.052  000.119  000.067: require('vim._editor')
+002.055  000.251  000.055: require('vim._init_packages')
+002.057  000.565: init lua interpreter
+002.199  000.142: expanding arguments
+002.275  000.076: inits 2
+002.685  000.410: init highlight
+002.688  000.003: waiting for UI
+002.944  000.256: done waiting for UI
+002.957  000.013: clear screen
+003.185  000.228: init default mappings & autocommands
+004.365  000.131  000.131: sourcing /snap/nvim/2810/usr/share/nvim/runtime/ftplugin.vim
+004.523  000.075  000.075: sourcing /snap/nvim/2810/usr/share/nvim/runtime/indent.vim
+008.378  000.344  000.344: require('packer.util')
+008.475  003.016  002.672: require('packer')
+009.402  000.921  000.921: require('packer.log')
+009.995  000.135  000.135: require('packer.async')
+010.250  000.075  000.075: require('packer.result')
+010.255  000.256  000.181: require('packer.jobs')
+010.268  000.824  000.433: require('packer.plugin_utils')
+010.490  000.204  000.204: require('packer.snapshot')
+010.909  006.270  001.306: sourcing /home/erioluwa/.config/nvim/init.lua
+010.930  001.270: sourcing vimrc file(s)
+011.221  000.219  000.219: sourcing /snap/nvim/2810/usr/share/nvim/runtime/filetype.lua
+011.496  000.149  000.149: sourcing /snap/nvim/2810/usr/share/nvim/runtime/syntax/synload.vim
+011.688  000.421  000.272: sourcing /snap/nvim/2810/usr/share/nvim/runtime/syntax/syntax.vim
+012.970  000.316  000.316: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/gzip.vim
+014.018  000.333  000.333: sourcing /snap/nvim/2810/usr/share/nvim/runtime/pack/dist/opt/matchit/plugin/matchit.vim
+014.198  001.165  000.832: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/matchit.vim
+014.456  000.229  000.229: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/matchparen.vim
+015.149  000.655  000.655: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/netrwPlugin.vim
+015.455  000.247  000.247: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/rplugin.vim
+015.630  000.103  000.103: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/shada.vim
+015.717  000.041  000.041: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/spellfile.vim
+015.936  000.182  000.182: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/tarPlugin.vim
+016.112  000.130  000.130: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/tohtml.vim
+016.175  000.028  000.028: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/tutor.vim
+016.452  000.241  000.241: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/zipPlugin.vim
+017.029  000.107  000.107: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/editorconfig.lua
+017.201  000.090  000.090: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/man.lua
+017.305  000.071  000.071: sourcing /snap/nvim/2810/usr/share/nvim/runtime/plugin/nvim.lua
+017.330  002.154: loading rtp plugins
+017.661  000.331: loading packages
+018.347  000.687: loading after plugins
+018.368  000.021: inits 3
+019.907  001.539: reading ShaDa
+020.252  000.345: opening buffers
+020.281  000.029: BufEnter autocommands
+020.285  000.004: editing files in windows
+020.401  000.115: VimEnter autocommands
+020.405  000.004: UIEnter autocommands
+020.407  000.002: before starting main loop
+020.764  000.358: first screen update
+020.767  000.003: --- NVIM STARTED ---
+
+
+times in msec
+ clock   self+sourced   self:  sourced script
+ clock   elapsed:              other lines
+
+000.013  000.013: --- NVIM STARTING ---
+000.278  000.265: event init
+000.387  000.109: early init
+000.478  000.091: locale set
+000.550  000.072: init first window
+001.054  000.503: inits 1
+001.072  000.019: window checked
+001.078  000.006: parsing arguments
+001.770  000.068  000.068: require('vim.shared')
+001.956  000.079  000.079: require('vim._meta')
+001.962  000.183  000.104: require('vim._editor')
+001.966  000.335  000.083: require('vim._init_packages')
+001.970  000.557: init lua interpreter
+002.803  000.833: expanding arguments
+002.892  000.089: inits 2
+004.170  001.278: init highlight
