@@ -74,20 +74,46 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  ["harpoon.nvim"] = {
+  harpoon = {
     loaded = true,
-    path = "/home/erioluwa/.local/share/nvim/site/pack/packer/start/harpoon.nvim",
-    url = "https://github.com/ThePrimeagen/harpoon.nvim"
+    path = "/home/erioluwa/.local/share/nvim/site/pack/packer/start/harpoon",
+    url = "https://github.com/ThePrimeagen/harpoon"
+  },
+  ["nvim-jdtls"] = {
+    loaded = true,
+    path = "/home/erioluwa/.local/share/nvim/site/pack/packer/start/nvim-jdtls",
+    url = "https://github.com/mfussenegger/nvim-jdtls"
   },
   ["nvim-treesitter"] = {
     loaded = true,
     path = "/home/erioluwa/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
     url = "https://github.com/nvim-treesitter/nvim-treesitter"
   },
-  ["packer.nvim"] = {
+  ["nvim-treesitter-textobjects"] = {
     loaded = true,
-    path = "/home/erioluwa/.local/share/nvim/site/pack/packer/start/packer.nvim",
+    path = "/home/erioluwa/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects",
+    url = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"
+  },
+  ["packer.nvim"] = {
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/erioluwa/.local/share/nvim/site/pack/packer/opt/packer.nvim",
     url = "https://github.com/wbthomason/packer.nvim"
+  },
+  ["plenary.nvim"] = {
+    loaded = true,
+    path = "/home/erioluwa/.local/share/nvim/site/pack/packer/start/plenary.nvim",
+    url = "https://github.com/nvim-lua/plenary.nvim"
+  },
+  ["vim-fugitive"] = {
+    loaded = true,
+    path = "/home/erioluwa/.local/share/nvim/site/pack/packer/start/vim-fugitive",
+    url = "https://github.com/tpope/vim-fugitive"
+  },
+  ["vim-test"] = {
+    loaded = true,
+    path = "/home/erioluwa/.local/share/nvim/site/pack/packer/start/vim-test",
+    url = "https://github.com/vim-test/vim-test"
   }
 }
 

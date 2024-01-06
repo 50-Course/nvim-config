@@ -12,7 +12,7 @@ require('packer').startup(function(use)
 	--
 	-- This option allows to manage version updates
 	-- for the packer plugin itself
-	use 'wbthomason/packer.nvim'
+	use { 'wbthomason/packer.nvim', opt = true }
 
 	-- Pass me the harpoon for swift buffer navigation
 	use 'ThePrimeagen/harpoon'
