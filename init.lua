@@ -75,6 +75,22 @@ autocmd('TextYankPost', {
 	pattern = '*'
 })
 
+-- Persist last known cursor location across sessions
+local jump_to_lastloc = augroup('JumpToLastLocation', {clear = true })
+autocmd('BufReadPost', {
+	group = jump_to_lastloc,
+	callback = function()
+        local mark = vim.api.nvim_buf_get_mark(0, '"')
+        local line = vim.api.nvim_buf_line_count(0)
+
+        print(vim.inspect(mark))
+        if mark[1] > 0 and mark[1] <= line then
+            pcall(vim.api.nvim_win_set_cursor, 0, mark)
+        end
+	end
+})
+
+
 -- ======================== KEYMAPS ========================
 --
 local keymap = vim.keymap
@@ -97,6 +113,5 @@ keymap.set('n', '<leader>pv', vim.cmd.Ex)
 
 -- Better way to jump out of modes
 keymap.set({'i', 'v', 'x'}, 'jk', '<Esc>')
-keymap.set({'i', 'v', 'x'}, 'kj', '<Esc>')
 
 keymap.set('n', 'Q', '<nop>')
