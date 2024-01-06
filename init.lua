@@ -1,9 +1,12 @@
 -- I am using Packer as my plugin manager
+--
+-- This is only possible because `install.sh` is bootsrapping my Vim
+-- distro with packer installation
 
 vim.cmd [[packadd packer.nvim ]]
 
 -- ======================== PLUGINS MANAGEMENT ========================
-require('packer').setup(function(use)
+require('packer').startup(function(use)
 
 	-- Packer-in-Packer (PIP) to manage itself
 	--
@@ -36,9 +39,7 @@ local options = {
 	swapfile = false,
 }
 
-for conf, val in ipairs(options) do
+for conf, val in pairs(options) do
 	vim.opt[conf] = val
 end
-
-
 
