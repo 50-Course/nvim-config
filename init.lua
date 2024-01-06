@@ -15,10 +15,11 @@ require('packer').startup(function(use)
 	use 'wbthomason/packer.nvim'
 
 	-- Pass me the harpoon for swift buffer navigation
-	use 'ThePrimeagen/harpoon.nvim'
+	use 'ThePrimeagen/harpoon'
 
 	-- Treesitter
 	use 'nvim-treesitter/nvim-treesitter'
+	use 'nvim-treesitter/nvim-treesitter-textobjects'
 
 end)
 
@@ -33,8 +34,8 @@ local options = {
 
 	termguicolors = true,
 	smartindent = true,
-	autoindent = true,
 	smartcase = true,
+	ignorecase = true,
 	wrap = false,
 	scrolloff = 8,
 	sidescrolloff = 6,
@@ -46,11 +47,19 @@ local options = {
 	undofile = false,
 	swapfile = false,
 	updatetime = 50,
+
+	softtabstop = 4,
+	tabstop = 4,
+	shiftwidth = 4,
+	expandtab = true
 }
 
 for conf, val in pairs(options) do
 	vim.opt[conf] = val
 end
+
+-- Nobody likes the top banner on NetRW -- I don't!
+vim.g.netrw_banner = 0
 
 -- ======================== USER/AUTOCOMMANDS ========================
 local autocmd = vim.api.nvim_create_autocmd
@@ -72,6 +81,8 @@ local keymap = vim.keymap
 
 -- Unbind space to leader key
 keymap.set('n', '<Space>', '<Nop>')
+-- getting used to Ctrl+c is not my thing
+keymap.set('i', '<C-c>', '<Nop>')
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
