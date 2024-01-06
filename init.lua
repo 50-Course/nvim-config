@@ -2,7 +2,6 @@
 --
 -- This is only possible because `install.sh` is bootsrapping my Vim
 -- distro with packer installation
-
 vim.cmd [[packadd packer.nvim ]]
 
 -- ======================== PLUGINS MANAGEMENT ========================
@@ -22,6 +21,8 @@ require('packer').startup(function(use)
 	use 'nvim-treesitter/nvim-treesitter-textobjects'
 
     -- Fugitive for Git-integration
+    --
+    -- Run: `:h fugitive` to get started
     use 'tpope/vim-fugitive'
 
     -- Extend plugin capabilities by providing 
@@ -29,14 +30,22 @@ require('packer').startup(function(use)
     use 'nvim-lua/plenary.nvim'
 
     -- Java LSP
+    --
+    -- For configuration, see: https://github.com/mfussenegger/nvim-jdtls
     use 'mfussenegger/nvim-jdtls'
 
     -- Test integration with Vim Test
     --
     -- The plugin allows granular control over how vim interacts 
     -- with test suites and how tests are run.
-    -- See: 
+    -- See: https://github.com/vim-test/vim-test/blob/master/README.md
     use 'vim-test/vim-test'
+
+
+    -- Fuzzy-matching with Telesecope
+    --
+    -- File explorer sucks, just fuzzy bro@
+    use { 'nvim-telescope/telescope.nvim', tag = '0.1.5' }
 
 end)
 
@@ -75,8 +84,11 @@ for conf, val in pairs(options) do
 	vim.opt[conf] = val
 end
 
+--- Disable VIM defaults
 -- Nobody likes the top banner on NetRW -- I don't!
 vim.g.netrw_banner = 0
+vim.g.loaded_shada = 1
+vim.g.loaded_gzip = 1
 
 -- ======================== USER/AUTOCOMMANDS ========================
 local autocmd = vim.api.nvim_create_autocmd
