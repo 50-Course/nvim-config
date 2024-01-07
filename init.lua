@@ -1,3 +1,11 @@
+------------------------------------------
+--- PERSONAL DEVELOPMENT ENVIRONMENT
+---
+--- Author: Eri (@50Course/@codemage)
+--- License: MIT License
+------------------------------------------
+
+
 -- I am using Packer as my plugin manager
 --
 -- This is only possible because `install.sh` is bootsrapping my Vim
@@ -170,6 +178,12 @@ keymap.set("n", "<C-x>", "<cmd>silent !chmod +x %<cr>")
 -- ..and when the reverse is done with Ctrl+u
 keymap.set("n", "<C-d>", "<C-d>zz")
 keymap.set("n", "<C-u>", "<C-u>zz")
+
+-- Vim Tests keybinds
+keymap.set("n", "<leader>tn", "<cmd>TestNearest<cr>")
+keymap.set("n", "<leader>tf", "<cmd>TestFile<cr>")
+keymap.set("n", "<leader>ts", "<cmd>TestSuite<cr>")
+keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
 
 
 -- ======================== PLUGINS CONFIGURATION ========================
