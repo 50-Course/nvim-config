@@ -1,6 +1,7 @@
 ------------------------------------------
 --- PERSONAL DEVELOPMENT ENVIRONMENT
 ---
+--- 2024 is the year of efficiency and winnings - I can feel it! - Jan 7, 24
 --- Author: Eri (@50Course/@codemage)
 --- License: MIT License
 ------------------------------------------
@@ -54,6 +55,11 @@ require('packer').startup(function(use)
     --
     -- File explorer sucks, just fuzzy bro@
     use { 'nvim-telescope/telescope.nvim', tag = '0.1.5' }
+
+    -- UndoTree
+    --
+    -- Persist undos and redos in VCS format using algorithm similar to git trees
+    use 'mbbill/undotree'
 
     -- You never know when i'd be dealing with Web Dev
     --
@@ -163,8 +169,14 @@ keymap.set({'i', 'v', 'x'}, 'jk', '<Esc>')
 
 keymap.set('n', 'Q', '<nop>')
 
+-- Undo tree for the Win!
+keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle )
+
 --- Git bindings
 keymap.set('n', '<leader>gs', function() vim.cmd [[ Git ]] end)
+keymap.set('n', '<leader>ga', function() vim.cmd [[ Git add % ]] end)
+keymap.set('n', '<leader>gc', function() vim.cmd [[ Git commit ]] end)
+keymap.set('n', '<leader>gco', function() vim.cmd [[ Git checkout ]] end)
 
 -- Make text selection move up and down in selection mode
 keymap.set("v", "J", ":m '>+1<cr>gv=gv")
@@ -187,5 +199,44 @@ keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
 
 
 -- ======================== PLUGINS CONFIGURATION ========================
+--
+-- ******************************** Harpoon ********************************
+local mark = require("harpoon.mark")
+local ui = require("harpoon.ui")
 
+vim.keymap.set("n", "<leader>ha", function() mark.add_file() end)
+vim.keymap.set("n", "<leader>hh", function() ui.toggle_quick_menu() end)
+vim.keymap.set("n", "<leader>h", function() ui.nav_file(1) end)
+vim.keymap.set("n", "<leader>j", function() ui.nav_file(2) end)
+vim.keymap.set("n", "<leader>k", function() ui.nav_file(3) end)
+vim.keymap.set("n", "<leader>l", function() ui.nav_file(4) end)
+
+-- ******************************** Telescope ********************************
+local builtin = require("telescope.builtin")
+local telescope = require("telescope")
+
+telescope.setup({
+    pickers = {
+        find_files = {
+            previewer = false,
+        },
+        buffers = {
+            previewer = false,
+        },
+    },
+})
+
+vim.keymap.set("n", "<leader>ff", function()
+    if vim.fn.isdirectory(".git") == 1 then
+        -- Run git files search
+        builtin.git_files()
+    else
+        -- Regular file search
+        builtin.find_files()
+    end
+end, {})
+
+vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
+vim.keymap.set("n", "<leader>ps", function() builtin.grep_string({ search = vim.fn.input("Grep > ") }) end, {})
+vim.keymap.set("n", "<leader>fb", function() builtin.buffers() end, {})
 
