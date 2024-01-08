@@ -26,7 +26,7 @@ require('packer').startup(function(use)
 	use 'ThePrimeagen/harpoon'
 
 	-- Treesitter
-	use 'nvim-treesitter/nvim-treesitter'
+	use ( 'nvim-treesitter/nvim-treesitter', { run = ':TSUpdate'} )
 	use 'nvim-treesitter/nvim-treesitter-textobjects'
 
     -- Fugitive for Git-integration
@@ -37,6 +37,14 @@ require('packer').startup(function(use)
     -- Extend plugin capabilities by providing 
     -- high-level apis to extend vim native apis
     use 'nvim-lua/plenary.nvim'
+
+    -- Comment.nvim
+    -- Comments are just awesome
+    use "numToStr/Comment.nvim"
+
+    -- Null LS
+    use 'jose-elias-alvarez/null-ls.nvim'
+
 
     -- Java LSP
     --
@@ -55,15 +63,19 @@ require('packer').startup(function(use)
     --
     -- File explorer sucks, just fuzzy bro@
     use { 'nvim-telescope/telescope.nvim', tag = '0.1.5' }
+    use ( 'nvim-telescope/telescope-fzf-native.nvim', { run = "make"})
 
     -- UndoTree
     --
     -- Persist undos and redos in VCS format using algorithm similar to git trees
     use 'mbbill/undotree'
 
+    -- Themes (Tokyonight or Rose-pine)
+    use({ "rose-pine/neovim", as = "rose-pine" })
+
+
     -- You never know when i'd be dealing with Web Dev
     --
-    -- 
 
 end)
 
@@ -77,6 +89,7 @@ local options = {
 	relativenumber = true,
 
 	termguicolors = true,
+	breakindent = true,
 	smartindent = true,
 	smartcase = true,
 	ignorecase = true,
@@ -90,12 +103,14 @@ local options = {
 	undodir = vim.fn.expand('$HOME/.vim/undodir'),
 	undofile = false,
 	swapfile = false,
-	updatetime = 50,
-
+	updatetime = 100,
+    hidden = false,
 	softtabstop = 4,
 	tabstop = 4,
 	shiftwidth = 4,
-	expandtab = true
+	expandtab = true,
+
+	signcolumn = 'yes'
 }
 
 for conf, val in pairs(options) do
@@ -104,8 +119,6 @@ end
 
 -- Just ignore `node_modules` and `.git`. Seriously, its the worst place
 -- to be in the universe
--- vim.opt.wildignore += '**/.git/*'
--- vim.opt.wildignore += '**/node_modules/*'
 
 
 --- Disable VIM defaults
@@ -113,6 +126,7 @@ end
 vim.g.netrw_banner = 0
 vim.g.loaded_shada = 1
 vim.g.loaded_gzip = 1
+vim.g.loaded_perl_provider = 0
 
 -- ======================== USER/AUTOCOMMANDS ========================
 local autocmd = vim.api.nvim_create_autocmd
@@ -143,12 +157,14 @@ autocmd('BufReadPost', {
 })
 
 
+
+
 -- ======================== KEYMAPS ========================
 --
 local keymap = vim.keymap
 
 -- Unbind space to leader key
-keymap.set('n', '<Space>', '<Nop>')
+keymap.set({'n', 'v'}, '<Space>', '<Nop>', { silent = true })
 -- getting used to Ctrl+c is not my thing
 keymap.set('i', '<C-c>', '<Nop>')
 
@@ -163,6 +179,12 @@ keymap.set('n', '<leader>p', '"+P')
 
 -- Navigation is better with `project-view`
 keymap.set('n', '<leader>pv', vim.cmd.Ex)
+
+-- Navigate up, down, left, and right between splits.
+vim.keymap.set("n", "<C-h>", "<c-w>h")
+vim.keymap.set("n", "<C-j>", "<c-w>j")
+vim.keymap.set("n", "<C-k>", "<c-w>k")
+vim.keymap.set("n", "<C-l>", "<c-w>l")
 
 -- Better way to jump out of modes
 keymap.set({'i', 'v', 'x'}, 'jk', '<Esc>')
@@ -206,12 +228,14 @@ local ui = require("harpoon.ui")
 
 vim.keymap.set("n", "<leader>ha", function() mark.add_file() end)
 vim.keymap.set("n", "<leader>hh", function() ui.toggle_quick_menu() end)
-vim.keymap.set("n", "<leader>h", function() ui.nav_file(1) end)
+vim.keymap.set("n", "<S-h>", function() ui.nav_file(1) end)
 vim.keymap.set("n", "<leader>j", function() ui.nav_file(2) end)
 vim.keymap.set("n", "<leader>k", function() ui.nav_file(3) end)
 vim.keymap.set("n", "<leader>l", function() ui.nav_file(4) end)
 
 -- ******************************** Telescope ********************************
+pcall(require("telescope").load_extension, "fzf")
+
 local builtin = require("telescope.builtin")
 local telescope = require("telescope")
 
@@ -240,3 +264,5 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
 vim.keymap.set("n", "<leader>ps", function() builtin.grep_string({ search = vim.fn.input("Grep > ") }) end, {})
 vim.keymap.set("n", "<leader>fb", function() builtin.buffers() end, {})
 
+
+-- ******************************** LSP ********************************
