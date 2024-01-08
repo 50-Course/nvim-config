@@ -1,7 +1,13 @@
-local null_ls = require("null-ls")
+local ok, null_ls = pcall(require, "null-ls")
+
+if not ok then
+    return
+end
 
 null_ls.setup({
-  sources = {
-    null_ls.builtins.formatting.lua_format, -- Lua
-  },
+    sources = {
+        null_ls.builtins.formatting.ruff,
+        null_ls.builtins.formatting.black,
+        null_ls.builtins.formatting.stylua,
+    },
 })
