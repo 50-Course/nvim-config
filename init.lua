@@ -142,6 +142,7 @@ end
 
 -- Just ignore `node_modules` and `.git`. Seriously, its the worst place
 -- to be in the universe
+vim.o.wildignore = vim.o.wildignore .. ',**/node_modules/*,**/.git/*'
 
 --- Disable VIM defaults
 -- Nobody likes the top banner on NetRW -- I don't!

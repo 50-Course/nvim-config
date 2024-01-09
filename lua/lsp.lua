@@ -9,7 +9,7 @@ local servers = {
     "lua_ls", -- Lua
 }
 
-M.on_attach = function(client, buffnr)
+local on_attach = function(client, buffnr)
     local map = vim.keymap.set
     local opts = { buffer = buffnr, noremap = true, silent = true }
 
@@ -72,6 +72,7 @@ local source_names = {
     buffer = "[Buffer]",
 }
 
+
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -100,95 +101,12 @@ cmp.setup({
     }),
     formatting = {
         format = function(entry, vim_item)
-            vim_item.kind = source_names[vim_item.source.name]
             vim_item.menu = source_names[entry.source.name]
             return vim_item
         end,
     },
 })
 
--- return the way cmp should be formatted for the lsp
-local on_attach = function(client, bufnr)
-    buffer = bufnr
-    local map = vim.keymap.set
-
-    map(
-        "n",
-        "gd",
-        "<cmd>lua vim.lsp.buf.definition()<CR>",
-        { noremap = true, silent = true, desc = "Goto definition" }
-    )
-    map("n", "<C-k>", vim.lsp.buf.signature_help, {
-        noremap = true,
-        silent = true,
-        desc = "Show Signature Help",
-        buffer = 0,
-    })
-    map(
-        "n",
-        "gD",
-        "<cmd>lua vim.lsp.buf.declaration()<CR>",
-        { noremap = true, silent = true, desc = "Goto declaration" }
-    )
-    map(
-        "n",
-        "gr",
-        "<cmd>lua vim.lsp.buf.references()<CR>",
-        { noremap = true, silent = true, desc = "Goto references" }
-    )
-    map(
-        { "n", "v" },
-        "<leader>f",
-        "<cmd> lua vim.lsp.buf.formatting()<CR>",
-        { noremap = true, silent = true, desc = "Format" }
-    )
-    map(
-        "n",
-        "<leader>rn",
-        "<cmd>lua vim.lsp.buf.rename()<CR>",
-        { noremap = true, silent = true, desc = "Rename Symbol" }
-    )
-    map(
-        "n",
-        "<leader>ca",
-        "<cmd>lua vim.lsp.buf.code_action()<CR>",
-        { noremap = true, silent = true, desc = "Code Action" }
-    )
-    map(
-        "n",
-        "gi",
-        "<cmd>lua vim.lsp.buf.implementation()<CR>",
-        { noremap = true, silent = true, desc = "Goto Implementation" }
-    )
-    map(
-        "n",
-        "K",
-        vim.lsp.buf.hover,
-        { buffer = 0, noremap = true, silent = true, desc = "Show Hover" }
-    )
-    map(
-        "n",
-        "<leader>D",
-        "<cmd>lua vim.lsp.buf.type_definition()<CR>",
-        { noremap = true, silent = true, desc = "Goto Type Definition" }
-    )
-
-    -- Diagonistic Keymaps
-    vim.keymap.set("n", "<leader>dl", vim.diagnostic.open_float)
-    vim.keymap.set("n", "<leader>pd", vim.diagnostic.goto_prev)
-    vim.keymap.set("n", "<leader>nd", vim.diagnostic.goto_next)
-    vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
-end
-
-local servers = {
-    "clangd", -- C/C++
-    "gopls", -- Go
-    "pyright", -- Python
-    "lua_ls", -- Lua
-    "rust_analyzer", -- Rust
-    "tsserver", -- TypeScript
-    "dockerls", -- Docker
-}
 
 mason.setup()
 mason_lspconfig.setup({
