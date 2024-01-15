@@ -3,3 +3,5 @@
 .viminfo
 # for profiling
 nvim.log
+# Packer
+packer_compiled.lua

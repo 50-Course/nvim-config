@@ -6,6 +6,20 @@
 --- License: MIT License
 ------------------------------------------
 
+
+
+--- Disable VIM defaults
+-- Nobody likes the top banner on NetRW -- I don't!
+vim.g.netrw_banner = 0
+vim.g.loaded_gzip = 1
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_python_provider = 0
+vim.g.loaded_python3_provider = 0
+
+
+
 -- I am using Packer as my plugin manager
 --
 -- This is only possible because `install.sh` is bootsrapping my Vim
@@ -82,6 +96,7 @@ require("packer").startup(function(use)
     --
     -- The plugin allows granular control over how vim interacts
     -- with test suites and how tests are run.
+    use 'vim-test/vim-test'
 
     -- Fuzzy-matching with Telesecope
     --
@@ -144,11 +159,6 @@ end
 -- to be in the universe
 vim.o.wildignore = vim.o.wildignore .. ',**/node_modules/*,**/.git/*'
 
---- Disable VIM defaults
--- Nobody likes the top banner on NetRW -- I don't!
-vim.g.netrw_banner = 0
-vim.g.loaded_gzip = 1
-vim.g.loaded_perl_provider = 0
 
 -- ======================== USER/AUTOCOMMANDS ========================
 local autocmd = vim.api.nvim_create_autocmd
@@ -244,6 +254,11 @@ keymap.set("n", "<leader>tf", "<cmd>TestFile<cr>")
 keymap.set("n", "<leader>ts", "<cmd>TestSuite<cr>")
 keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
 
+-- window management
+keymap.set('n', "<C-S-Right>", "<cmd>:vertical resize -1<cr>")
+keymap.set('n', "<C-S-Left>", "<cmd>:vertical resize +1<cr>")
+
+
 -- ======================== PLUGINS CONFIGURATION ========================
 --
 -- ******************************** Harpoon ********************************
@@ -284,6 +299,15 @@ telescope.setup({
             previewer = false,
         },
     },
+    extensions = {
+    fzf = {
+      fuzzy = true,                    -- false will only do exact matching
+      override_generic_sorter = true,  -- override the generic sorter
+      override_file_sorter = true,     -- override the file sorter
+      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                       -- the default case_mode is "smart_case"
+    }
+  }
 })
 
 vim.keymap.set("n", "<leader>ff", function()
