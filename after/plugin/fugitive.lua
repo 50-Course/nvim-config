@@ -12,14 +12,20 @@ local git_keymaps = function()
         -- if there are changes, stash them, pull, then pop the stash
         -- otherwise just pull
         vim.cmd.Git('stash')
-        vim.cmd.Git({ "pull", "--rebase" })
-        vim.cmd.Git({ "stash", "pop" })
+        -- rebase and display the log in a split
+        vim.cmd [[Git pull origin --rebase | copen]]
+        vim.cmd.Git('stash pop')
     end, opts)
 
     -- Git push to named branch
     vim.keymap.set("n", "<leader>pt", function()
         local branch = vim.fn.input("Branch: ")
         vim.cmd.Git({ "push", "-u", "origin", branch })
+    end, opts)
+
+    -- add and push tags interactively
+    vim.keymap.set("n", "<leader>ptt", function()
+        vim.cmd.Git("tag -l | fzf | xargs git push origin")
     end, opts)
 end
 
