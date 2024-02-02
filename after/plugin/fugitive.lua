@@ -24,10 +24,27 @@ local git_keymaps = function()
     end, opts)
 
     -- add and push tags interactively
+    -- TODO: implement this
     vim.keymap.set("n", "<leader>ptt", function()
-        local tag_name = vim.fn.input("Tag name: ")
-        vim.cmd.Git("tag " .. tag_name)
-        vim.cmd.Git("tag -l | fzf | xargs git push origin")
+        local _, telescope_builtin = pcall(require, "telescope.builtin")
+
+        -- UPDATE: this is not working as expected, I am able to see the list of tags,
+        -- but I am not able to select them and push them - I am thnking of using 
+        -- fzf and piping the output to git push
+
+        -- local tag_name = vim.fn.input("Tag name: ")
+        -- vim.cmd.Git("tag " .. tag_name)
+        -- local tags = vim.fn.systemlist("git tag -l")
+        --
+        -- if not tags[tag_name] then
+        --    vim.cmd.Git("tag " .. tag_name)
+        --    tags = vim.fn.systemlist("git tag -l")
+        --    print(vim.inspect(tags))
+        -- --
+        -- -- if tag exists, push it
+        -- print(vim.inspect(tags))
+        --
+
     end, opts)
 end
 
