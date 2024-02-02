@@ -10,11 +10,12 @@ local workspace_folder = os.getenv("HOME")
     .. "/.local/share/eclipse/"
     .. project_name
 
-
 local debug_adapter_jar_path = vim.fn.glob(
-    jdtls_path .. '/mason/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar'
+    jdtls_path
+        .. "/mason/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
 )
 
+local OS_NAME = ""
 
 local config = {
     flags = {
@@ -23,7 +24,7 @@ local config = {
     },
     root_dir = root_dir,
     init_options = {
-	    bundles = debug_adapter_jar_path
+        bundles = debug_adapter_jar_path,
     },
     cmd = {
         "java",
@@ -51,13 +52,13 @@ local config = {
             saveActions = {
                 organizeImports = true,
             },
-	    format = {
-		    settings = {
-			    url = "/.local/share/eclipse/eclipse-java-google-style.xml",
-			    profile = "GoogleStyle",
-		    },
-	    },
-	    contentProvider = { preferred = "fernflower" },
+            format = {
+                settings = {
+                    url = "/.local/share/eclipse/eclipse-java-google-style.xml",
+                    profile = "GoogleStyle",
+                },
+            },
+            contentProvider = { preferred = "fernflower" },
             completion = {
                 maxResults = 25,
                 favoriteStaticMembers = {
@@ -71,12 +72,13 @@ local config = {
                     "org.mockito.ArgumentMatchers.*",
                     "org.mockito.Answers.RETURNS_DEEP_STUBS",
                 },
-		filteredTypes = {
-			"com.sun.*",
-			"io.micrometer.shaded.*",
-			"java.awt.*",
-			"jdk.*", "sun.*",
-		},
+                filteredTypes = {
+                    "com.sun.*",
+                    "io.micrometer.shaded.*",
+                    "java.awt.*",
+                    "jdk.*",
+                    "sun.*",
+                },
             },
             sources = {
                 organizeImports = {
@@ -102,7 +104,7 @@ local config = {
 }
 
 -- Additional mappings
-local bufopts = { noremap = true, buffer = bufnr}
+local bufopts = { noremap = true, buffer = bufnr }
 
 vim.keymap.set(
     "n",
@@ -144,6 +146,5 @@ vim.keymap.set(
 -- For testing
 -- vim.keymap.set("n", , , bufopts) <leader>df <Cmd>lua require'jdtls'.test_class()<CR>
 -- vim.keymap.set("n", , , bufopts) <leader>dn <Cmd>lua require'jdtls'.test_nearest_method()<CR>
-
 
 require("jdtls").start_or_attach(config)

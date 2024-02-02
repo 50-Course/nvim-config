@@ -55,7 +55,6 @@ local on_attach = function(client, buffnr)
     vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 end
 
-
 local cmp = require("cmp")
 local capabalities = vim.lsp.protocol.make_client_capabilities()
 
@@ -71,7 +70,6 @@ local source_names = {
     luasnip = "[Snippet]",
     buffer = "[Buffer]",
 }
-
 
 cmp.setup({
     snippet = {
@@ -96,7 +94,7 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = "nvim_lsp" },
-	{ name = 'nvim_lsp_signature_help' },
+        { name = "nvim_lsp_signature_help" },
         { name = "luasnip" },
         { name = "buffer" },
     }),
@@ -107,7 +105,6 @@ cmp.setup({
         end,
     },
 })
-
 
 mason.setup()
 mason_lspconfig.setup({
@@ -159,8 +156,5 @@ mason_lspconfig.setup_handlers({
         lspconfig["gopls"].setup(opts)
     end,
 })
-
-
-
 
 return M

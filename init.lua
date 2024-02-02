@@ -6,19 +6,16 @@
 --- License: MIT License
 ------------------------------------------
 
-
-
 --- Disable VIM defaults
 -- Nobody likes the top banner on NetRW -- I don't!
 vim.g.netrw_banner = 0
+vim.g.netrw_browse_split = 0
 vim.g.loaded_gzip = 1
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.loaded_python3_provider = 0
-
-
 
 -- I am using Packer as my plugin manager
 --
@@ -96,7 +93,7 @@ require("packer").startup(function(use)
     --
     -- The plugin allows granular control over how vim interacts
     -- with test suites and how tests are run.
-    use 'vim-test/vim-test'
+    use("vim-test/vim-test")
 
     -- Fuzzy-matching with Telesecope
     --
@@ -116,7 +113,7 @@ require("packer").startup(function(use)
     --
 end)
 
-require('lsp')
+require("lsp")
 
 -- ======================== GLOBAL CONFIGURATION ========================
 --
@@ -157,8 +154,7 @@ end
 
 -- Just ignore `node_modules` and `.git`. Seriously, its the worst place
 -- to be in the universe
-vim.o.wildignore = vim.o.wildignore .. ',**/node_modules/*,**/.git/*'
-
+vim.opt.wildignore:append({ ".git", ".venv", "node_modules" })
 
 -- ======================== USER/AUTOCOMMANDS ========================
 local autocmd = vim.api.nvim_create_autocmd
@@ -255,9 +251,8 @@ keymap.set("n", "<leader>ts", "<cmd>TestSuite<cr>")
 keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
 
 -- window management
-keymap.set('n', "<C-S-Right>", "<cmd>:vertical resize -1<cr>")
-keymap.set('n', "<C-S-Left>", "<cmd>:vertical resize +1<cr>")
-
+keymap.set("n", "<C-S-Right>", "<cmd>:vertical resize -1<cr>")
+keymap.set("n", "<C-S-Left>", "<cmd>:vertical resize +1<cr>")
 
 -- ======================== PLUGINS CONFIGURATION ========================
 --
@@ -298,16 +293,19 @@ telescope.setup({
         buffers = {
             previewer = false,
         },
+        live_grep = {
+            previewer = false,
+        },
     },
     extensions = {
-    fzf = {
-      fuzzy = true,                    -- false will only do exact matching
-      override_generic_sorter = true,  -- override the generic sorter
-      override_file_sorter = true,     -- override the file sorter
-      case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                       -- the default case_mode is "smart_case"
-    }
-  }
+        fzf = {
+            fuzzy = true, -- false will only do exact matching
+            override_generic_sorter = true, -- override the generic sorter
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            -- the default case_mode is "smart_case"
+        },
+    },
 })
 
 vim.keymap.set("n", "<leader>ff", function()
@@ -324,6 +322,7 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
 vim.keymap.set("n", "<leader>ps", function()
     builtin.grep_string({ search = vim.fn.input("Grep > ") })
 end, {})
+vim.keymap.set("n", "<leader>fs", builtin.live_grep, {})
 vim.keymap.set("n", "<leader>fb", function()
     builtin.buffers()
 end, {})
