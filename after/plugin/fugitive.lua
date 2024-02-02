@@ -25,6 +25,8 @@ local git_keymaps = function()
 
     -- add and push tags interactively
     vim.keymap.set("n", "<leader>ptt", function()
+        local tag_name = vim.fn.input("Tag name: ")
+        vim.cmd.Git("tag " .. tag_name)
         vim.cmd.Git("tag -l | fzf | xargs git push origin")
     end, opts)
 end
