@@ -6,6 +6,9 @@
 --- License: MIT License
 ------------------------------------------
 
+-- Just testing out startup time
+vim.loader.enable()
+
 --- Disable VIM defaults
 -- Nobody likes the top banner on NetRW -- I don't!
 vim.g.netrw_banner = 0
@@ -56,11 +59,16 @@ require("packer").startup(function(use)
         end,
     })
 
-    -- Null LS
-    use("jose-elias-alvarez/null-ls.nvim")
-
     -- GitHub Co-pilot
-    use("github/copilot.vim")
+    use({"github/copilot.vim", disable = true})
+
+    -- Glow for markdown preview
+    use({
+        "ellisonleao/glow.nvim",
+        config = function()
+            require("glow").setup()
+        end,
+    })
 
     --- LSP Config
     --- Langugue server management
@@ -109,11 +117,31 @@ require("packer").startup(function(use)
     -- Themes (Tokyonight or Rose-pine)
     use({ "rose-pine/neovim", as = "rose-pine" })
 
-    -- You never know when i'd be dealing with Web Dev
-    --
+    -- Autopairs
+    use {
+	"windwp/nvim-autopairs",
+        config = function() require("nvim-autopairs").setup {} end
+    }
+
+    -- Wakatime
+    use 'wakatime/vim-wakatime'
+
+    -- Vim Surround
+    use({
+    "kylechui/nvim-surround",
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+    config = function()
+        require("nvim-surround").setup({
+            -- Configuration here, or leave empty to use defaults
+        })
+      end
+    })
 end)
 
-require("lsp")
+
+-- ======================== GLOBAL CONFIGURATION ========================
+require("codemage.lsp")
+require("codemage.null-ls")
 
 -- ======================== GLOBAL CONFIGURATION ========================
 --
@@ -203,6 +231,9 @@ keymap.set("n", "<leader>p", '"+P')
 -- Navigation is better with `project-view`
 keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
+-- Fast way to save and exit a file
+keymap.set('n', '<leader>w', '<cmd>w<cr>')
+
 -- Navigate up, down, left, and right between splits.
 vim.keymap.set("n", "<C-h>", "<c-w>h")
 vim.keymap.set("n", "<C-j>", "<c-w>j")
@@ -226,9 +257,6 @@ keymap.set("n", "<leader>ga", function()
 end)
 keymap.set("n", "<leader>gc", function()
     vim.cmd([[ Git commit ]])
-end)
-keymap.set("n", "<leader>gco", function()
-    vim.cmd([[ Git checkout ]])
 end)
 
 -- Make text selection move up and down in selection mode
@@ -266,16 +294,16 @@ end)
 vim.keymap.set("n", "<leader>hh", function()
     ui.toggle_quick_menu()
 end)
-vim.keymap.set("n", "<S-h>", function()
+vim.keymap.set("n", "<S-f>", function()
     ui.nav_file(1)
 end)
-vim.keymap.set("n", "<leader>j", function()
+vim.keymap.set("n", "<S-g>", function()
     ui.nav_file(2)
 end)
-vim.keymap.set("n", "<leader>k", function()
+vim.keymap.set("n", "<S-k>", function()
     ui.nav_file(3)
 end)
-vim.keymap.set("n", "<leader>l", function()
+vim.keymap.set("n", "<S-l>", function()
     ui.nav_file(4)
 end)
 

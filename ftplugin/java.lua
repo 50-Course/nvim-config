@@ -1,4 +1,5 @@
 local jdtls_path = vim.fn.stdpath("data") .. "/mason/packages/jdtls/"
+local jdtls_pack_path = vim.fn.stdpath("data") .. "/mason/packages/"
 
 local root_markers = { "gradlew", "pom.xml", ".git", "mvnw", "build.gradle" }
 
@@ -11,11 +12,15 @@ local workspace_folder = os.getenv("HOME")
     .. project_name
 
 local debug_adapter_jar_path = vim.fn.glob(
-    jdtls_path
-        .. "/mason/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
+    jdtls_pack_path
+        .. "java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
 )
 
-local OS_NAME = ""
+local function get_lombok_path()
+    print("Unable to find Lombok in path")
+end
+
+local OS_NAME = "linux"
 
 local config = {
     flags = {
@@ -94,8 +99,12 @@ local config = {
             configuration = {
                 runtimes = {
                     {
-                        name = "JavaSE-17",
+                        name = "JavaSE-21",
                         path = os.getenv("JAVA_HOME"),
+                    },
+                    {
+                        name = "JavaSE-17",
+                        path = vim.fn.glob("/usr/lib/jvm/jdk-17/bin")
                     },
                 },
             },
@@ -104,44 +113,59 @@ local config = {
 }
 
 -- Additional mappings
-local bufopts = { noremap = true, buffer = bufnr }
 
-vim.keymap.set(
-    "n",
-    "<localleader>o",
-    " <Cmd>lua require'jdtls'.organize_imports()<CR>",
-    bufopts
-)
-vim.keymap.set(
-    "n",
-    "<localleader>ev",
-    " <Cmd>lua require('jdtls').extract_variable()<CR>",
-    bufopts
-)
-vim.keymap.set(
-    "v",
-    "<localleader>ev",
-    " <Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>",
-    bufopts
-)
-vim.keymap.set(
-    "n",
-    "<localleader>ec",
-    " <Cmd>lua require('jdtls').extract_constant()<CR>",
-    bufopts
-)
-vim.keymap.set(
-    "v",
-    "<localleader>ec",
-    " <Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>",
-    bufopts
-)
-vim.keymap.set(
-    "v",
-    "<localleader>em",
-    " <Esc><Cmd>lua require('jdtls').extract_method(true)<CR>",
-    bufopts
-)
+local java_buf_mappings = function (_, bufnr)
+    local bufopts = { noremap = true, buffer = bufnr }
+    vim.keymap.set(
+        "n",
+        "<leader>o",
+        " <Cmd>lua require'jdtls'.organize_imports()<CR>",
+        bufopts
+    )
+    vim.keymap.set(
+        "n",
+        "<leader>ev",
+        " <Cmd>lua require('jdtls').extract_variable()<CR>",
+        bufopts
+    )
+    vim.keymap.set(
+        "v",
+        "<leader>ev",
+        " <Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>",
+        bufopts
+    )
+    vim.keymap.set(
+        "n",
+        "<leader>ec",
+        " <Cmd>lua require('jdtls').extract_constant()<CR>",
+        bufopts
+    )
+    vim.keymap.set(
+        "v",
+        "<leader>ec",
+        " <Esc><Cmd>lua require('jdtls').extract_constant(true)<CR>",
+        bufopts
+    )
+    vim.keymap.set(
+        "v",
+        "<leader>em",
+        " <Esc><Cmd>lua require('jdtls').extract_method(true)<CR>",
+        bufopts
+    )
+end
+
+local client = vim.lsp.get_client_by_id() == "java"
+
+if vim.lsp.buf_is_attached(0, client) then
+    local java_bindings = vim.api.nvim_create_augroup("JavaBindings", {
+        clear = true
+    })
+
+    vim.api.nvim_create_autocmd("LspAttach", {
+        group = java_bindings,
+        callback = java_buf_mappings
+    })
+end
 
 -- For testing
 -- vim.keymap.set("n", , , bufopts) <leader>df <Cmd>lua require'jdtls'.test_class()<CR>
