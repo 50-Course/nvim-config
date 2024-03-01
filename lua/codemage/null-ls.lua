@@ -8,10 +8,13 @@ local sources = {
     null_ls.builtins.formatting.clang_format.with({
 	filetypes = { "c", "cpp", "objc", "objcpp" },
     }),
+    null_ls.builtins.formatting.djlint,
+    null_ls.builtins.formatting.dart_format,
+    null_ls.builtins.formatting.npm_groovy_lint.with({
+	filetypes = { "groovy", "jenkinsfile" },
+    }),
     null_ls.builtins.formatting.stylua,
-    null_ls.builtins.formatting.eslint_d,
     null_ls.builtins.formatting.black,
-    null_ls.builtins.formatting.rustfmt,
     null_ls.builtins.formatting.shfmt,
 }
 

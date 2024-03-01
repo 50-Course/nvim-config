@@ -126,6 +126,10 @@ require("packer").startup(function(use)
     -- Wakatime
     use 'wakatime/vim-wakatime'
 
+    -- Fomatting with None-ls
+    -- Drop-in replacement for null-ls
+    use 'nvimtools/none-ls.nvim'
+
     -- Vim Surround
     use({
     "kylechui/nvim-surround",
