@@ -236,7 +236,7 @@ keymap.set("n", "<leader>p", '"+P')
 keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 -- Fast way to save and exit a file
-keymap.set('n', '<leader>w', '<cmd>w<cr>')
+keymap.set('n', '<leader><leader>w', '<cmd>w<cr>')
 
 -- Navigate up, down, left, and right between splits.
 vim.keymap.set("n", "<C-h>", "<c-w>h")
@@ -244,10 +244,19 @@ vim.keymap.set("n", "<C-j>", "<c-w>j")
 vim.keymap.set("n", "<C-k>", "<c-w>k")
 vim.keymap.set("n", "<C-l>", "<c-w>l")
 
+-- Glow preview (for markdowns)
+vim.keymap.set('n', '<localleader>p', ':Glow<CR>')
+
 -- Better way to jump out of modes
 keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
 
 keymap.set("n", "Q", "<nop>")
+keymap.set('n', 'qqq', '<cmd>q!<cr>')
+keymap.set('n', '<leader><leader>q', '<cmd>q<cr>')
+
+-- Search-replace
+vim.keymap.set('n', "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
 -- Undo tree for the Win!
 keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
