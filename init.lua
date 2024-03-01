@@ -13,7 +13,7 @@ vim.loader.enable()
 -- Nobody likes the top banner on NetRW -- I don't!
 vim.g.netrw_banner = 0
 vim.g.netrw_browse_split = 0
-vim.g.loaded_gzip = 1
+vim.g.loaded_gzip = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
@@ -245,14 +245,15 @@ vim.keymap.set("n", "<C-k>", "<c-w>k")
 vim.keymap.set("n", "<C-l>", "<c-w>l")
 
 -- Glow preview (for markdowns)
-vim.keymap.set('n', '<localleader>p', ':Glow<CR>')
+-- pm means, preview markdown
+vim.keymap.set('n', '<localleader>pm', ':Glow<CR>')
 
 -- Better way to jump out of modes
 keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format({ timeout = 2000 }) end)
 
 keymap.set("n", "Q", "<nop>")
-keymap.set('n', 'qqq', '<cmd>q!<cr>')
+keymap.set('n', '<leader>qx', '<cmd>q!<cr>')
 keymap.set('n', '<leader><leader>q', '<cmd>q<cr>')
 
 -- Search-replace
@@ -284,6 +285,9 @@ keymap.set("n", "<C-x>", "<cmd>silent !chmod +x %<cr>")
 -- ..and when the reverse is done with Ctrl+u
 keymap.set("n", "<C-d>", "<C-d>zz")
 keymap.set("n", "<C-u>", "<C-u>zz")
+
+keymap.set('n', 'n', 'nzzV')
+keymap.set('n', 'N', 'NzzV')
 
 -- Vim Tests keybinds
 keymap.set("n", "<leader>tn", "<cmd>TestNearest<cr>")
