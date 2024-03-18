@@ -6,9 +6,6 @@
 --- License: MIT License
 ------------------------------------------
 
--- Just testing out startup time
-vim.loader.enable()
-
 --- Disable VIM defaults
 -- Nobody likes the top banner on NetRW -- I don't!
 vim.g.netrw_banner = 0
@@ -41,6 +38,14 @@ require("packer").startup(function(use)
     use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
     use("nvim-treesitter/nvim-treesitter-textobjects")
 
+    use({
+        "lewis6991/gitsigns.nvim",
+        requires = { "nvim-lua/plenary.nvim" },
+        config = function()
+            require("gitsigns").setup()
+        end,
+    })
+
     -- Fugitive for Git-integration
     --
     -- Run: `:h fugitive` to get started
@@ -60,7 +65,7 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use({"github/copilot.vim", disable = true})
+    use({ "github/copilot.vim", opt = true })
 
     -- Glow for markdown preview
     use({
@@ -118,34 +123,46 @@ require("packer").startup(function(use)
     use({ "rose-pine/neovim", as = "rose-pine" })
 
     -- Autopairs
-    use {
-	"windwp/nvim-autopairs",
-        config = function() require("nvim-autopairs").setup {} end
-    }
+    use({
+        "windwp/nvim-autopairs",
+        config = function()
+            require("nvim-autopairs").setup({})
+        end,
+    })
 
     -- Wakatime
-    use 'wakatime/vim-wakatime'
+    use("wakatime/vim-wakatime")
 
     -- Fomatting with None-ls
     -- Drop-in replacement for null-ls
-    use 'nvimtools/none-ls.nvim'
+    use("nvimtools/none-ls.nvim")
+
+    -- Gruvbox
+    use({ "ellisonleao/gruvbox.nvim" })
+
+    use({
+        "folke/tokyonight.nvim",
+        lazy = true,
+        priority = 1000,
+        opts = {},
+    })
 
     -- Vim Surround
     use({
-    "kylechui/nvim-surround",
-    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
-    config = function()
-        require("nvim-surround").setup({
-            -- Configuration here, or leave empty to use defaults
-        })
-      end
+        "kylechui/nvim-surround",
+        tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+        config = function()
+            require("nvim-surround").setup({
+                -- Configuration here, or leave empty to use defaults
+            })
+        end,
     })
 end)
-
 
 -- ======================== GLOBAL CONFIGURATION ========================
 require("codemage.lsp")
 require("codemage.null-ls")
+require("codemage.colorscheme.gruvbox")
 
 -- ======================== GLOBAL CONFIGURATION ========================
 --
@@ -170,8 +187,8 @@ local options = {
     undodir = vim.fn.expand("$HOME/.vim/undodir"),
     undofile = false,
     swapfile = false,
-    updatetime = 100,
-    hidden = false,
+    updatetime = 50,
+    hidden = true,
     softtabstop = 4,
     tabstop = 4,
     shiftwidth = 4,
@@ -188,6 +205,7 @@ end
 -- to be in the universe
 vim.opt.wildignore:append({ ".git", ".venv", "node_modules" })
 
+vim.opt.isfname:append("@-@")
 -- ======================== USER/AUTOCOMMANDS ========================
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
@@ -235,8 +253,11 @@ keymap.set("n", "<leader>p", '"+P')
 -- Navigation is better with `project-view`
 keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
+-- Quickly jummp out of the terminal with Ctrl+c
+keymap.set("t", "<C-c>", "<C-\\><C-n>")
+
 -- Fast way to save and exit a file
-keymap.set('n', '<leader><leader>w', '<cmd>w<cr>')
+keymap.set("n", "<leader><leader>w", "<cmd>w<cr>")
 
 -- Navigate up, down, left, and right between splits.
 vim.keymap.set("n", "<C-h>", "<c-w>h")
@@ -246,18 +267,24 @@ vim.keymap.set("n", "<C-l>", "<c-w>l")
 
 -- Glow preview (for markdowns)
 -- pm means, preview markdown
-vim.keymap.set('n', '<localleader>pm', ':Glow<CR>')
+vim.keymap.set("n", "<localleader>pm", ":Glow<CR>")
 
 -- Better way to jump out of modes
 keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
-vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format({ timeout = 2000 }) end)
+vim.keymap.set("n", "<leader>f", function()
+    vim.lsp.buf.format({ timeout = 2000 })
+end)
 
 keymap.set("n", "Q", "<nop>")
-keymap.set('n', '<leader>qx', '<cmd>q!<cr>')
-keymap.set('n', '<leader><leader>q', '<cmd>q<cr>')
+keymap.set("n", "<leader>qx", "<cmd>q!<cr>")
+keymap.set("n", "<leader><leader>q", "<cmd>q<cr>")
 
 -- Search-replace
-vim.keymap.set('n', "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
+vim.keymap.set(
+    "n",
+    "<leader>s",
+    [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]
+)
 
 -- Undo tree for the Win!
 keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
@@ -280,14 +307,21 @@ keymap.set("v", "K", ":m '<-2<cr>gv=gv")
 -- Use <Ctrl-x'> to make a bash script executable
 keymap.set("n", "<C-x>", "<cmd>silent !chmod +x %<cr>")
 
+keymap.set("n", "<C-f>", "<cmd>silent !tmux-sess-man <cr>")
+
 -- Keep cursor at the middle of the buffer at all times
 -- ..when Ctrl+d is pressed to scroll to the bottom of the page
 -- ..and when the reverse is done with Ctrl+u
 keymap.set("n", "<C-d>", "<C-d>zz")
 keymap.set("n", "<C-u>", "<C-u>zz")
 
-keymap.set('n', 'n', 'nzzV')
-keymap.set('n', 'N', 'NzzV')
+-- Quickfist list, LocLists and Buffers
+keymap.set("n", "<leader>nc", ":cnext<cr>")
+keymap.set("n", "<leader>pc", ":cprev<cr>")
+keymap.set("n", "<leader>nb", ":bnext<cr>")
+keymap.set("n", "<leader>pb", ":bprev<cr>")
+keymap.set("n", "<leader>nl", ":lnext<cr>")
+keymap.set("n", "<leader>pl", ":lprev<cr>")
 
 -- Vim Tests keybinds
 keymap.set("n", "<leader>tn", "<cmd>TestNearest<cr>")
@@ -311,10 +345,10 @@ end)
 vim.keymap.set("n", "<leader>hh", function()
     ui.toggle_quick_menu()
 end)
-vim.keymap.set("n", "<S-f>", function()
+vim.keymap.set("n", "<S-s>", function()
     ui.nav_file(1)
 end)
-vim.keymap.set("n", "<S-g>", function()
+vim.keymap.set("n", "<S-h>", function()
     ui.nav_file(2)
 end)
 vim.keymap.set("n", "<S-k>", function()

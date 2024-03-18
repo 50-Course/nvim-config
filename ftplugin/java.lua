@@ -1,10 +1,10 @@
 local jdtls_path = vim.fn.stdpath("data") .. "/mason/packages/jdtls/"
 local jdtls_pack_path = vim.fn.stdpath("data") .. "/mason/packages/"
+local lombok_path = os.getenv("HOME") .. "/.local/share/eclipse/lombok.jar"
 
 local root_markers = { "gradlew", "pom.xml", ".git", "mvnw", "build.gradle" }
 
 local root_dir = require("jdtls.setup").find_root(root_markers)
-
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), "p:h:t")
 
 local workspace_folder = os.getenv("HOME")
@@ -15,10 +15,6 @@ local debug_adapter_jar_path = vim.fn.glob(
     jdtls_pack_path
         .. "java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
 )
-
-local function get_lombok_path()
-    print("Unable to find Lombok in path")
-end
 
 local OS_NAME = "linux"
 
@@ -42,11 +38,11 @@ local config = {
         "--add-modules=ALL-SYSTEM",
         "--add-opens java.base/java.util=ALL-UNNAMED",
         "--add-opens java.base/java.lang=ALL-UNNAMED",
-
         "-jar",
         jdtls_path .. "plugins/org.eclipse.equinox.launcher_*.jar",
         "-configuration",
         jdtls_path .. "config_" .. OS_NAME,
+        "javaagent:" .. lombok_path,
         -- Our dedicated JDTLS workspace
         "-data",
         workspace_folder,
@@ -97,6 +93,10 @@ local config = {
                 },
             },
             configuration = {
+                maven = {
+                    downloadSources = true,
+                    downloadJavadocs = true,
+                },
                 runtimes = {
                     {
                         name = "JavaSE-21",
@@ -104,7 +104,13 @@ local config = {
                     },
                     {
                         name = "JavaSE-17",
-                        path = vim.fn.glob("/usr/lib/jvm/jdk-17/bin")
+                        path = vim.fn.glob("/usr/lib/jvm/jdk-17/bin/"),
+                    },
+                    {
+                        name = "JavaSE-11",
+                        path = vim.fn.glob(
+                            "/usr/lib/jvm/java-11-openjdk-amd64/"
+                        ),
                     },
                 },
             },
@@ -114,7 +120,7 @@ local config = {
 
 -- Additional mappings
 
-local java_buf_mappings = function (_, bufnr)
+local java_buf_mappings = function(_, bufnr)
     local bufopts = { noremap = true, buffer = bufnr }
     vim.keymap.set(
         "n",
@@ -158,12 +164,13 @@ local client = vim.lsp.get_client_by_id() == "java"
 
 if vim.lsp.buf_is_attached(0, client) then
     local java_bindings = vim.api.nvim_create_augroup("JavaBindings", {
-        clear = true
+        clear = true,
     })
 
     vim.api.nvim_create_autocmd("LspAttach", {
+        filetype = { "java" },
         group = java_bindings,
-        callback = java_buf_mappings
+        callback = java_buf_mappings,
     })
 end
 

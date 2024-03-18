@@ -1,7 +1,4 @@
-local M = {}
-
 local servers = {
-    "clangd", -- C/C++
     "pyright", -- Python
     "rust_analyzer", -- Rust
     "tsserver", -- TypeScript/JavaScript
@@ -18,17 +15,11 @@ local on_attach = function(client, buffnr)
     map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
     map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
     map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-    map(
-        { "n", "v" },
-        "<leader>f",
-        "<cmd> lua vim.lsp.buf.formatting()<CR>",
-        opts
-    )
     map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
     map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
     map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
     map("n", "K", vim.lsp.buf.hover, opts)
-    map("n", "<leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+    map("n", "<leader>td", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
     map(
         "n",
         "<leader>wa",
@@ -59,6 +50,7 @@ local cmp = require("cmp")
 local capabalities = vim.lsp.protocol.make_client_capabilities()
 
 capabalities = require("cmp_nvim_lsp").default_capabilities(capabalities)
+local luasnip = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
 
 local mason = require("mason")
@@ -67,6 +59,7 @@ local mason_lspconfig = require("mason-lspconfig")
 
 local source_names = {
     nvim_lsp = "[LSP]",
+    nvim_lsp_signature_help = "[Signature]",
     luasnip = "[Snippet]",
     buffer = "[Buffer]",
 }
@@ -74,13 +67,14 @@ local source_names = {
 cmp.setup({
     snippet = {
         expand = function(args)
-            require("luasnip").lsp_expand(args.body)
+            luasnip.lsp_expand(args.body)
         end,
     },
     completion = {
         completeopt = "menu,menuone,noinsert",
     },
     mapping = cmp.mapping.preset.insert({
+        -- Manually trigger snippet completion from nvim-cmp
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<C-x>"] = cmp.mapping.close(),
         ["<C-y>"] = cmp.mapping.confirm({
@@ -89,14 +83,37 @@ cmp.setup({
         }),
         ["<Tab>"] = nil,
         ["<S-Tab>"] = nil,
+        -- Navigate through the completion list
+        --
+        -- <C-n> and <C-p> are used to navigate through the completion list [f]orward and [b]ackward.
+        -- However, these keys are also used to navigate the quickfix list.
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+        -- Navigate through the snippet list
+        -- using the same keys as the completion list
+        ["<C-n>"] = cmp.mapping.select_next_item({
+            behavior = cmp.SelectBehavior.Insert,
+        }),
+        ["<C-p>"] = cmp.mapping.select_prev_item({
+            behavior = cmp.SelectBehavior.Insert,
+        }),
+        ["<C-l>"] = cmp.mapping(function()
+            if luasnip.expand_or_locally_jumpable() then
+                luasnip.expand_or_jump()
+            end
+        end, { "i", "s" }),
+        ["<C-h>"] = cmp.mapping(function()
+            if luasnip.locally_jumpable() then
+                luasnip.expand_or_jump(-1)
+            end
+        end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
         { name = "nvim_lsp" },
         { name = "nvim_lsp_signature_help" },
         { name = "luasnip" },
         { name = "buffer" },
+        { name = "path" },
     }),
     formatting = {
         format = function(entry, vim_item)
@@ -111,6 +128,7 @@ mason_lspconfig.setup({
     ensure_installed = servers,
     automatic_installation = true,
 })
+
 mason_lspconfig.setup_handlers({
     -- Automatically configure servers installed via `:MasonInstall or :Mason `
     function(server_name)
@@ -122,6 +140,9 @@ mason_lspconfig.setup_handlers({
 
     ["lua_ls"] = function()
         local settings = {
+            runtime = {
+                version = "LuaJIT",
+            },
             Lua = {
                 diagnostics = {
                     globals = { "vim" },
@@ -132,8 +153,8 @@ mason_lspconfig.setup_handlers({
             },
         }
         local opts = {
-            on_attach = on_attach,
             capabilities = capabalities,
+            on_attach = on_attach,
             settings = settings,
         }
         lspconfig["lua_ls"].setup(opts)
@@ -156,5 +177,3 @@ mason_lspconfig.setup_handlers({
         lspconfig["gopls"].setup(opts)
     end,
 })
-
-return M

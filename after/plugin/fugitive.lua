@@ -23,17 +23,18 @@ local git_keymaps = function()
         vim.cmd.Git({ "push", "-u", "origin", branch })
     end, opts)
 
-    vim.keymap.set('n', '<leader>gco', function ()
+    vim.keymap.set("n", "<leader>gco", function()
         local _, telescope_builtin = pcall(require, "telescope.builtin")
         telescope_builtin.git_branches({
             attach_mappings = function(_, map)
-                map('i', '<CR>', function(bufnr)
-                    local entry = require('telescope.actions.state').get_selected_entry()
-                    require('telescope.actions').close(bufnr)
-                    vim.cmd('Git checkout ' .. entry.value)
+                map("i", "<CR>", function(bufnr)
+                    local entry =
+                        require("telescope.actions.state").get_selected_entry()
+                    require("telescope.actions").close(bufnr)
+                    vim.cmd("Git checkout " .. entry.value)
                 end)
                 return true
-            end
+            end,
         })
     end, opts)
 

@@ -2,26 +2,37 @@
 --
 -- nvim-treesitter supercharges syntax highlighting with better language support.
 -- nvim-treesitter also improves the ability to navigate through code quickly.
+
+local filetypes = {
+    "c",
+    "cpp",
+    "go",
+    "javascript",
+    "lua",
+    "markdown",
+    "python",
+    "rust",
+    "java",
+}
+
 require("nvim-treesitter.configs").setup({
-    ensure_installed = {
-        "cpp",
-        "go",
-        "javascript",
-        "lua",
-        "markdown",
-        "python",
-        "rust",
-        "java",
+    ensure_installed = filetypes,
+
+    sync_install = false,
+    auto_install = true,
+    highlight = {
+        enable = true,
+        indent = true,
+        disable = {},
+        additional_vim_regex_highlighting = false,
     },
-    highlight = { enable = true },
-    indent = { enable = true },
     incremental_selection = {
         enable = true,
         keymaps = {
-            init_selection = "<c-space>",
-            node_incremental = "<c-space>",
-            scope_incremental = "<c-s>",
-            node_decremental = "<c-backspace>",
+            init_selection = "gnn", -- maps in normal mode to init the node/scope selection
+            node_incremental = "grn", -- increment to the upper named parent
+            scope_incremental = "grc", -- increment to the upper scope (as defined in locals.scm)
+            node_decremental = "grm", -- decrement to the previous node
         },
     },
     -- Configuration for the nvim-treesitter-textobjects plugin
