@@ -93,6 +93,10 @@ require("packer").startup(function(use)
             "hrsh7th/cmp-nvim-lua",
         },
     })
+
+    -- Debugger Support
+    use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } })
+
     -- Snippets
     use({ "L3MON4D3/LuaSnip" })
     use("rafamadriz/friendly-snippets")
