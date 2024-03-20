@@ -14,7 +14,12 @@ local on_attach = function(client, buffnr)
     map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
     map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
     map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-    map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
+    map("n", "<leader>vws", function()
+        vim.lsp.buf.workspace_symbol()
+    end, opts)
+    map("n", "<leader>vrr", function()
+        vim.lsp.buf.references()
+    end, opts)
     map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
     map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
     map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
@@ -176,4 +181,8 @@ mason_lspconfig.setup_handlers({
         }
         lspconfig["gopls"].setup(opts)
     end,
+})
+
+vim.diagnostic.config({
+    virtual_text = true,
 })
