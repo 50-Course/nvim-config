@@ -95,7 +95,10 @@ require("packer").startup(function(use)
     })
 
     -- Debugger Support
-    use({ "rcarriga/nvim-dap-ui", requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } })
+    use({
+        "rcarriga/nvim-dap-ui",
+        requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+    })
 
     -- Snippets
     use({ "L3MON4D3/LuaSnip" })
@@ -271,13 +274,11 @@ vim.keymap.set("n", "<C-l>", "<c-w>l")
 
 -- Glow preview (for markdowns)
 -- pm means, preview markdown
-vim.keymap.set("n", "<localleader>pm", ":Glow<CR>")
+vim.keymap.set("n", "<leader>pmf", ":Glow<CR>")
 
 -- Better way to jump out of modes
 keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
-vim.keymap.set("n", "<leader>f", function()
-    vim.lsp.buf.format({ timeout = 2000 })
-end)
+vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format({ timeout = 2000 }) end)
 
 keymap.set("n", "Q", "<nop>")
 keymap.set("n", "<leader>qx", "<cmd>q!<cr>")
@@ -309,9 +310,9 @@ keymap.set("v", "J", ":m '>+1<cr>gv=gv")
 keymap.set("v", "K", ":m '<-2<cr>gv=gv")
 
 -- Use <Ctrl-x'> to make a bash script executable
-keymap.set("n", "<C-x>", "<cmd>silent !chmod +x %<cr>")
+keymap.set("n", "<leader>x", "<cmd>silent !chmod +x %<cr>")
 
-keymap.set("n", "<C-f>", "<cmd>silent !tmux-sess-man <cr>")
+keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sess-man<cr>")
 
 -- Keep cursor at the middle of the buffer at all times
 -- ..when Ctrl+d is pressed to scroll to the bottom of the page
@@ -336,6 +337,10 @@ keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
 -- window management
 keymap.set("n", "<C-S-Right>", "<cmd>:vertical resize -1<cr>")
 keymap.set("n", "<C-S-Left>", "<cmd>:vertical resize +1<cr>")
+
+keymap.set("n", "<leader><leader>", function()
+    vim.cmd([[ so % ]])
+end)
 
 -- ======================== PLUGINS CONFIGURATION ========================
 --
