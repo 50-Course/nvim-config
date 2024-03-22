@@ -6,6 +6,9 @@
 --- License: MIT License
 ------------------------------------------
 
+-- ******************************** SPEED UP LOAD TIME ********************************
+vim.loader.enable()
+
 --- Disable VIM defaults
 -- Nobody likes the top banner on NetRW -- I don't!
 vim.g.netrw_banner = 0
@@ -20,9 +23,9 @@ vim.g.loaded_python3_provider = 0
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
--- Treesitter folding 
-vim.wo.foldmethod = 'expr'
-vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+-- Treesitter folding
+vim.wo.foldmethod = "expr"
+vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- I am using Packer as my plugin manager
 --
@@ -97,7 +100,7 @@ require("packer").startup(function(use)
             "saadparwaiz1/cmp_luasnip",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
-	    "hrsh7th/cmp-nvim-lsp-signature-help",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-nvim-lua",
         },
     })
@@ -108,7 +111,7 @@ require("packer").startup(function(use)
         requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
     })
 
-    use 'voldikss/vim-floaterm'
+    use("voldikss/vim-floaterm")
 
     -- Snippets
     use({ "L3MON4D3/LuaSnip" })
@@ -271,7 +274,7 @@ keymap.set("n", "<leader>pv", vim.cmd.Ex)
 keymap.set("t", "<C-c>", "<C-\\><C-n>:q<cr>")
 
 -- Fast way to save and exit a file
-keymap.set("n", "<leader>wb", "<cmd>w<cr>", {desc = "[w]rite [b]uffer" })
+keymap.set("n", "<leader>wb", "<cmd>w<cr>", { desc = "[w]rite [b]uffer" })
 
 -- Navigate up, down, left, and right between splits.
 vim.keymap.set("n", "<C-h>", "<c-w>h")
@@ -281,7 +284,12 @@ vim.keymap.set("n", "<C-l>", "<c-w>l")
 
 -- Glow preview (for markdowns)
 -- pm means, preview markdown
-vim.keymap.set("n", "<leader>pmf", ":Glow<CR>", { desc = "[p]review [m]arkdown [f]ile" })
+vim.keymap.set(
+    "n",
+    "<leader>pmf",
+    ":Glow<CR>",
+    { desc = "[p]review [m]arkdown [f]ile" }
+)
 
 -- Better way to jump out of modes
 keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
