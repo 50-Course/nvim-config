@@ -45,6 +45,8 @@ function M.setup()
     setup_event_handlers()
     setup_debuggers()
     setup_debugger_keymaps()
+
+    dap.setup()
 end
 
 return M

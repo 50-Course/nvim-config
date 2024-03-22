@@ -17,6 +17,13 @@ vim.g.loaded_node_provider = 0
 vim.g.loaded_python_provider = 0
 vim.g.loaded_python3_provider = 0
 
+vim.g.mapleader = " "
+vim.g.maplocalleader = ","
+
+-- Treesitter folding 
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'nvim_treesitter#foldexpr()'
+
 -- I am using Packer as my plugin manager
 --
 -- This is only possible because `install.sh` is bootsrapping my Vim
@@ -90,6 +97,7 @@ require("packer").startup(function(use)
             "saadparwaiz1/cmp_luasnip",
             "hrsh7th/cmp-buffer",
             "hrsh7th/cmp-path",
+	    "hrsh7th/cmp-nvim-lsp-signature-help",
             "hrsh7th/cmp-nvim-lua",
         },
     })
@@ -99,6 +107,8 @@ require("packer").startup(function(use)
         "rcarriga/nvim-dap-ui",
         requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
     })
+
+    use 'voldikss/vim-floaterm'
 
     -- Snippets
     use({ "L3MON4D3/LuaSnip" })
@@ -166,7 +176,7 @@ require("packer").startup(function(use)
     })
 end)
 
--- ======================== GLOBAL CONFIGURATION ========================
+-- ======================== MODULES ========================
 require("codemage.lsp")
 require("codemage.null-ls")
 require("codemage.colorscheme.gruvbox")
@@ -194,7 +204,7 @@ local options = {
     undodir = vim.fn.expand("$HOME/.vim/undodir"),
     undofile = false,
     swapfile = false,
-    updatetime = 50,
+    updatetime = 180,
     hidden = true,
     softtabstop = 4,
     tabstop = 4,
@@ -249,9 +259,6 @@ keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 -- getting used to Ctrl+c is not my thing
 keymap.set("i", "<C-c>", "<Nop>")
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = ","
-
 -- Use system clipboards instead of Vim's built-in clipboard
 keymap.set({ "n", "v" }, "<leader>y", '"+Y')
 keymap.set({ "n", "v" }, "<leader>d", '"_d')
@@ -261,10 +268,10 @@ keymap.set("n", "<leader>p", '"+P')
 keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 -- Quickly jummp out of the terminal with Ctrl+c
-keymap.set("t", "<C-c>", "<C-\\><C-n>")
+keymap.set("t", "<C-c>", "<C-\\><C-n>:q<cr>")
 
 -- Fast way to save and exit a file
-keymap.set("n", "<leader><leader>w", "<cmd>w<cr>")
+keymap.set("n", "<leader>wb", "<cmd>w<cr>", {desc = "[w]rite [b]uffer" })
 
 -- Navigate up, down, left, and right between splits.
 vim.keymap.set("n", "<C-h>", "<c-w>h")
@@ -274,15 +281,18 @@ vim.keymap.set("n", "<C-l>", "<c-w>l")
 
 -- Glow preview (for markdowns)
 -- pm means, preview markdown
-vim.keymap.set("n", "<leader>pmf", ":Glow<CR>")
+vim.keymap.set("n", "<leader>pmf", ":Glow<CR>", { desc = "[p]review [m]arkdown [f]ile" })
 
 -- Better way to jump out of modes
 keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
-vim.keymap.set("n", "<leader>f", function() vim.lsp.buf.format({ timeout = 2000 }) end)
+vim.keymap.set("n", "<leader>f", function()
+    vim.lsp.buf.format({ timeout = 2000 })
+end)
 
 keymap.set("n", "Q", "<nop>")
 keymap.set("n", "<leader>qx", "<cmd>q!<cr>")
-keymap.set("n", "<leader><leader>q", "<cmd>q<cr>")
+keymap.set("n", "<leader>wq", "<cmd>wq<cr>")
+keymap.set("n", "<leader>qb", "<cmd>q<cr>", { desc = "[q]uit [b]uffer" })
 
 -- Search-replace
 vim.keymap.set(
@@ -354,18 +364,19 @@ end)
 vim.keymap.set("n", "<leader>hh", function()
     ui.toggle_quick_menu()
 end)
-vim.keymap.set("n", "<S-s>", function()
+
+vim.keymap.set("n", "<leader>hsf", function()
     ui.nav_file(1)
-end)
-vim.keymap.set("n", "<S-h>", function()
+end, { desc = "[h]arpoon [s]witch [f]irst" })
+vim.keymap.set("n", "<leader>hss", function()
     ui.nav_file(2)
-end)
-vim.keymap.set("n", "<S-k>", function()
+end, { desc = "[h]arpoon [s]witch [s]econd" })
+vim.keymap.set("n", "<leader>hst", function()
     ui.nav_file(3)
-end)
-vim.keymap.set("n", "<S-l>", function()
+end, { desc = "[h]arpoon [s]witch [t]hird" })
+vim.keymap.set("n", "<leader>hsl", function()
     ui.nav_file(4)
-end)
+end, { desc = "[h]arpoon [s]witch [l]ast" })
 
 -- ******************************** Telescope ********************************
 pcall(require("telescope").load_extension, "fzf")
@@ -406,14 +417,19 @@ vim.keymap.set("n", "<leader>ff", function()
     end
 end, {})
 
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, {})
+vim.keymap.set(
+    "n",
+    "<leader>vh",
+    builtin.help_tags,
+    { desc = "View Help Tags" }
+)
 vim.keymap.set("n", "<leader>ps", function()
     builtin.grep_string({ search = vim.fn.input("Grep > ") })
-end, {})
+end, { desc = "Project Search" })
 vim.keymap.set("n", "<leader>fs", builtin.live_grep, {})
 vim.keymap.set("n", "<leader>fb", function()
     builtin.buffers()
-end, {})
+end, { desc = "Find Buffers" })
 
 -- ******************************** Tests ********************************
 vim.g["test#strategy"] = "neovim"

@@ -45,7 +45,7 @@ local on_attach = function(client, buffnr)
     )
 
     -- Diagonistic Keymaps
-    vim.keymap.set("n", "<leader>dl", vim.diagnostic.open_float)
+    vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float)
     vim.keymap.set("n", "<leader>pd", vim.diagnostic.goto_prev)
     vim.keymap.set("n", "<leader>nd", vim.diagnostic.goto_next)
     vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
@@ -76,7 +76,7 @@ cmp.setup({
         end,
     },
     completion = {
-        completeopt = "menu,menuone,noinsert",
+        completeopt = "menuone,noselect,noinsert",
     },
     mapping = cmp.mapping.preset.insert({
         -- Manually trigger snippet completion from nvim-cmp
@@ -114,13 +114,15 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = "nvim_lsp" },
-        { name = "nvim_lsp_signature_help" },
-        { name = "luasnip" },
-        { name = "buffer" },
-        { name = "path" },
+        { name = "path" }, -- file paths
+        { name = "nvim_lsp", keyword_length = 3 }, -- LSP
+        { name = "nvim_lsp_signature_help" }, -- display function signature with current param emphasized
+        { name = "nvim_lua", keyword_length = 2 }, -- lua runtime API
+        { name = "buffer", keyword_length = 2 }, -- completion from current buffer
+        { name = "luasnip" }, -- nvim-cmp for snippets
     }),
     formatting = {
+        fields = { "menu", "abbr", "kind" },
         format = function(entry, vim_item)
             vim_item.menu = source_names[entry.source.name]
             return vim_item
@@ -185,4 +187,5 @@ mason_lspconfig.setup_handlers({
 
 vim.diagnostic.config({
     virtual_text = true,
+    update_on_insert = true,
 })
