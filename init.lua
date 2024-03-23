@@ -24,8 +24,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
 -- Treesitter folding
-vim.wo.foldmethod = "expr"
-vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.wo.foldmethod = "expr"
+-- vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- I am using Packer as my plugin manager
 --
@@ -75,7 +75,7 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use({ "github/copilot.vim", opt = true })
+    use({ "github/copilot.vim" })
 
     -- Glow for markdown preview
     use({
@@ -189,11 +189,14 @@ require("codemage.colorscheme.gruvbox")
 -- Vim options are settings that set the behaviour of a buffer or window.
 -- Use: `:h options` or `:h options-list` for more infomation.
 local options = {
+    encoding = "utf-8",
+    fileencoding = "utf-8",
     number = true,
     relativenumber = true,
 
     termguicolors = true,
     breakindent = true,
+    autoindent = true,
     smartindent = true,
     smartcase = true,
     ignorecase = true,
@@ -213,7 +216,8 @@ local options = {
     tabstop = 4,
     shiftwidth = 4,
     expandtab = true,
-
+    laststatus = 0,
+    backspace = { 'start', 'eol', 'indent' },
     signcolumn = "yes",
 }
 
@@ -223,14 +227,15 @@ end
 
 -- Just ignore `node_modules` and `.git`. Seriously, its the worst place
 -- to be in the universe
-vim.opt.wildignore:append({ ".git", ".venv", "node_modules" })
+vim.opt.wildignore:append({ ".git", ".venv", "*/node_modules/*" })
 
+vim.opt.path:append({'**'})
 vim.opt.isfname:append("@-@")
 -- ======================== USER/AUTOCOMMANDS ========================
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
-
 local highlight_text = augroup("TextHighlight", { clear = true })
+
 autocmd("TextYankPost", {
     group = highlight_text,
     callback = function()
@@ -253,6 +258,12 @@ autocmd("BufReadPost", {
     end,
 })
 
+autocmd({ "FileType " }, {
+    pattern = { "json", "jsonc", "markdown" },
+    callback = function()
+        vim.wo.conceallevel = 0
+    end,
+})
 -- ======================== KEYMAPS ========================
 --
 local keymap = vim.keymap

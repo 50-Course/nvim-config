@@ -114,12 +114,12 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = "path" }, -- file paths
         { name = "nvim_lsp", keyword_length = 3 }, -- LSP
         { name = "nvim_lsp_signature_help" }, -- display function signature with current param emphasized
         { name = "nvim_lua", keyword_length = 2 }, -- lua runtime API
-        { name = "buffer", keyword_length = 2 }, -- completion from current buffer
         { name = "luasnip" }, -- nvim-cmp for snippets
+        { name = "buffer", keyword_length = 2 }, -- completion from current buffer
+        { name = "path" }, -- file paths
     }),
     formatting = {
         fields = { "menu", "abbr", "kind" },
