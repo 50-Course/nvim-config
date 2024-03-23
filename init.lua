@@ -452,5 +452,7 @@ end, { desc = "Find Buffers" })
 
 -- ******************************** Tests ********************************
 vim.g["test#strategy"] = "neovim"
+vim.g["test#strategy#suite"] = "vimux"
 vim.g["test#neovim#term_position"] = "vert"
 vim.g["test#neovim#term_repl_command"] = "vsplit"
+
