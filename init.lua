@@ -111,7 +111,11 @@ require("packer").startup(function(use)
         requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
     })
 
-    use("voldikss/vim-floaterm")
+    -- Terminal manager with Toggleterm
+    -- https://github.com/akinsho/toggleterm.nvim.git
+	use {"akinsho/toggleterm.nvim", tag = '*', config = function()
+  require("codemage.toggleterm")
+end}
 
     -- Snippets
     use({ "L3MON4D3/LuaSnip" })
@@ -182,6 +186,7 @@ end)
 -- ======================== MODULES ========================
 require("codemage.lsp")
 require("codemage.null-ls")
+require("codemage.toggleterm")
 require("codemage.colorscheme.gruvbox")
 
 -- ======================== GLOBAL CONFIGURATION ========================
@@ -189,35 +194,43 @@ require("codemage.colorscheme.gruvbox")
 -- Vim options are settings that set the behaviour of a buffer or window.
 -- Use: `:h options` or `:h options-list` for more infomation.
 local options = {
-    encoding = "utf-8",
-    fileencoding = "utf-8",
     number = true,
     relativenumber = true,
 
+    guicursor = "",
     termguicolors = true,
-    breakindent = true,
-    autoindent = true,
+
+    tabstop = 4,
+    softtabstop = 4,
+    shiftwidth = 4,
+    expandtab = true,
+
     smartindent = true,
+
     smartcase = true,
     ignorecase = true,
+
     wrap = false,
+
     scrolloff = 8,
     sidescrolloff = 6,
+    
     hlsearch = false,
     incsearch = true,
+
     splitright = true,
     splitbelow = true,
+
     undodir = vim.fn.expand("$HOME/.vim/undodir"),
     undofile = false,
     swapfile = false,
-    updatetime = 180,
+
+    updatetime = 50,
+
     hidden = true,
-    softtabstop = 4,
-    tabstop = 4,
-    shiftwidth = 4,
-    expandtab = true,
+
     laststatus = 0,
-    backspace = { 'start', 'eol', 'indent' },
+    backspace = { "start", "eol", "indent" },
     signcolumn = "yes",
 }
 
@@ -229,7 +242,7 @@ end
 -- to be in the universe
 vim.opt.wildignore:append({ ".git", ".venv", "*/node_modules/*" })
 
-vim.opt.path:append({'**'})
+vim.opt.path:append({ "**" })
 vim.opt.isfname:append("@-@")
 -- ======================== USER/AUTOCOMMANDS ========================
 local autocmd = vim.api.nvim_create_autocmd
@@ -455,4 +468,3 @@ vim.g["test#strategy"] = "neovim"
 vim.g["test#strategy#suite"] = "vimux"
 vim.g["test#neovim#term_position"] = "vert"
 vim.g["test#neovim#term_repl_command"] = "vsplit"
-
