@@ -85,6 +85,7 @@ require("packer").startup(function(use)
         end,
     })
 
+
     --- LSP Config
     --- Langugue server management
     use({ "williamboman/mason.nvim" })
@@ -116,6 +117,11 @@ require("packer").startup(function(use)
 	use {"akinsho/toggleterm.nvim", tag = '*', config = function()
   require("codemage.toggleterm")
 end}
+
+    -- Flutter
+    -- Lsp integraton
+    -- https://github.ocm/akinsho/flutter-tools.nvim
+    use 'akinsho/flutter-tools.nvim'
 
     -- Snippets
     use({ "L3MON4D3/LuaSnip" })
@@ -229,7 +235,6 @@ local options = {
 
     hidden = true,
 
-    laststatus = 0,
     backspace = { "start", "eol", "indent" },
     signcolumn = "yes",
 }
