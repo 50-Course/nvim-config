@@ -16,9 +16,9 @@ vim.g.netrw_browse_split = 0
 vim.g.loaded_gzip = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
-vim.g.loaded_node_provider = 0
+vim.g.loaded_node_provider = 1
 vim.g.loaded_python_provider = 0
-vim.g.loaded_python3_provider = 0
+vim.g.loaded_python3_provider = 1 -- enable python 3 provider
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
@@ -85,7 +85,6 @@ require("packer").startup(function(use)
         end,
     })
 
-
     --- LSP Config
     --- Langugue server management
     use({ "williamboman/mason.nvim" })
@@ -114,14 +113,18 @@ require("packer").startup(function(use)
 
     -- Terminal manager with Toggleterm
     -- https://github.com/akinsho/toggleterm.nvim.git
-	use {"akinsho/toggleterm.nvim", tag = '*', config = function()
-  require("codemage.toggleterm")
-end}
+    use({
+        "akinsho/toggleterm.nvim",
+        tag = "*",
+        config = function()
+            require("codemage.toggleterm")
+        end,
+    })
 
     -- Flutter
     -- Lsp integraton
     -- https://github.ocm/akinsho/flutter-tools.nvim
-    use 'akinsho/flutter-tools.nvim'
+    use("akinsho/flutter-tools.nvim")
 
     -- Snippets
     use({ "L3MON4D3/LuaSnip" })
@@ -220,7 +223,7 @@ local options = {
 
     scrolloff = 8,
     sidescrolloff = 6,
-    
+
     hlsearch = false,
     incsearch = true,
 
@@ -303,7 +306,7 @@ keymap.set("n", "<leader>pv", vim.cmd.Ex)
 keymap.set("t", "<C-c>", "<C-\\><C-n>:q<cr>")
 
 -- Fast way to save and exit a file
-keymap.set("n", "<leader>wb", "<cmd>w<cr>", { desc = "[w]rite [b]uffer" })
+keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "[w]rite [b]uffer" })
 
 -- Navigate up, down, left, and right between splits.
 vim.keymap.set("n", "<C-h>", "<c-w>h")
@@ -327,9 +330,9 @@ vim.keymap.set("n", "<leader>f", function()
 end)
 
 keymap.set("n", "Q", "<nop>")
-keymap.set("n", "<leader>qx", "<cmd>q!<cr>")
+--keymap.set("n", "<leader>qq", "<cmd>q!<cr>")
 keymap.set("n", "<leader>wq", "<cmd>wq<cr>")
-keymap.set("n", "<leader>qb", "<cmd>q<cr>", { desc = "[q]uit [b]uffer" })
+keymap.set("n", "<leader>qq", "<cmd>q<cr>", { desc = "[q]uit [b]uffer" })
 
 -- Search-replace
 vim.keymap.set(
@@ -435,10 +438,10 @@ telescope.setup({
     },
     extensions = {
         fzf = {
-            fuzzy = true, -- false will only do exact matching
+            fuzzy = true,                   -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
         },
     },
