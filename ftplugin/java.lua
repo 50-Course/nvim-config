@@ -2,7 +2,16 @@ local jdtls_path = vim.fn.stdpath("data") .. "/mason/packages/jdtls/"
 local jdtls_pack_path = vim.fn.stdpath("data") .. "/mason/packages/"
 local lombok_path = os.getenv("HOME") .. "/.local/share/eclipse/lombok.jar"
 
-local root_markers = { "gradlew", "pom.xml", ".git", "mvnw", "build.gradle" }
+local root_markers = {
+    "gradlew",
+    "pom.xml",
+    ".git",
+    "mvnw",
+    "build.gradle",
+    "build.gradle.kts",
+    "settings.gradle",
+    "settings.gradle.kts",
+}
 
 local root_dir = require("jdtls.setup").find_root(root_markers)
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), "p:h:t")
