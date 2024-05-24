@@ -22,7 +22,7 @@ local workspace_folder = os.getenv("HOME")
 
 local debug_adapter_jar_path = vim.fn.glob(
     jdtls_pack_path
-        .. "java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
+    .. "java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
 )
 
 local OS_NAME = "linux"

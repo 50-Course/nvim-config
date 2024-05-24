@@ -16,9 +16,9 @@ vim.g.netrw_browse_split = 0
 vim.g.loaded_gzip = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
-vim.g.loaded_node_provider = 1
+vim.g.loaded_node_provider = 0
 vim.g.loaded_python_provider = 0
-vim.g.loaded_python3_provider = 1 -- enable python 3 provider
+vim.g.loaded_python3_provider = 0 -- enable python 3 provider
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
@@ -43,6 +43,9 @@ require("packer").startup(function(use)
 
     -- Pass me the harpoon for swift buffer navigation
     use("ThePrimeagen/harpoon")
+
+    -- Refactoring
+    use { 'ThePrimeagen/refactoring.nvim' }
 
     -- Treesitter
     use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
@@ -196,6 +199,7 @@ end)
 require("codemage.lsp")
 require("codemage.null-ls")
 require("codemage.toggleterm")
+require('codemage.refactor')
 require("codemage.colorscheme.gruvbox")
 
 -- ======================== GLOBAL CONFIGURATION ========================

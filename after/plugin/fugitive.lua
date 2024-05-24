@@ -18,7 +18,7 @@ local git_keymaps = function()
     end, opts)
 
     -- Git push to named branch
-    vim.keymap.set("n", "<leader>pt", function()
+    vim.keymap.set("n", "<leader>pb", function()
         local branch = vim.fn.input("Branch: ")
         vim.cmd.Git({ "push", "-u", "origin", branch })
     end, opts)
@@ -40,7 +40,7 @@ local git_keymaps = function()
 
     -- add and push tags interactively
     -- TODO: implement this
-    vim.keymap.set("n", "<leader>ptt", function()
+    vim.keymap.set("n", "<leader>gpt", function()
         -- local _, telescope_builtin = pcall(require, "telescope.builtin")
 
         -- UPDATE: this is not working as expected, I am able to see the list of tags,
@@ -58,7 +58,22 @@ local git_keymaps = function()
         -- --
         -- -- if tag exists, push it
         -- print(vim.inspect(tags))
-        --
+
+        local tag_name = vim.fn.input("Tag name: ")
+        vim.cmd.Git("tag " .. tag_name)
+        vim.cmd.Git({ "push", "--tags", tag_name })
+        print("Pushed " .. tag_name .. " to remote")
+    end, opts)
+
+    -- List all Git tags available
+    vim.keymap.set("n", "<leader>gt", function()
+        local _, telescope_builtin = pcall(require, "telescope.builtin")
+
+        local tag_name = vim.fn.input("Tag name: ")
+        local tags = vim.fn.systemlist("git tag -l")
+        if tags[tag_name] then
+            print(vim.inspect(tags))
+        end
     end, opts)
 end
 

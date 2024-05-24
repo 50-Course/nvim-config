@@ -3,7 +3,15 @@ local _, null_ls = pcall(require, "null-ls")
 local sources = {
     null_ls.builtins.diagnostics.commitlint,
     null_ls.builtins.code_actions.gitsigns,
-    null_ls.builtins.code_actions.refactoring,
+    null_ls.builtins.code_actions.refactoring.with {
+        filetypes = {
+            "python",
+            "javascript",
+            "typescript",
+            "go",
+            "lua"
+        }
+    },
     null_ls.builtins.formatting.prettierd.with({
         filetypes = {
             "html",
@@ -21,6 +29,7 @@ local sources = {
         },
     }),
     null_ls.builtins.diagnostics.cppcheck,
+    null_ls.builtins.diagnostics.hadolint,
     null_ls.builtins.formatting.clang_format.with({
         filetypes = { "c", "cpp", "objc", "objcpp" },
     }),
@@ -31,11 +40,11 @@ local sources = {
     --     end,
     -- }),
     null_ls.builtins.formatting.isort,
-    -- null_ls.builtins.diagnostics.mypy,
-    null_ls.builtins.formatting.dart_format,
-    null_ls.builtins.formatting.npm_groovy_lint.with({
-        filetypes = { "groovy", "jenkinsfile" },
-    }),
+    null_ls.builtins.diagnostics.mypy,
+    -- null_ls.builtins.formatting.dart_format,
+    -- null_ls.builtins.formatting.npm_groovy_lint.with({
+    --     filetypes = { "groovy", "jenkinsfile" },
+    -- }),
     null_ls.builtins.formatting.stylua,
     -- null_ls.builtins.formatting.black,
     null_ls.builtins.formatting.shfmt,
