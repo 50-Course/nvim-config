@@ -13,7 +13,7 @@ local on_attach = function(client, buffnr)
     -- Mappings
     map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
     map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-    map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
+    map("n", "gD", vim.lsp.buf.declaration, opts)
     map("n", "<leader>vws", function()
         vim.lsp.buf.workspace_symbol()
     end, opts)
@@ -24,7 +24,7 @@ local on_attach = function(client, buffnr)
     map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
     map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
     map("n", "K", vim.lsp.buf.hover, opts)
-    map("n", "<leader>td", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+    map("n", "<leader>D", vim.lsp.buf.type_definition, opts)
     map(
         "n",
         "<leader>wa",
@@ -48,7 +48,7 @@ local on_attach = function(client, buffnr)
     vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float)
     vim.keymap.set("n", "<leader>pd", vim.diagnostic.goto_prev)
     vim.keymap.set("n", "<leader>nd", vim.diagnostic.goto_next)
-    vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
+    -- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 end
 
 local cmp = require("cmp")
@@ -76,7 +76,7 @@ cmp.setup({
         end,
     },
     completion = {
-        completeopt = "menuone,noselect,noinsert",
+        completeopt = "menu,menuone,noinsert",
     },
     mapping = cmp.mapping.preset.insert({
         -- Manually trigger snippet completion from nvim-cmp
@@ -185,7 +185,14 @@ mason_lspconfig.setup_handlers({
     end,
 })
 
-vim.diagnostic.config({
-    virtual_text = true,
-    update_on_insert = true,
-})
+-- require("spring_boot").init_lsp_commands()
+-- require("lspconfig").jdtls.setup({
+--     init_options = {
+--         bundles = require("spring_boot").java_extensions(),
+--     },
+-- })
+
+-- vim.diagnostic.config({
+--     virtual_text = true,
+--     update_on_insert = true,
+-- })

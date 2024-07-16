@@ -16,9 +16,9 @@ vim.g.netrw_browse_split = 0
 vim.g.loaded_gzip = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
-vim.g.loaded_node_provider = 0
+--vim.g.loaded_node_provider = 0
 vim.g.loaded_python_provider = 0
-vim.g.loaded_python3_provider = 0 -- enable python 3 provider
+--vim.g.loaded_python3_provider = 0 -- enable python 3 provider
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
@@ -39,13 +39,13 @@ require("packer").startup(function(use)
     --
     -- This option allows to manage version updates
     -- for the packer plugin itself
-    use({ "wbthomason/packer.nvim", opt = true })
+    use({ "wbthomason/packer.nvim" })
 
     -- Pass me the harpoon for swift buffer navigation
     use("ThePrimeagen/harpoon")
 
     -- Refactoring
-    use { 'ThePrimeagen/refactoring.nvim' }
+    use({ "ThePrimeagen/refactoring.nvim" })
 
     -- Treesitter
     use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
@@ -78,7 +78,10 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use({ "github/copilot.vim" })
+    -- use({ "github/copilot.vim" })
+
+    -- Codemium (Free and sleeky)
+    -- use 'Exafunction/codeium.vim'
 
     -- Glow for markdown preview
     use({
@@ -137,6 +140,33 @@ require("packer").startup(function(use)
     --
     -- For configuration, see: https://github.com/mfussenegger/nvim-jdtls
     use("mfussenegger/nvim-jdtls")
+
+    -- Nvim Java
+    --
+    -- An all-in-one ready java plugin manager for vim
+    -- https://github.com/nvim-java/nvim-java
+    -- use({
+    --     "nvim-java/nvim-java",
+    --     config = function()
+    --         require("java").setup()
+    --     end,
+    --     requires = {
+    --         "nvim-java/nvim-java-core",
+    --         "nvim-java/nvim-java-dap",
+    --         "nvim-java/nvim-java-test",
+    --         "MunifTanjim/nui.nvim",
+    --     },
+    -- })
+
+    -- SpringBoot nvim
+    --
+    -- https://github.com/JavaHello/spring-boot.nvim
+    -- use({
+    --     "JavaHello/spring-boot.nvim",
+    --     config = function()
+    --         require("spring_boot").setup({})
+    --     end,
+    -- })
 
     -- Test integration with Vim Test
     --
@@ -199,7 +229,7 @@ end)
 require("codemage.lsp")
 require("codemage.null-ls")
 require("codemage.toggleterm")
-require('codemage.refactor')
+require("codemage.refactor")
 require("codemage.colorscheme.gruvbox")
 
 -- ======================== GLOBAL CONFIGURATION ========================
@@ -235,7 +265,7 @@ local options = {
     splitbelow = true,
 
     undodir = vim.fn.expand("$HOME/.vim/undodir"),
-    undofile = false,
+    undofile = true,
     swapfile = false,
 
     updatetime = 50,
@@ -283,7 +313,7 @@ autocmd("BufReadPost", {
     end,
 })
 
-autocmd({ "FileType " }, {
+autocmd({ "FileReadPre", "BufRead" }, {
     pattern = { "json", "jsonc", "markdown" },
     callback = function()
         vim.wo.conceallevel = 0
@@ -308,6 +338,27 @@ keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
 -- Quickly jummp out of the terminal with Ctrl+c
 keymap.set("t", "<C-c>", "<C-\\><C-n>:q<cr>")
+
+-- Quickly jummp out of the terminal with kj
+vim.api.nvim_set_keymap(
+    "t",
+    "kj",
+    "<C-\\><C-n>",
+    { noremap = true, silent = true }
+)
+vim.api.nvim_set_keymap(
+    "t",
+    "jk",
+    "<C-\\><C-n>",
+    { noremap = true, silent = true }
+)
+
+vim.api.nvim_set_keymap(
+    "n",
+    "<Leader>fc",
+    ":q<CR>",
+    { noremap = true, silent = true }
+)
 
 -- Fast way to save and exit a file
 keymap.set("n", "<leader>w", "<cmd>w<cr>", { desc = "[w]rite [b]uffer" })
@@ -442,10 +493,10 @@ telescope.setup({
     },
     extensions = {
         fzf = {
-            fuzzy = true,                   -- false will only do exact matching
+            fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
         },
     },

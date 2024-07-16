@@ -27,6 +27,12 @@ local debug_adapter_jar_path = vim.fn.glob(
 
 local OS_NAME = "linux"
 
+local status_ok, jdtls = pcall(require, "jdtls")
+if not status_ok then
+    return
+end
+local extendedClientCapabilities = jdtls.extendedClientCapabilities
+
 local config = {
     flags = {
         debounce_text_changes = 80,
@@ -59,6 +65,7 @@ local config = {
     settings = {
         java = {
             signatureHelp = { enabled = true },
+            extendedCapabilities = extendedCapabilities,
             saveActions = {
                 organizeImports = true,
             },
@@ -126,6 +133,12 @@ local config = {
         },
     },
 }
+
+-- Include other bundles
+vim.list_extend(
+    config.init_options.bundles,
+    require("spring_boot").java_extensions()
+)
 
 -- Additional mappings
 

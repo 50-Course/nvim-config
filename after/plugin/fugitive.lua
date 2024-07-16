@@ -17,10 +17,23 @@ local git_keymaps = function()
         vim.cmd.Git("stash pop")
     end, opts)
 
+
     -- Git push to named branch
     vim.keymap.set("n", "<leader>pb", function()
         local branch = vim.fn.input("Branch: ")
         vim.cmd.Git({ "push", "-u", "origin", branch })
+    end, opts)
+
+    vim.keymap.set('n', '<leader>gdv', function()
+        vim.cmd('Gvdiffsplit %')
+    end, opts)
+
+    vim.keymap.set('n', '<leader>gds', function()
+        vim.cmd('Gvdiffsplit')
+    end, opts)
+
+    vim.keymap.set('n', '<leader>gdc', function()
+        vim.cmd('Gvdiffsplit | wincmd p')
     end, opts)
 
     vim.keymap.set("n", "<leader>gco", function()
