@@ -139,25 +139,25 @@ require("packer").startup(function(use)
     -- Java LSP
     --
     -- For configuration, see: https://github.com/mfussenegger/nvim-jdtls
-    use("mfussenegger/nvim-jdtls")
+    -- use("mfussenegger/nvim-jdtls")
 
     -- Nvim Java
     --
     -- An all-in-one ready java plugin manager for vim
     -- https://github.com/nvim-java/nvim-java
-    -- use({
-    --     "nvim-java/nvim-java",
-    --     config = function()
-    --         require("java").setup()
-    --     end,
-    --     requires = {
-    --         "nvim-java/nvim-java-core",
-    --         "nvim-java/nvim-java-dap",
-    --         "nvim-java/nvim-java-test",
-    --         "MunifTanjim/nui.nvim",
-    --     },
-    -- })
-
+    use({
+        "nvim-java/nvim-java",
+        requires = {
+            "nvim-java/nvim-java-refactor",
+            "nvim-java/nvim-java-core",
+            "nvim-java/nvim-java-test",
+            "nvim-java/nvim-java-dap",
+            "MunifTanjim/nui.nvim",
+            "nvim-java/lua-async-await",
+            "JavaHello/spring-boot.nvim",
+        },
+    })
+    --
     -- SpringBoot nvim
     --
     -- https://github.com/JavaHello/spring-boot.nvim
@@ -226,6 +226,7 @@ require("packer").startup(function(use)
 end)
 
 -- ======================== MODULES ========================
+require("codemage.mason")
 require("codemage.lsp")
 require("codemage.null-ls")
 require("codemage.toggleterm")
