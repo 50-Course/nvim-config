@@ -54,7 +54,7 @@ end
 local cmp = require("cmp")
 local capabalities = vim.lsp.protocol.make_client_capabilities()
 
-capabalities = require("cmp_nvim_lsp").default_capabilities(capabalities)
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabalities)
 local luasnip = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -141,7 +141,7 @@ mason_lspconfig.setup_handlers({
     function(server_name)
         require("lspconfig")[server_name].setup({
             on_attach = on_attach,
-            capabilities = capabalities,
+            capabilities = capabilities,
         })
     end,
 
@@ -160,7 +160,7 @@ mason_lspconfig.setup_handlers({
             },
         }
         local opts = {
-            capabilities = capabalities,
+            capabilities = capabilities,
             on_attach = on_attach,
             settings = settings,
         }
@@ -169,7 +169,7 @@ mason_lspconfig.setup_handlers({
     ["gopls"] = function()
         local opts = {
             on_attach = on_attach,
-            capabilities = capabalities,
+            capabilities = capabilities,
             cmd = { "gopls" },
             settings = {
                 gopls = {
@@ -182,6 +182,17 @@ mason_lspconfig.setup_handlers({
             },
         }
         lspconfig["gopls"].setup(opts)
+    end,
+    ["ruff_lsp"] = function()
+        local opts = {
+            cmd = {
+                "ruff",
+                "server",
+            },
+            on_attach = on_attach,
+            capabilities = capabilities,
+        }
+        lspconfig["ruff_lsp"].setup(opts)
     end,
 })
 

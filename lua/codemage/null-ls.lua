@@ -40,7 +40,14 @@ local sources = {
     --     end,
     -- }),
     null_ls.builtins.formatting.isort,
-    null_ls.builtins.diagnostics.mypy,
+    null_ls.builtins.diagnostics.mypy.with({
+        extra_args = function(params)
+            return {
+                "--config-file",
+                params.root .. "/pyproject.toml",
+            }
+        end,
+    }),
     -- null_ls.builtins.formatting.dart_format,
     -- null_ls.builtins.formatting.npm_groovy_lint.with({
     --     filetypes = { "groovy", "jenkinsfile" },

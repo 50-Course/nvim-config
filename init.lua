@@ -78,7 +78,7 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use({ "github/copilot.vim" })
+    use({ "github/copilot.vim", opt = false })
 
     -- Codemium (Free and sleeky)
     -- use 'Exafunction/codeium.vim'
