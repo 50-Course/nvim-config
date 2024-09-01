@@ -1,5 +1,13 @@
 local _, null_ls = pcall(require, "null-ls")
 
+-- gives us the superpowers to  manupulate how the lsp interact
+local _, lspconfig_util = pcall(require, "lspconfig/util")
+
+local root_files = {
+    "pyproject.toml",
+    ".git",
+}
+
 local sources = {
     null_ls.builtins.diagnostics.commitlint,
     null_ls.builtins.code_actions.gitsigns,
@@ -42,10 +50,18 @@ local sources = {
     null_ls.builtins.formatting.isort,
     null_ls.builtins.diagnostics.mypy.with({
         extra_args = function(params)
-            return {
-                "--config-file",
-                params.root .. "/pyproject.toml",
-            }
+            -- dynamically find the root directory
+            local root_dir =
+                lspconfig_util.root_pattern(unpack(root_files))(params.bufname)
+
+            if root_dir then
+                return {
+                    "--config-file",
+                    root_dir .. "/pyproject.toml",
+                }
+            else
+                return {}
+            end
         end,
     }),
     -- null_ls.builtins.formatting.dart_format,

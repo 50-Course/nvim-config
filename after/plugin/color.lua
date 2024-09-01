@@ -10,4 +10,4 @@ end
 
 local status, rose_pine = pcall(require, "rose-pine")
 
-vim.cmd("colorscheme rose-pine")
+vim.cmd("colorscheme tokyonight")
