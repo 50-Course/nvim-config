@@ -41,9 +41,13 @@ refactoring.setup({
     prompt_return_type = {
         java = true,
         go = true,
+        c = true,
+        cpp = true,
     },
     prompt_func_param_type = {
         java = true,
         go = true,
+        cpp = true,
+        c = true,
     },
 })
