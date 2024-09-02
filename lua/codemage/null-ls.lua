@@ -9,6 +9,9 @@ local root_files = {
 }
 
 local sources = {
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.shfmt,
     null_ls.builtins.diagnostics.commitlint,
     null_ls.builtins.code_actions.gitsigns,
     null_ls.builtins.code_actions.refactoring.with({
@@ -68,9 +71,6 @@ local sources = {
     -- null_ls.builtins.formatting.npm_groovy_lint.with({
     --     filetypes = { "groovy", "jenkinsfile" },
     -- }),
-    null_ls.builtins.formatting.stylua,
-    -- null_ls.builtins.formatting.black,
-    null_ls.builtins.formatting.shfmt,
 }
 
 local attach_to_lsp = function(client)

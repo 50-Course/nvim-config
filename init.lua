@@ -24,8 +24,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
 -- Treesitter folding
--- vim.wo.foldmethod = "expr"
--- vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
+vim.wo.foldmethod = "indent"
+vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- I am using Packer as my plugin manager
 --
@@ -192,7 +192,7 @@ require("packer").startup(function(use)
     use({
         "windwp/nvim-autopairs",
         config = function()
-            require("nvim-autopairs").setup({})
+            require("nvim-autopairs").setup()
         end,
     })
 
@@ -218,9 +218,7 @@ require("packer").startup(function(use)
         "kylechui/nvim-surround",
         tag = "*", -- Use for stability; omit to use `main` branch for the latest features
         config = function()
-            require("nvim-surround").setup({
-                -- Configuration here, or leave empty to use defaults
-            })
+            require("nvim-surround").setup()
         end,
     })
 end)
@@ -441,8 +439,8 @@ keymap.set("n", "<leader>ts", "<cmd>TestSuite<cr>")
 keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
 
 -- window management
-keymap.set("n", "<C-S-Right>", "<cmd>:vertical resize -1<cr>")
-keymap.set("n", "<C-S-Left>", "<cmd>:vertical resize +1<cr>")
+keymap.set("n", "<C-S-Right>", "<cmd>vertical resize -1<cr>")
+keymap.set("n", "<C-S-Left>", "<cmd>vertical resize +1<cr>")
 
 keymap.set("n", "<leader><leader>", function()
     vim.cmd([[ so % ]])
