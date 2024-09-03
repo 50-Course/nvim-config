@@ -439,8 +439,10 @@ keymap.set("n", "<leader>ts", "<cmd>TestSuite<cr>")
 keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
 
 -- window management
-keymap.set("n", "<C-S-Right>", "<cmd>vertical resize -1<cr>")
-keymap.set("n", "<C-S-Left>", "<cmd>vertical resize +1<cr>")
+keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
+keymap.set("n", "<A-l>", "<cmd>vertical resize +2<cr>") -- increase width to the right
+keymap.set("n", "<A-j>", "<cmd>resize -2<cr>") -- decrease height
+keymap.set("n", "<A-k>", "<cmd>resize +2<cr>") -- increase height
 
 keymap.set("n", "<leader><leader>", function()
     vim.cmd([[ so % ]])
