@@ -38,17 +38,36 @@ local git_keymaps = function()
 
     vim.keymap.set("n", "<leader>gco", function()
         local _, telescope_builtin = pcall(require, "telescope.builtin")
-        telescope_builtin.git_branches({
-            attach_mappings = function(_, map)
-                map("i", "<CR>", function(bufnr)
-                    local entry =
-                        require("telescope.actions.state").get_selected_entry()
-                    require("telescope.actions").close(bufnr)
-                    vim.cmd("Git checkout " .. entry.value)
-                end)
-                return true
-            end,
-        })
+        local branch_name = vim.fn.input("Branch name: ")
+
+        if branch_name == "" then
+            print("Branch name cannot be empty")
+            return
+        end
+
+        local branch_exists =
+            vim.fn.system("git rev-parse --verify " .. branch_name)
+
+        if branch_exists then
+            telescope_builtin.git_branches({
+                attach_mappings = function(_, map)
+                    map("i", "<CR>", function(bufnr)
+                        local entry =
+                            require("telescope.actions.state").get_selected_entry(
+                                bufnr
+                            )
+                        require("telescope.actions").close(bufnr)
+                        vim.cmd("Git checkout " .. entry.value)
+                    end)
+                    return true
+                end,
+            })
+        else
+            vim.cmd("Git checkout -b " .. branch_name)
+        end
+
+        -- Use telescope to confirm switching branches
+        --
     end, opts)
 
     -- add and push tags interactively
