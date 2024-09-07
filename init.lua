@@ -78,7 +78,7 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use({ "github/copilot.vim", opt = false })
+    use({ "github/copilot.vim", opt = true })
 
     -- Codemium (Free and sleeky)
     -- use 'Exafunction/codeium.vim'
@@ -289,6 +289,24 @@ vim.opt.isfname:append("@-@")
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 local highlight_text = augroup("TextHighlight", { clear = true })
+
+autocmd("BufWritePre", {
+    callback = function()
+        if vim.bo.ft == "java" then
+            vim.lsp.buf.code_action({
+                context = { only = { "source.organizeImports" } },
+                apply = true,
+            })
+        end
+
+        if vim.bo.ft == "python" then
+            vim.lsp.buf.code_action()({
+                context = { only = { "source.organizeImports" } },
+                apply = true,
+            })
+        end
+    end,
+})
 
 autocmd("TextYankPost", {
     group = highlight_text,
