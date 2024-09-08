@@ -37,7 +37,17 @@ end
 local function setup_debugger_keymaps()
     local map = vim.keymap.set
 
-    -- TODO: Write the keymaps later
+    -- toggler debugger
+    --
+    -- toggle breakpoints
+    --
+    -- step over
+    --
+    -- step into
+    --
+    -- step out
+    --
+    -- continue
 end
 
 function M.setup()

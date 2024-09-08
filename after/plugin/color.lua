@@ -8,9 +8,9 @@ function no_bg_color()
     vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 end
 
-local status, rose_pine = pcall(require, "rose-pine")
+local _, rose_pine = pcall(require, "rose-pine")
 
-vim.cmd("colorscheme tokyonight-night")
+vim.cmd("colorscheme wildcharm")
 
 vim.keymap.set("n", "<leader>nbg", function()
     vim.cmd([[hi Normal guibg=None ctermbg=None]])
