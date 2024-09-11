@@ -6,6 +6,8 @@ local _, lspconfig_util = pcall(require, "lspconfig/util")
 local root_files = {
     "pyproject.toml",
     ".git",
+    "pom.xml",
+    "build.gradle",
 }
 
 local sources = {
@@ -42,7 +44,7 @@ local sources = {
     null_ls.builtins.diagnostics.cppcheck,
     null_ls.builtins.diagnostics.hadolint,
     null_ls.builtins.formatting.clang_format.with({
-        filetypes = { "c", "cpp", "objc", "objcpp" },
+        filetypes = { "c", "cpp", "objc", "objcpp", "java" },
     }),
     null_ls.builtins.formatting.djlint,
     -- null_ls.builtins.diagnostics.pylint.with({
@@ -51,22 +53,23 @@ local sources = {
     --     end,
     -- }),
     null_ls.builtins.formatting.isort,
-    null_ls.builtins.diagnostics.mypy.with({
-        extra_args = function(params)
-            -- dynamically find the root directory
-            local root_dir =
-                lspconfig_util.root_pattern(unpack(root_files))(params.bufname)
-
-            if root_dir then
-                return {
-                    "--config-file",
-                    root_dir .. "/pyproject.toml",
-                }
-            else
-                return {}
-            end
-        end,
-    }),
+    null_ls.builtins.formatting.mypy,
+    -- null_ls.builtins.diagnostics.mypy.with({
+    --     extra_args = function(params)
+    --         -- dynamically find the root directory
+    --         local root_dir =
+    --             lspconfig_util.root_pattern(unpack(root_files))(params.bufname)
+    --
+    --         if root_dir then
+    --             return {
+    --                 "--config-file",
+    --                 root_dir .. "/pyproject.toml",
+    --             }
+    --         else
+    --             return {}
+    --         end
+    --     end,
+    -- }),
     -- null_ls.builtins.formatting.dart_format,
     -- null_ls.builtins.formatting.npm_groovy_lint.with({
     --     filetypes = { "groovy", "jenkinsfile" },
