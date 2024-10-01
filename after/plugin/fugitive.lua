@@ -1,6 +1,29 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
 
+local function open_curr_file_diff()
+    local filepath = vim.fn.expand("%:p")
+    vim.cmd("DiffviewOpen HEAD --" .. filepath)
+end
+
+local function accept_upstream_changes()
+    if vim.bo.modifiable then
+        vim.cmd("diffget //2")
+    else
+        vim.bo.modifiable = true
+        vim.cmd("diffget //2")
+    end
+end
+
+local function keep_downstream_changes()
+    if vim.bo.modifiable then
+        vim.cmd("diffget //2")
+    else
+        vim.bo.modifiable = true
+        vim.cmd("diffget //2")
+    end
+end
+
 local git_keymaps = function()
     local opts = { noremap = true, silent = true }
 
@@ -30,6 +53,11 @@ local git_keymaps = function()
     vim.keymap.set("n", "<leader>dp", ":DiffviewPrevFile<CR>") -- similar to next chunk and prev chunk
     vim.keymap.set("n", "<leader>ds", ":DiffviewStage<CR>")
     vim.keymap.set("n", "<leader>df", ":DiffviewFileHistory %<CR>") -- file history diff view
+
+    -- alternate fast keybinds for splits
+    vim.keymap.set("n", "<localleader>dv", open_curr_file_diff, opts)
+    vim.keymap.set("n", "<localleader>dt", keep_downstream_changes, opts) -- Choose current branch
+    vim.keymap.set("n", "<localleader>dy", accept_upstream_changes, opts) -- Choose incoming branch
 
     vim.keymap.set("n", "<leader>gdo", ":diffget //2<CR>") -- Choose current branch
     vim.keymap.set("n", "<leader>gdy", ":diffget //3<CR>") -- Choose incoming branch
