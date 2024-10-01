@@ -1,7 +1,7 @@
 local servers = {
     "pyright", -- Python
     "rust_analyzer", -- Rust
-    "tsserver", -- TypeScript/JavaScript
+    "ts_ls", -- TypeScript/JavaScript
     "gopls", -- Go
     "lua_ls", -- Lua
 }

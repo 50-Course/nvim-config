@@ -12,7 +12,7 @@ local root_files = {
 
 local sources = {
     null_ls.builtins.formatting.stylua,
-    null_ls.builtins.formatting.black,
+    -- null_ls.builtins.formatting.black,
     null_ls.builtins.formatting.shfmt,
     null_ls.builtins.diagnostics.commitlint,
     null_ls.builtins.code_actions.gitsigns,
@@ -52,8 +52,8 @@ local sources = {
     --         diagnostic.code = diagnostic.message_id
     --     end,
     -- }),
-    null_ls.builtins.formatting.isort,
-    null_ls.builtins.formatting.mypy,
+    -- null_ls.builtins.formatting.isort,
+    null_ls.builtins.diagnostics.mypy,
     -- null_ls.builtins.diagnostics.mypy.with({
     --     extra_args = function(params)
     --         -- dynamically find the root directory

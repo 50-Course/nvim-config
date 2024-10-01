@@ -17,6 +17,29 @@ local git_keymaps = function()
         vim.cmd.Git("stash pop")
     end, opts)
 
+    -- Navigate between Merge or Rebase chuncks
+    -- using fugitive
+    vim.keymap.set("n", "<leader>gdn", "]c") -- next chunk
+    vim.keymap.set("n", "<leader>gdp", "[c") -- previous chunk
+
+    -- using diffview
+    vim.keymap.set("n", "<leader>dv", ":DiffviewOpen<CR>") -- diff view
+    vim.keymap.set("n", "<leader>dr", ":DiffviewOpen HEAD^<CR>") -- diff view during rebase
+    vim.keymap.set("n", "<leader>dx", ":DiffviewClose<CR>")
+    vim.keymap.set("n", "<leader>dn", ":DiffviewNextFile<CR>")
+    vim.keymap.set("n", "<leader>dp", ":DiffviewPrevFile<CR>") -- similar to next chunk and prev chunk
+    vim.keymap.set("n", "<leader>ds", ":DiffviewStage<CR>")
+    vim.keymap.set("n", "<leader>df", ":DiffviewFileHistory %<CR>") -- file history diff view
+
+    vim.keymap.set("n", "<leader>gdo", ":diffget //2<CR>") -- Choose current branch
+    vim.keymap.set("n", "<leader>gdy", ":diffget //3<CR>") -- Choose incoming branch
+
+    -- Do git blame
+    vim.keymap.set("n", "<leader>gb", ":Git blame<CR>")
+
+    -- Do Git log
+    vim.keymap.set("n", "<leader>gh", ":Git log<CR>")
+
     -- Git push to named branch
     vim.keymap.set("n", "<leader>pb", function()
         local branch = vim.fn.input("Branch: ")

@@ -23,7 +23,7 @@ require("nvim-treesitter.configs").setup({
     indent = { enable = true },
     highlight = {
         enable = true,
-        disable = {},
+        disable = { "help", "vimdoc" },
         additional_vim_regex_highlighting = false,
     },
     incremental_selection = {

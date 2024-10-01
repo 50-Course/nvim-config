@@ -221,6 +221,10 @@ require("packer").startup(function(use)
             require("nvim-surround").setup()
         end,
     })
+
+    -- Diffview
+    -- Link: https://github.com/sindrets/diffview.nvim
+    use("sindrets/diffview.nvim")
 end)
 
 -- ======================== MODULES ========================
