@@ -78,7 +78,7 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use({ "github/copilot.vim", opt = true })
+    use({ "github/copilot.vim" })
 
     -- Codemium (Free and sleeky)
     -- use 'Exafunction/codeium.vim'
@@ -360,19 +360,26 @@ keymap.set("n", "<leader>pv", vim.cmd.Ex)
 -- Quickly jummp out of the terminal with Ctrl+c
 keymap.set("t", "<C-c>", "<C-\\><C-n>:q<cr>")
 
+vim.api.nvim_set_keymap(
+    "t",
+    "<C-q>",
+    "<C-d>",
+    { noremap = true, silent = true }
+)
+
 -- Quickly jummp out of the terminal with kj
 vim.api.nvim_set_keymap(
     "t",
-    "kj",
+    "<C-q>",
     "<C-\\><C-n>",
     { noremap = true, silent = true }
 )
-vim.api.nvim_set_keymap(
-    "t",
-    "jk",
-    "<C-\\><C-n>",
-    { noremap = true, silent = true }
-)
+-- vim.api.nvim_set_keymap(
+--     "t",
+--     "jk",
+--     "<C-\\><C-n>",
+--     { noremap = true, silent = true }
+-- )
 
 vim.api.nvim_set_keymap(
     "n",
@@ -554,3 +561,9 @@ vim.g["test#strategy"] = "neovim"
 vim.g["test#strategy#suite"] = "vimux"
 vim.g["test#neovim#term_position"] = "vert"
 vim.g["test#neovim#term_repl_command"] = "vsplit"
+
+-- SPLITS WITH MAPPINGS
+--
+keymap.set("n", ";sp", ":sp<CR>")
+
+keymap.set("n", ";vs", ":vsp<CR>")
