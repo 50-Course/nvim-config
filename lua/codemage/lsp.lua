@@ -183,7 +183,7 @@ mason_lspconfig.setup_handlers({
         }
         lspconfig["gopls"].setup(opts)
     end,
-    ["ruff_lsp"] = function()
+    ["ruff"] = function()
         local opts = {
             cmd = {
                 "ruff",
@@ -192,7 +192,7 @@ mason_lspconfig.setup_handlers({
             on_attach = on_attach,
             capabilities = capabilities,
         }
-        lspconfig["ruff_lsp"].setup(opts)
+        lspconfig["ruff"].setup(opts)
     end,
 })
 

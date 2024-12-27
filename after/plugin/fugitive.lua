@@ -17,10 +17,10 @@ end
 
 local function keep_downstream_changes()
     if vim.bo.modifiable then
-        vim.cmd("diffget //2")
+        vim.cmd("diffget //3")
     else
         vim.bo.modifiable = true
-        vim.cmd("diffget //2")
+        vim.cmd("diffget //3")
     end
 end
 
