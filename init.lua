@@ -277,6 +277,7 @@ local options = {
 
     backspace = { "start", "eol", "indent" },
     signcolumn = "yes",
+    guifont = "Fira Code",
 }
 
 for conf, val in pairs(options) do
@@ -413,7 +414,7 @@ vim.keymap.set("n", "<leader>f", function()
 end)
 
 keymap.set("n", "Q", "<nop>")
---keymap.set("n", "<leader>qq", "<cmd>q!<cr>")
+keymap.set("n", "<leader>qq", "<cmd>q!<cr>")
 keymap.set("n", "<leader>wq", "<cmd>wq<cr>")
 keymap.set("n", "<leader>qq", "<cmd>q<cr>", { desc = "[q]uit [b]uffer" })
 
