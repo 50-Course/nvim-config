@@ -21,11 +21,12 @@ vim.g.loaded_python_provider = 0
 --vim.g.loaded_python3_provider = 0 -- enable python 3 provider
 
 vim.g.mapleader = " "
-vim.g.maplocalleader = ","
+vim.g.maplocalleader = ";"
+-- vim.g.rg_command = "rg --vimgrep -S"
 
 -- Treesitter folding
 vim.wo.foldmethod = "indent"
-vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
+-- vim.wo.foldexpr = "nvim_treesitter#foldexpr()"
 
 -- I am using Packer as my plugin manager
 --
@@ -35,201 +36,202 @@ vim.cmd([[packadd packer.nvim ]])
 
 -- ======================== PLUGINS MANAGEMENT ========================
 require("packer").startup(function(use)
-    -- Packer-in-Packer (PIP) to manage itself
-    --
-    -- This option allows to manage version updates
-    -- for the packer plugin itself
-    use({ "wbthomason/packer.nvim" })
+	-- Packer-in-Packer (PIP) to manage itself
+	--
+	-- This option allows to manage version updates
+	-- for the packer plugin itself
+	use({ "wbthomason/packer.nvim" })
 
-    -- Pass me the harpoon for swift buffer navigation
-    use("ThePrimeagen/harpoon")
+	-- Pass me the harpoon for swift buffer navigation
+	use("ThePrimeagen/harpoon")
 
-    -- Refactoring
-    use({ "ThePrimeagen/refactoring.nvim" })
+	-- Refactoring
+	use({ "ThePrimeagen/refactoring.nvim" })
 
-    -- Treesitter
-    use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
-    use("nvim-treesitter/nvim-treesitter-textobjects")
+	-- Treesitter
+	use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
+	use("nvim-treesitter/nvim-treesitter-textobjects")
 
-    use({
-        "lewis6991/gitsigns.nvim",
-        requires = { "nvim-lua/plenary.nvim" },
-        config = function()
-            require("gitsigns").setup()
-        end,
-    })
+	use({
+		"lewis6991/gitsigns.nvim",
+		requires = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("gitsigns").setup()
+		end,
+	})
 
-    -- Fugitive for Git-integration
-    --
-    -- Run: `:h fugitive` to get started
-    use("tpope/vim-fugitive")
+	-- Fugitive for Git-integration
+	--
+	-- Run: `:h fugitive` to get started
+	use("tpope/vim-fugitive")
 
-    -- Extend plugin capabilities by providing
-    -- high-level apis to extend vim native apis
-    use("nvim-lua/plenary.nvim")
+	-- Extend plugin capabilities by providing
+	-- high-level apis to extend vim native apis
+	use("nvim-lua/plenary.nvim")
 
-    -- Comment.nvim
-    -- Comments are just awesome
-    use({
-        "numToStr/Comment.nvim",
-        config = function()
-            require("Comment").setup()
-        end,
-    })
+	-- Comment.nvim
+	-- Comments are just awesome
+	use({
+		"numToStr/Comment.nvim",
+		config = function()
+			require("Comment").setup()
+		end,
+	})
 
-    -- GitHub Co-pilot
-    use({ "github/copilot.vim" })
+	-- GitHub Co-pilot
+	use({ "github/copilot.vim" })
 
-    -- Codemium (Free and sleeky)
-    -- use 'Exafunction/codeium.vim'
+	-- Codemium (Free and sleeky)
+	-- use 'Exafunction/codeium.vim'
 
-    -- Glow for markdown preview
-    use({
-        "ellisonleao/glow.nvim",
-        config = function()
-            require("glow").setup()
-        end,
-    })
+	-- Glow for markdown preview
+	use({
+		"ellisonleao/glow.nvim",
+		config = function()
+			require("glow").setup()
+		end,
+	})
 
-    --- LSP Config
-    --- Langugue server management
-    use({ "williamboman/mason.nvim" })
-    use({ "williamboman/mason-lspconfig.nvim" })
+	--- LSP Config
+	--- Langugue server management
+	use({ "williamboman/mason.nvim" })
+	use({ "williamboman/mason-lspconfig.nvim" })
 
-    -- LSP Support
-    use({ "neovim/nvim-lspconfig" })
-    -- Autocompletion
-    use({
-        "hrsh7th/nvim-cmp",
-        requires = {
-            "hrsh7th/cmp-nvim-lsp",
-            "saadparwaiz1/cmp_luasnip",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-nvim-lsp-signature-help",
-            "hrsh7th/cmp-nvim-lua",
-        },
-    })
+	-- LSP Support
+	use({ "neovim/nvim-lspconfig" })
+	-- Autocompletion
+	use({
+		"hrsh7th/nvim-cmp",
+		requires = {
+			"hrsh7th/cmp-nvim-lsp",
+			"saadparwaiz1/cmp_luasnip",
+			"hrsh7th/cmp-buffer",
+			"hrsh7th/cmp-path",
+			"hrsh7th/cmp-nvim-lsp-signature-help",
+			"hrsh7th/cmp-nvim-lua",
+		},
+	})
 
-    -- Debugger Support
-    use({
-        "rcarriga/nvim-dap-ui",
-        requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-    })
+	-- Debugger Support
+	use({
+		"rcarriga/nvim-dap-ui",
+		requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+	})
 
-    -- Terminal manager with Toggleterm
-    -- https://github.com/akinsho/toggleterm.nvim.git
-    use({
-        "akinsho/toggleterm.nvim",
-        tag = "*",
-        config = function()
-            require("codemage.toggleterm")
-        end,
-    })
+	-- Terminal manager with Toggleterm
+	-- https://github.com/akinsho/toggleterm.nvim.git
+	use({
+		"akinsho/toggleterm.nvim",
+		tag = "*",
+		config = function()
+			require("codemage.toggleterm")
+		end,
+	})
 
-    -- Flutter
-    -- Lsp integraton
-    -- https://github.ocm/akinsho/flutter-tools.nvim
-    use("akinsho/flutter-tools.nvim")
+	-- Flutter
+	-- Lsp integraton
+	-- https://github.ocm/akinsho/flutter-tools.nvim
+	use("akinsho/flutter-tools.nvim")
 
-    -- Snippets
-    use({ "L3MON4D3/LuaSnip" })
-    use("rafamadriz/friendly-snippets")
+	-- Snippets
+	use({ "L3MON4D3/LuaSnip" })
+	use("rafamadriz/friendly-snippets")
 
-    -- Java LSP
-    --
-    -- For configuration, see: https://github.com/mfussenegger/nvim-jdtls
-    -- use("mfussenegger/nvim-jdtls")
+	-- Java LSP
+	--
+	-- For configuration, see: https://github.com/mfussenegger/nvim-jdtls
+	-- use("mfussenegger/nvim-jdtls")
 
-    -- Nvim Java
-    --
-    -- An all-in-one ready java plugin manager for vim
-    -- https://github.com/nvim-java/nvim-java
-    use({
-        "nvim-java/nvim-java",
-        requires = {
-            "nvim-java/nvim-java-refactor",
-            "nvim-java/nvim-java-core",
-            "nvim-java/nvim-java-test",
-            "nvim-java/nvim-java-dap",
-            "MunifTanjim/nui.nvim",
-            "nvim-java/lua-async-await",
-            "JavaHello/spring-boot.nvim",
-        },
-    })
-    --
-    -- SpringBoot nvim
-    --
-    -- https://github.com/JavaHello/spring-boot.nvim
-    -- use({
-    --     "JavaHello/spring-boot.nvim",
-    --     config = function()
-    --         require("spring_boot").setup({})
-    --     end,
-    -- })
+	-- Nvim Java
+	--
+	-- An all-in-one ready java plugin manager for vim
+	-- https://github.com/nvim-java/nvim-java
+	use({
+		"nvim-java/nvim-java",
+		requires = {
+			"nvim-java/nvim-java-refactor",
+			"nvim-java/nvim-java-core",
+			"nvim-java/nvim-java-test",
+			"nvim-java/nvim-java-dap",
+			"MunifTanjim/nui.nvim",
+			"nvim-java/lua-async-await",
+			"JavaHello/spring-boot.nvim",
+		},
+	})
+	--
+	-- SpringBoot nvim
+	--
+	-- https://github.com/JavaHello/spring-boot.nvim
+	-- use({
+	--     "JavaHello/spring-boot.nvim",
+	--     config = function()
+	--         require("spring_boot").setup({})
+	--     end,
+	-- })
 
-    -- Test integration with Vim Test
-    --
-    -- The plugin allows granular control over how vim interacts
-    -- with test suites and how tests are run.
-    use("vim-test/vim-test")
+	-- Test integration with Vim Test
+	--
+	-- The plugin allows granular control over how vim interacts
+	-- with test suites and how tests are run.
+	use("vim-test/vim-test")
 
-    -- Fuzzy-matching with Telesecope
-    --
-    -- File explorer sucks, just fuzzy bro@
-    use({ "nvim-telescope/telescope.nvim", tag = "0.1.5" })
-    use("nvim-telescope/telescope-fzf-native.nvim", { run = "make" })
+	-- Fuzzy-matching with Telesecope
+	--
+	-- File explorer sucks, just fuzzy bro@
+	use({ "nvim-telescope/telescope.nvim", tag = "0.1.5" })
+	use("nvim-telescope/telescope-fzf-native.nvim", { run = "make" })
 
-    -- UndoTree
-    --
-    -- Persist undos and redos in VCS format using algorithm similar to git trees
-    use("mbbill/undotree")
+	-- UndoTree
+	--
+	-- Persist undos and redos in VCS format using algorithm similar to git trees
+	use("mbbill/undotree")
 
-    -- Themes (Tokyonight or Rose-pine)
-    use({ "rose-pine/neovim", as = "rose-pine" })
+	-- Themes (Tokyonight or Rose-pine)
+	use({ "rose-pine/neovim", as = "rose-pine" })
 
-    -- Autopairs
-    use({
-        "windwp/nvim-autopairs",
-        config = function()
-            require("nvim-autopairs").setup()
-        end,
-    })
+	-- Autopairs
+	use({
+		"windwp/nvim-autopairs",
+		config = function()
+			require("nvim-autopairs").setup()
+		end,
+	})
 
-    -- Wakatime
-    use("wakatime/vim-wakatime")
+	-- Wakatime
+	use("wakatime/vim-wakatime")
 
-    -- Fomatting with None-ls
-    -- Drop-in replacement for null-ls
-    use("nvimtools/none-ls.nvim")
+	-- Fomatting with None-ls
+	-- Drop-in replacement for null-ls
+	use("nvimtools/none-ls.nvim")
 
-    -- Gruvbox
-    use({ "ellisonleao/gruvbox.nvim" })
+	-- Gruvbox
+	use({ "ellisonleao/gruvbox.nvim" })
 
-    use({
-        "folke/tokyonight.nvim",
-        lazy = true,
-        priority = 1000,
-        opts = {},
-    })
+	use({
+		"folke/tokyonight.nvim",
+		lazy = true,
+		priority = 1000,
+		opts = {},
+	})
 
-    -- Vim Surround
-    use({
-        "kylechui/nvim-surround",
-        tag = "*", -- Use for stability; omit to use `main` branch for the latest features
-        config = function()
-            require("nvim-surround").setup()
-        end,
-    })
+	-- Vim Surround
+	use({
+		"kylechui/nvim-surround",
+		tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+		config = function()
+			require("nvim-surround").setup()
+		end,
+	})
 
-    -- Diffview
-    -- Link: https://github.com/sindrets/diffview.nvim
-    use("sindrets/diffview.nvim")
+	-- Diffview
+	-- Link: https://github.com/sindrets/diffview.nvim
+	use("sindrets/diffview.nvim")
 end)
 
 -- ======================== MODULES ========================
 require("codemage.mason")
 require("codemage.lsp")
+require("codemage.keymaps")
 require("codemage.null-ls")
 require("codemage.toggleterm")
 require("codemage.refactor")
@@ -240,48 +242,56 @@ require("codemage.colorscheme.gruvbox")
 -- Vim options are settings that set the behaviour of a buffer or window.
 -- Use: `:h options` or `:h options-list` for more infomation.
 local options = {
-    number = true,
-    relativenumber = true,
+	number = true,
+	relativenumber = true,
 
-    guicursor = "",
-    termguicolors = true,
+	guicursor = "",
+	termguicolors = true,
 
-    tabstop = 4,
-    softtabstop = 4,
-    shiftwidth = 4,
-    expandtab = true,
+	tabstop = 4,
+	softtabstop = 4,
+	shiftwidth = 4,
+	expandtab = true,
 
-    smartindent = true,
+	breakindent = true,
+	smartindent = true,
 
-    smartcase = true,
-    ignorecase = true,
+	smartcase = true,
+	ignorecase = true,
 
-    wrap = false,
+	wrap = false,
 
-    scrolloff = 8,
-    sidescrolloff = 6,
+	scrolloff = 8,
+	sidescrolloff = 6,
 
-    hlsearch = false,
-    incsearch = true,
+	hlsearch = false,
+	incsearch = true,
 
-    splitright = true,
-    splitbelow = true,
+	splitright = true,
+	splitbelow = true,
 
-    undodir = vim.fn.expand("$HOME/.vim/undodir"),
-    undofile = true,
-    swapfile = false,
+	undodir = vim.fn.expand("$HOME/.vim/undodir"),
+	undofile = true,
+	swapfile = false,
 
-    updatetime = 50,
+	-- Time before writing to swap file
+	--
+	-- Since we set swap file to false, won't be needing this anyway but
+	-- its what it is
+	updatetime = 100,
 
-    hidden = true,
+	hidden = false,
 
-    backspace = { "start", "eol", "indent" },
-    signcolumn = "yes",
-    guifont = "Fira Code",
+	-- preview subtitutions in realtime
+	incomand = true,
+
+	backspace = { "start", "eol", "indent" },
+	signcolumn = "yes",
+	guifont = "Fira Code",
 }
 
 for conf, val in pairs(options) do
-    vim.opt[conf] = val
+	vim.opt[conf] = val
 end
 
 -- Just ignore `node_modules` and `.git`. Seriously, its the worst place
@@ -296,50 +306,50 @@ local augroup = vim.api.nvim_create_augroup
 local highlight_text = augroup("TextHighlight", { clear = true })
 
 autocmd("BufWritePre", {
-    callback = function()
-        if vim.bo.ft == "java" then
-            vim.lsp.buf.code_action({
-                context = { only = { "source.organizeImports" } },
-                apply = true,
-            })
-        end
+	callback = function()
+		if vim.bo.ft == "java" then
+			vim.lsp.buf.code_action({
+				context = { only = { "source.organizeImports" } },
+				apply = true,
+			})
+		end
 
-        -- if vim.bo.ft == "python" then
-        --     vim.lsp.buf.code_action({
-        --         context = { only = { "source.organizeImports" } },
-        --         apply = true,
-        --     })
-        -- end
-    end,
+		-- if vim.bo.ft == "python" then
+		--     vim.lsp.buf.code_action({
+		--         context = { only = { "source.organizeImports" } },
+		--         apply = true,
+		--     })
+		-- end
+	end,
 })
 
 autocmd("TextYankPost", {
-    group = highlight_text,
-    callback = function()
-        vim.highlight.on_yank()
-    end,
-    pattern = "*",
+	group = highlight_text,
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+	pattern = "*",
 })
 
 -- Persist last known cursor location across sessions
 local jump_to_lastloc = augroup("JumpToLastLocation", { clear = true })
 autocmd("BufReadPost", {
-    group = jump_to_lastloc,
-    callback = function()
-        local mark = vim.api.nvim_buf_get_mark(0, '"')
-        local line = vim.api.nvim_buf_line_count(0)
+	group = jump_to_lastloc,
+	callback = function()
+		local mark = vim.api.nvim_buf_get_mark(0, '"')
+		local line = vim.api.nvim_buf_line_count(0)
 
-        if mark[1] > 0 and mark[1] <= line then
-            pcall(vim.api.nvim_win_set_cursor, 0, mark)
-        end
-    end,
+		if mark[1] > 0 and mark[1] <= line then
+			pcall(vim.api.nvim_win_set_cursor, 0, mark)
+		end
+	end,
 })
 
 autocmd({ "FileReadPre", "BufRead" }, {
-    pattern = { "json", "jsonc", "markdown" },
-    callback = function()
-        vim.wo.conceallevel = 0
-    end,
+	pattern = { "json", "jsonc", "markdown" },
+	callback = function()
+		vim.wo.conceallevel = 0
+	end,
 })
 -- ======================== KEYMAPS ========================
 --
@@ -352,29 +362,30 @@ keymap.set("i", "<C-c>", "<Nop>")
 
 -- Use system clipboards instead of Vim's built-in clipboard
 keymap.set({ "n", "v" }, "<leader>y", '"+Y')
+keymap.set({ "v" }, "<localleader>y", '"+y')
 keymap.set({ "n", "v" }, "<leader>d", '"_d')
 keymap.set("n", "<leader>p", '"+P')
 
 -- Navigation is better with `project-view`
 keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
--- Quickly jummp out of the terminal with Ctrl+c
-keymap.set("t", "<C-c>", "<C-\\><C-n>:q<cr>")
-
-vim.api.nvim_set_keymap(
-    "t",
-    "<C-q>",
-    "<C-d>",
-    { noremap = true, silent = true }
-)
-
+-- -- Quickly jummp out of the terminal with Ctrl+c
+-- keymap.set("t", "<C-c>", "<C-\\><C-n>:q<cr>")
+--
+-- vim.api.nvim_set_keymap(
+--     "t",
+--     "<C-q>",
+--     "<C-d>",
+--     { noremap = true, silent = true }
+-- )
+--
 -- Quickly jummp out of the terminal with kj
-vim.api.nvim_set_keymap(
-    "t",
-    "<C-q>",
-    "<C-\\><C-n>",
-    { noremap = true, silent = true }
-)
+-- vim.api.nvim_set_keymap(
+--     "t",
+--     "<localleader>q",
+--     "<C-\\><C-n>",
+--     { noremap = true, silent = true }
+-- )
 -- vim.api.nvim_set_keymap(
 --     "t",
 --     "jk",
@@ -383,10 +394,10 @@ vim.api.nvim_set_keymap(
 -- )
 
 vim.api.nvim_set_keymap(
-    "n",
-    "<Leader>fc",
-    ":q<CR>",
-    { noremap = true, silent = true }
+	"n",
+	"<Leader>fc",
+	":q<CR>",
+	{ noremap = true, silent = true }
 )
 
 -- Fast way to save and exit a file
@@ -401,16 +412,16 @@ vim.keymap.set("n", "<C-l>", "<c-w>l")
 -- Glow preview (for markdowns)
 -- pm means, preview markdown
 vim.keymap.set(
-    "n",
-    "<leader>pmf",
-    ":Glow<CR>",
-    { desc = "[p]review [m]arkdown [f]ile" }
+	"n",
+	"<leader>pmf",
+	":Glow<CR>",
+	{ desc = "[p]review [m]arkdown [f]ile" }
 )
 
 -- Better way to jump out of modes
 keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
 vim.keymap.set("n", "<leader>f", function()
-    vim.lsp.buf.format({ timeout = 2000 })
+	vim.lsp.buf.format({ timeout = 2000 })
 end)
 
 keymap.set("n", "Q", "<nop>")
@@ -420,9 +431,9 @@ keymap.set("n", "<leader>qq", "<cmd>q<cr>", { desc = "[q]uit [b]uffer" })
 
 -- Search-replace
 vim.keymap.set(
-    "n",
-    "<leader>s",
-    [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]
+	"n",
+	"<leader>s",
+	[[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]
 )
 
 -- Undo tree for the Win!
@@ -430,13 +441,13 @@ keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
 --- Git bindings
 keymap.set("n", "<leader>gs", function()
-    vim.cmd([[ Git ]])
+	vim.cmd([[ Git ]])
 end)
 keymap.set("n", "<leader>ga", function()
-    vim.cmd([[ Git add % ]])
+	vim.cmd([[ Git add % ]])
 end)
 keymap.set("n", "<leader>gc", function()
-    vim.cmd([[ Git commit ]])
+	vim.cmd([[ Git commit ]])
 end)
 
 -- Make text selection move up and down in selection mode
@@ -471,11 +482,11 @@ keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
 -- window management
 keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
 keymap.set("n", "<A-l>", "<cmd>vertical resize +2<cr>") -- increase width to the right
-keymap.set("n", "<A-j>", "<cmd>resize -2<cr>") -- decrease height
-keymap.set("n", "<A-k>", "<cmd>resize +2<cr>") -- increase height
+keymap.set("n", "<A-j>", "<cmd>resize -2<cr>")          -- decrease height
+keymap.set("n", "<A-k>", "<cmd>resize +2<cr>")          -- increase height
 
 keymap.set("n", "<leader><leader>", function()
-    vim.cmd([[ so % ]])
+	vim.cmd([[ so % ]])
 end)
 
 -- ======================== PLUGINS CONFIGURATION ========================
@@ -485,23 +496,23 @@ local mark = require("harpoon.mark")
 local ui = require("harpoon.ui")
 
 vim.keymap.set("n", "<leader>ha", function()
-    mark.add_file()
+	mark.add_file()
 end)
 vim.keymap.set("n", "<leader>hh", function()
-    ui.toggle_quick_menu()
+	ui.toggle_quick_menu()
 end)
 
 vim.keymap.set("n", "<leader>hsf", function()
-    ui.nav_file(1)
+	ui.nav_file(1)
 end, { desc = "[h]arpoon [s]witch [f]irst" })
 vim.keymap.set("n", "<leader>hss", function()
-    ui.nav_file(2)
+	ui.nav_file(2)
 end, { desc = "[h]arpoon [s]witch [s]econd" })
 vim.keymap.set("n", "<leader>hst", function()
-    ui.nav_file(3)
+	ui.nav_file(3)
 end, { desc = "[h]arpoon [s]witch [t]hird" })
 vim.keymap.set("n", "<leader>hsl", function()
-    ui.nav_file(4)
+	ui.nav_file(4)
 end, { desc = "[h]arpoon [s]witch [l]ast" })
 
 -- ******************************** Telescope ********************************
@@ -511,50 +522,50 @@ local builtin = require("telescope.builtin")
 local telescope = require("telescope")
 
 telescope.setup({
-    pickers = {
-        find_files = {
-            previewer = false,
-        },
-        buffers = {
-            previewer = false,
-        },
-        live_grep = {
-            previewer = false,
-        },
-    },
-    extensions = {
-        fzf = {
-            fuzzy = true, -- false will only do exact matching
-            override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-            -- the default case_mode is "smart_case"
-        },
-    },
+	pickers = {
+		find_files = {
+			previewer = false,
+		},
+		buffers = {
+			previewer = false,
+		},
+		live_grep = {
+			previewer = false,
+		},
+	},
+	extensions = {
+		fzf = {
+			fuzzy = true,       -- false will only do exact matching
+			override_generic_sorter = true, -- override the generic sorter
+			override_file_sorter = true, -- override the file sorter
+			case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+			-- the default case_mode is "smart_case"
+		},
+	},
 })
 
 vim.keymap.set("n", "<leader>ff", function()
-    if vim.fn.isdirectory(".git") == 1 then
-        -- Run git files search
-        builtin.git_files()
-    else
-        -- Regular file search
-        builtin.find_files()
-    end
+	if vim.fn.isdirectory(".git") == 1 then
+		-- Run git files search
+		builtin.git_files()
+	else
+		-- Regular file search
+		builtin.find_files()
+	end
 end, {})
 
 vim.keymap.set(
-    "n",
-    "<leader>vh",
-    builtin.help_tags,
-    { desc = "View Help Tags" }
+	"n",
+	"<leader>vh",
+	builtin.help_tags,
+	{ desc = "View Help Tags" }
 )
 vim.keymap.set("n", "<leader>ps", function()
-    builtin.grep_string({ search = vim.fn.input("Grep > ") })
+	builtin.grep_string({ search = vim.fn.input("Grep > ") })
 end, { desc = "Project Search" })
 vim.keymap.set("n", "<leader>fs", builtin.live_grep, {})
 vim.keymap.set("n", "<leader>fb", function()
-    builtin.buffers()
+	builtin.buffers()
 end, { desc = "Find Buffers" })
 --
 -- ******************************** Tests ********************************
