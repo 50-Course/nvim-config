@@ -1,14 +1,23 @@
 local servers = {
-    "pyright", -- Python
+    "pyright",       -- Python
     "rust_analyzer", -- Rust
-    "ts_ls", -- TypeScript/JavaScript
-    "gopls", -- Go
-    "lua_ls", -- Lua
+    "ts_ls",         -- TypeScript/JavaScript
+    "gopls",         -- Go
+    "lua_ls",        -- Lua
 }
+
+-- Diagonistics signs
+--
 
 local on_attach = function(client, buffnr)
     local map = vim.keymap.set
     local opts = { buffer = buffnr, noremap = true, silent = true }
+
+    local signs = { Error = "E", Warn = "W", Hint = "H", Info = "I" }
+    for type, text_icon in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        vim.fn.sign_define(hl, { text = text_icon, texthl = hl, numhl = "" })
+    end
 
     -- Mappings
     map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
@@ -76,7 +85,7 @@ cmp.setup({
         end,
     },
     completion = {
-        completeopt = "menu,menuone,noinsert",
+        completeopt = "menu,menuone,popup,noinsert,fuzzy",
     },
     mapping = cmp.mapping.preset.insert({
         -- Manually trigger snippet completion from nvim-cmp
@@ -114,12 +123,12 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = "nvim_lsp", keyword_length = 3 }, -- LSP
-        { name = "nvim_lsp_signature_help" }, -- display function signature with current param emphasized
-        { name = "nvim_lua", keyword_length = 2 }, -- lua runtime API
-        { name = "luasnip" }, -- nvim-cmp for snippets
-        { name = "buffer", keyword_length = 2 }, -- completion from current buffer
-        { name = "path" }, -- file paths
+        { name = "nvim_lsp",               keyword_length = 3 }, -- LSP
+        { name = "nvim_lsp_signature_help" },      -- display function signature with current param emphasized
+        { name = "nvim_lua",               keyword_length = 2 }, -- lua runtime API
+        { name = "luasnip" },                      -- nvim-cmp for snippets
+        { name = "buffer",                 keyword_length = 2 }, -- completion from current buffer
+        { name = "path" },                         -- file paths
     }),
     formatting = {
         fields = { "menu", "abbr", "kind" },
