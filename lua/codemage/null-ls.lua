@@ -10,6 +10,13 @@ local root_files = {
     "build.gradle",
 }
 
+-- Sources
+local formatting = null_ls.builtins.formatting
+local code_actions = null_ls.builtins.code_actions
+local diagnostics = null_ls.builtins.diagnostics
+local hover = null_ls.builtins.hover
+local completion = null_ls.builtins.completion
+
 local sources = {
     null_ls.builtins.formatting.stylua,
     -- null_ls.builtins.formatting.black,
@@ -43,17 +50,28 @@ local sources = {
     }),
     null_ls.builtins.diagnostics.cppcheck,
     null_ls.builtins.diagnostics.hadolint,
+    null_ls.builtins.diagnostics.markdownlint,
+    null_ls.builtins.diagnostics.golangci_lint,
     null_ls.builtins.formatting.clang_format.with({
         filetypes = { "c", "cpp", "objc", "objcpp", "java" },
     }),
     null_ls.builtins.formatting.djlint,
-    -- null_ls.builtins.diagnostics.pylint.with({
-    --     diagnostics_postprocess = function(diagnostic)
-    --         diagnostic.code = diagnostic.message_id
-    --     end,
-    -- }),
+    null_ls.builtins.diagnostics.pylint.with({
+        -- method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+        -- diagnostics_postprocess = function(diagnostic)
+        --     diagnostic.code = diagnostic.message_id
+        -- end,
+        env = function(params)
+            return { PYTHONPATH = params.root }
+        end,
+    }),
+    null_ls.builtins.diagnostics.semgrep.with({
+        filetypes = { "java", "typescript", "go" },
+    }),
+    null_ls.builtins.hover.dictionary,
+    null_ls.builtins.formatting.remark,
     -- null_ls.builtins.formatting.isort,
-    null_ls.builtins.diagnostics.mypy,
+    diagnostics.mypy,
     -- null_ls.builtins.diagnostics.mypy.with({
     --     extra_args = function(params)
     --         -- dynamically find the root directory
@@ -81,7 +99,7 @@ local attach_to_lsp = function(client)
         vim.cmd([[augroup Format]])
         vim.cmd([[autocmd! * <buffer>]])
         vim.cmd(
-            [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format( {timeout = 2000})]]
+            [[autocmd BufWritePost <buffer> lua vim.lsp.buf.format({timeout_ms = 2000})]]
         )
         vim.cmd([[augroup END]])
     end

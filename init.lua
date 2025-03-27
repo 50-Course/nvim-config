@@ -137,6 +137,11 @@ require("packer").startup(function(use)
     use({ "L3MON4D3/LuaSnip" })
     use("rafamadriz/friendly-snippets")
 
+    -- Formatter
+    --
+    -- TODO: remove when i comback to fix none-ls
+    use 'mhartington/formatter.nvim'
+
     -- Java LSP
     --
     -- For configuration, see: https://github.com/mfussenegger/nvim-jdtls
@@ -417,9 +422,6 @@ vim.keymap.set(
 
 -- Better way to jump out of modes
 keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
-vim.keymap.set("n", "<leader><leader>f", function()
-    vim.lsp.buf.format({ timeout = 2000 })
-end)
 
 keymap.set("n", "Q", "<nop>")
 keymap.set("n", "<leader>qq", "<cmd>q!<cr>")
@@ -471,10 +473,10 @@ keymap.set("n", "<leader>nl", ":lnext<cr>")
 keymap.set("n", "<leader>pl", ":lprev<cr>")
 
 -- Vim Tests keybinds
-keymap.set("n", "<leader>tn", "<cmd>TestNearest<cr>")
-keymap.set("n", "<leader>tf", "<cmd>TestFile<cr>")
-keymap.set("n", "<leader>ts", "<cmd>TestSuite<cr>")
-keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
+-- keymap.set("n", "<leader>tn", "<cmd>TestNearest<cr>")
+-- keymap.set("n", "<leader>tf", "<cmd>TestFile<cr>")
+-- keymap.set("n", "<leader>ts", "<cmd>TestSuite<cr>")
+-- keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
 
 -- window management
 keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
@@ -499,16 +501,16 @@ vim.keymap.set("n", "<leader>hh", function()
     ui.toggle_quick_menu()
 end)
 
-vim.keymap.set("n", "<leader>hsf", function()
+vim.keymap.set("n", "<leader>haa", function()
     ui.nav_file(1)
 end, { desc = "[h]arpoon [s]witch [f]irst" })
 vim.keymap.set("n", "<leader>hss", function()
     ui.nav_file(2)
 end, { desc = "[h]arpoon [s]witch [s]econd" })
-vim.keymap.set("n", "<leader>hst", function()
+vim.keymap.set("n", "<leader>hdd", function()
     ui.nav_file(3)
 end, { desc = "[h]arpoon [s]witch [t]hird" })
-vim.keymap.set("n", "<leader>hsl", function()
+vim.keymap.set("n", "<leader>hff", function()
     ui.nav_file(4)
 end, { desc = "[h]arpoon [s]witch [l]ast" })
 

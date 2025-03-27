@@ -9,9 +9,9 @@ local servers = {
 -- Diagonistics signs
 --
 
-local on_attach = function(client, buffnr)
+local on_attach = function(client, bufnr)
     local map = vim.keymap.set
-    local opts = { buffer = buffnr, noremap = true, silent = true }
+    local opts = { buffer = bufnr, noremap = true, silent = true }
 
     local signs = { Error = "E", Warn = "W", Hint = "H", Info = "I" }
     for type, text_icon in pairs(signs) do
@@ -21,7 +21,14 @@ local on_attach = function(client, buffnr)
 
     -- Mappings
     map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-    map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+    -- map("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+    vim.api.nvim_buf_set_keymap(
+        bufnr,
+        "n",
+        "<C-k>",
+        "<Cmd>lua vim.lsp.buf.signature_help()<CR>",
+        { noremap = true, silent = true }
+    )
     map("n", "gD", vim.lsp.buf.declaration, opts)
     map("n", "<leader>vws", function()
         vim.lsp.buf.workspace_symbol()
@@ -202,6 +209,13 @@ mason_lspconfig.setup_handlers({
             capabilities = capabilities,
         }
         lspconfig["ruff"].setup(opts)
+    end,
+    ["mdx_analyzer"] = function()
+        local opts = {
+            capabilities = capabilities,
+            filetypes = { "markdown.mdx", "mdx" },
+        }
+        lspconfig["mdx_analyzer"].setup(opts)
     end,
 })
 
