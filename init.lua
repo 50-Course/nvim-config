@@ -472,12 +472,6 @@ keymap.set("n", "<leader>pb", ":bprev<cr>")
 keymap.set("n", "<leader>nl", ":lnext<cr>")
 keymap.set("n", "<leader>pl", ":lprev<cr>")
 
--- Vim Tests keybinds
--- keymap.set("n", "<leader>tn", "<cmd>TestNearest<cr>")
--- keymap.set("n", "<leader>tf", "<cmd>TestFile<cr>")
--- keymap.set("n", "<leader>ts", "<cmd>TestSuite<cr>")
--- keymap.set("n", "<leader>tl", "<cmd>TestLast<cr>")
-
 -- window management
 keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
 keymap.set("n", "<A-l>", "<cmd>vertical resize +2<cr>") -- increase width to the right
