@@ -1,6 +1,11 @@
+--- Module to house all my debugging configurations
+---
+--- ...keybinds, individual plugin configurations, etc
+---
 local M = {}
 
 local dap, dapui = require("dap"), require("dapui")
+require("nvim-dap-virtual-text").setup()
 
 local function setup_adapters()
     dap.adapters.gdb = {
@@ -58,5 +63,7 @@ function M.setup()
 
     dap.setup()
 end
+
+M.setup()
 
 return M

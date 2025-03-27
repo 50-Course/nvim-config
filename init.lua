@@ -118,6 +118,8 @@ require("packer").startup(function(use)
         requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
     })
 
+    use("theHamsta/nvim-dap-virtual-text")
+
     -- Terminal manager with Toggleterm
     -- https://github.com/akinsho/toggleterm.nvim.git
     use({
@@ -140,7 +142,7 @@ require("packer").startup(function(use)
     -- Formatter
     --
     -- TODO: remove when i comback to fix none-ls
-    use 'mhartington/formatter.nvim'
+    use("mhartington/formatter.nvim")
 
     -- Java LSP
     --
@@ -475,8 +477,8 @@ keymap.set("n", "<leader>pl", ":lprev<cr>")
 -- window management
 keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
 keymap.set("n", "<A-l>", "<cmd>vertical resize +2<cr>") -- increase width to the right
-keymap.set("n", "<A-j>", "<cmd>resize -2<cr>")          -- decrease height
-keymap.set("n", "<A-k>", "<cmd>resize +2<cr>")          -- increase height
+keymap.set("n", "<A-j>", "<cmd>resize -2<cr>") -- decrease height
+keymap.set("n", "<A-k>", "<cmd>resize +2<cr>") -- increase height
 
 keymap.set("n", "<leader><leader>", function()
     vim.cmd([[ so % ]])
@@ -528,10 +530,10 @@ telescope.setup({
     },
     extensions = {
         fzf = {
-            fuzzy = true,                   -- false will only do exact matching
+            fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
         },
     },
@@ -567,7 +569,7 @@ vim.g["test#strategy#suite"] = "vimux"
 vim.g["test#neovim#term_position"] = "vert"
 vim.g["test#neovim#term_repl_command"] = "vsplit"
 
--- SPLITS WITH MAPPINGS
+-- SPLITS WITH MAPPING
 --
 keymap.set("n", ";sp", ":sp<CR>")
 
