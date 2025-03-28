@@ -25,6 +25,60 @@ function M.setup_python()
     }
 end
 
+-- configures for adapters for Go
+function M.setup_go()
+    dap.adapters.delve = function(callback, config)
+        if config.mode == "remote" and config.request == "attach" then
+            callback({
+                type = "server",
+                host = config.host or "127.0.0.1",
+                port = config.port or "38697",
+            })
+        else
+            callback({
+                type = "server",
+                port = "${port}",
+                executable = {
+                    command = "dlv",
+                    args = {
+                        "dap",
+                        "-l",
+                        "127.0.0.1:${port}",
+                        "--log",
+                        "--log-output=dap",
+                    },
+                    detached = vim.fn.has("win32") == 0,
+                },
+            })
+        end
+    end
+
+    -- https://github.com/go-delve/delve/blob/master/Documentation/usage/dlv_dap.md
+    dap.configurations.go = {
+        {
+            type = "delve",
+            name = "Debug",
+            request = "launch",
+            program = "${file}",
+        },
+        {
+            type = "delve",
+            name = "Debug test", -- configuration for debugging test files
+            request = "launch",
+            mode = "test",
+            program = "${file}",
+        },
+        -- works with go.mod packages and sub packages
+        {
+            type = "delve",
+            name = "Debug test (go.mod)",
+            request = "launch",
+            mode = "test",
+            program = "./${relativeFileDirname}",
+        },
+    }
+end
+
 --- configure the adapters for Java debugging
 function M.setup_java()
     dap.configurations.java = {
@@ -112,6 +166,7 @@ local function setup_debuggers()
     M.setup_java()
     M.setup_dotnet()
     M.setup_js()
+    M.setup_go()
 end
 
 local function setup_dap_keymaps()
