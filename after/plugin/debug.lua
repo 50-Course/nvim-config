@@ -105,8 +105,6 @@ local function setup_event_handlers()
     dap.listeners.before.event_exited.dapui_config = function()
         dapui.close()
     end
-
-    vim.notify("Successfully setup event handlers", vim.log.levels.INFO)
 end
 
 local function setup_debuggers()
@@ -114,14 +112,10 @@ local function setup_debuggers()
     M.setup_java()
     M.setup_dotnet()
     M.setup_js()
-    -- print("successfully setup debuggers")
-    vim.notify("Successfully setup debuggers", vim.log.levels.INFO)
 end
 
 local function setup_dap_keymaps()
     local map = vim.keymap.set
-
-    -- toggler debugger
 
     -- toggle breakpoints
     map(
@@ -149,13 +143,17 @@ local function setup_dap_keymaps()
         { desc = "Debug: Start/[C]ontinue" }
     )
 
-    vim.notify("Keybinds configured successfully for DAP", vim.log.levels.INFO)
+    map("n", "<localleader>dr", dap.repl.open, { desc = "Debug: Open [R]epl" })
+    map("n", "<localleader>lp", dap.run_last, { desc = "Debug: Run [L]ast" })
+    map("n", "<localleader>dx", dap.terminate, { desc = "Debug: [XT]erminate" })
 end
 
 function M.setup()
     setup_event_handlers()
     setup_debuggers()
     setup_dap_keymaps()
+
+    dapui.setup()
 end
 
 M.setup()
