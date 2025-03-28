@@ -7,6 +7,13 @@ local M = {}
 local dap, dapui = require("dap"), require("dapui")
 require("nvim-dap-virtual-text").setup()
 
+-- TODO: comeback to this later
+--
+-- configure the adapters for elixir
+function M.setup_elixir()
+    print("Setting up elixir debugger")
+end
+
 --- configures the adapters for python
 function M.setup_python()
     dap.configurations.python = {
