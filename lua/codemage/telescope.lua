@@ -6,6 +6,8 @@
 pcall(require("telescope").load_extension, "fzf")
 
 local M = {}
+
+local test = require("nvim-test")
 local builtin = require("telescope.builtin")
 local telescope = require("telescope")
 
@@ -46,13 +48,72 @@ function M.setup_telescope_keybinds()
     end, {})
 
     map("n", "<leader>vh", builtin.help_tags, { desc = "View Help Tags" })
+
     map("n", "<leader>ps", function()
         builtin.grep_string({ search = vim.fn.input("Grep > ") })
     end, { desc = "Project Search" })
+
     map("n", "<leader>fs", builtin.live_grep, {})
+
     map("n", "<leader>fb", function()
         builtin.buffers()
     end, { desc = "Find Buffers" })
+
+    -- find lsp document symbols in the current buffer
+    map("n", "<leader>fS", function()
+        builtin.lsp_document_symbols()
+    end, { desc = "Find LSP Document Symbols" })
+
+    -- find in current buffer
+    map("n", "<leader>fB", function()
+        builtin.current_buffer_fuzzy_find()
+    end, { desc = "Find in Current Buffer" })
+
+    -- find lsp references
+    map("n", "<leader>vrr", function()
+        builtin.lsp_references()
+    end, { desc = "Find LSP References" })
+
+    -- find lsp implementations
+    map("n", "<leader>vI", function()
+        builtin.lsp_implementations()
+    end, { desc = "Find LSP Implementations" })
+
+    -- find type definitions
+    map("n", "<leader>vD", function()
+        builtin.lsp_type_definitions()
+    end, { desc = "Find LSP Type Definitions" })
+
+    -- -- find tests
+    -- map("n", "<leader>ft", function()
+    --     M.run_tests()
+    -- end, { desc = "Run Tests" })
+end
+
+--- Pick and Run specific tests with Telescope
+function M.run_tests()
+    local tests = test.get_tests()
+
+    if not tests or #tests == 0 then
+        vim.notify("No tests found", vim.log.levels.ERROR)
+        return
+    end
+
+    -- get the test entries
+    local test_entries = {}
+    for _, t in ipairs(tests) do
+        table.insert(
+            test_entries,
+            { value = t.name, ordinal = t.name, display = t.name }
+        )
+    end
+
+    -- telescope.pick(test_entries, {
+    --     prompt_title = "Select Test",
+    --     on_selection = function(selected)
+    --         test.run({ selected.value })
+    --     end,
+    -- })
 end
 
 M.setup_telescope_keybinds()
