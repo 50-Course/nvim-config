@@ -238,6 +238,7 @@ end)
 -- ======================== MODULES ========================
 require("codemage.mason")
 require("codemage.lsp")
+require("codemage.telescope")
 require("codemage.keymaps")
 require("codemage.null-ls")
 require("codemage.toggleterm")
@@ -510,58 +511,6 @@ vim.keymap.set("n", "<leader>hff", function()
     ui.nav_file(4)
 end, { desc = "[h]arpoon [s]witch [l]ast" })
 
--- ******************************** Telescope ********************************
-pcall(require("telescope").load_extension, "fzf")
-
-local builtin = require("telescope.builtin")
-local telescope = require("telescope")
-
-telescope.setup({
-    pickers = {
-        find_files = {
-            previewer = false,
-        },
-        buffers = {
-            previewer = false,
-        },
-        live_grep = {
-            previewer = false,
-        },
-    },
-    extensions = {
-        fzf = {
-            fuzzy = true, -- false will only do exact matching
-            override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-            -- the default case_mode is "smart_case"
-        },
-    },
-})
-
-vim.keymap.set("n", "<leader>ff", function()
-    if vim.fn.isdirectory(".git") == 1 then
-        -- Run git files search
-        builtin.git_files()
-    else
-        -- Regular file search
-        builtin.find_files()
-    end
-end, {})
-
-vim.keymap.set(
-    "n",
-    "<leader>vh",
-    builtin.help_tags,
-    { desc = "View Help Tags" }
-)
-vim.keymap.set("n", "<leader>ps", function()
-    builtin.grep_string({ search = vim.fn.input("Grep > ") })
-end, { desc = "Project Search" })
-vim.keymap.set("n", "<leader>fs", builtin.live_grep, {})
-vim.keymap.set("n", "<leader>fb", function()
-    builtin.buffers()
-end, { desc = "Find Buffers" })
 --
 -- ******************************** Tests ********************************
 vim.g["test#strategy"] = "neovim"
