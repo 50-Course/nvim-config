@@ -10,6 +10,8 @@ local M = {}
 local test = require("nvim-test")
 local builtin = require("telescope.builtin")
 local telescope = require("telescope")
+local picka = require("telescope.pickers")
+local picker = picka.new
 
 telescope.setup({
     pickers = {
@@ -85,7 +87,7 @@ function M.setup_telescope_keybinds()
     end, { desc = "Find LSP Type Definitions" })
 
     -- -- find tests
-    -- map("n", "<leader>ft", function()
+    -- map("n", "<leader>tT", function()
     --     M.run_tests()
     -- end, { desc = "Run Tests" })
 end
@@ -108,12 +110,37 @@ function M.run_tests()
         )
     end
 
-    -- telescope.pick(test_entries, {
-    --     prompt_title = "Select Test",
-    --     on_selection = function(selected)
-    --         test.run({ selected.value })
-    --     end,
-    -- })
+    -- create the picker
+    picker({
+        prompt_title = "Select Test",
+        selection_caret = "> ",
+        finder = {
+            entry_maker = function(entry)
+                return {
+                    display = entry.display,
+                    ordinal = entry.ordinal,
+                    value = entry.value,
+                }
+            end,
+            results = test_entries,
+        },
+        sorter = require("telescope.config").values.generic_sorter({}),
+        attach_mappings = function(prompt_bufnr, map)
+            local run_test = function()
+                local selection = picker.get_selected_entry(prompt_bufnr)
+                if not selection then
+                    return
+                end
+
+                test.run({ selection.value })
+            end
+
+            map("i", "<CR>", run_test)
+            map("n", "<CR>", run_test)
+
+            return true
+        end,
+    }):find()
 end
 
 M.setup_telescope_keybinds()
