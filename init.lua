@@ -144,6 +144,9 @@ require("packer").startup(function(use)
     -- TODO: remove when i comback to fix none-ls
     use("mhartington/formatter.nvim")
 
+    -- Tests with Nvim-test
+    use("klen/nvim-test")
+
     -- Java LSP
     --
     -- For configuration, see: https://github.com/mfussenegger/nvim-jdtls
