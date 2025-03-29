@@ -79,7 +79,7 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use({ "github/copilot.vim" })
+    use("github/copilot.vim", { cond = false})
 
     -- Codemium (Free and sleeky)
     -- use 'Exafunction/codeium.vim'
@@ -481,8 +481,8 @@ keymap.set("n", "<leader>pl", ":lprev<cr>")
 -- window management
 keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
 keymap.set("n", "<A-l>", "<cmd>vertical resize +2<cr>") -- increase width to the right
-keymap.set("n", "<A-j>", "<cmd>resize -2<cr>") -- decrease height
-keymap.set("n", "<A-k>", "<cmd>resize +2<cr>") -- increase height
+keymap.set("n", "<A-j>", "<cmd>resize -2<cr>")          -- decrease height
+keymap.set("n", "<A-k>", "<cmd>resize +2<cr>")          -- increase height
 
 keymap.set("n", "<leader><leader>", function()
     vim.cmd([[ so % ]])
