@@ -217,22 +217,22 @@ mason_lspconfig.setup_handlers({
         }
         lspconfig["mdx_analyzer"].setup(opts)
     end,
-    ["elixir-ls"] = function()
-        local opts = {
-            capabilities = capabilities,
-            cmd = { "elixir-ls" },
-            on_attach = on_attach,
-            -- settings = {
-            --     elixirLS = {
-            --         dialyzerEnabled = false,
-            --         fetchDeps = true,
-            --         enableTestLenses = true,
-            --         suggestSpecs = true,
-            --     },
-            -- },
-        }
-        lspconfig["elixir-ls"].setup(opts)
-    end,
+    -- ["elixir-ls"] = function()
+    --     local opts = {
+    --         capabilities = capabilities,
+    --         cmd = { "elixir-ls" },
+    --         on_attach = on_attach,
+    --         settings = {
+    --             elixirLS = {
+    --                 dialyzerEnabled = true,
+    --                 fetchDeps = true,
+    --                 enableTestLenses = true,
+    --                 suggestSpecs = true,
+    --             },
+    --         },
+    --     }
+    --     lspconfig["elixir-ls"].setup(opts)
+    -- end,
 })
 
 -- require("spring_boot").init_lsp_commands()

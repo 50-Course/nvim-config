@@ -133,7 +133,7 @@ require("packer").startup(function(use)
     -- Flutter
     -- Lsp integraton
     -- https://github.ocm/akinsho/flutter-tools.nvim
-    use("akinsho/flutter-tools.nvim", { cond = false} )
+    use("akinsho/flutter-tools.nvim", { cond = false })
 
     -- Snippets
     use({ "L3MON4D3/LuaSnip" })
@@ -253,6 +253,7 @@ require("codemage.null-ls")
 require("codemage.toggleterm")
 require("codemage.refactor")
 require("codemage.colorscheme.gruvbox")
+require("codemage.colorscheme.catappucin")
 
 -- ======================== GLOBAL CONFIGURATION ========================
 --

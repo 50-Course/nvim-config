@@ -7,11 +7,90 @@ local M = {}
 local dap, dapui = require("dap"), require("dapui")
 require("nvim-dap-virtual-text").setup()
 
+local function setup_elixir_adapter()
+    -- dap.adapters.elixir = {
+    --     {
+    --         name = "Run Debugger",
+    --         request = "attach",
+    --         type = "elixir-ls-debugger",
+    --     },
+    -- }
+
+    dap.adapters.elixir = {
+        type = "server",
+        host = "127.0.0.1",
+        port = "${port}",
+        executable = {
+            command = "elixir-ls",
+            args = {
+                "--enable-debug-adapter",
+                "--stdio",
+            },
+        },
+    }
+end
+
+local function setup_elixir_configurations() 
+    dap.configurations.elixir = {
+        {
+            type = "elixir",
+            name = "mix test",
+            request = "launch",
+            task = "test",
+            taskArgs = { "--trace" },
+            startApps = true,
+            projectDir = "${workspaceFolder}",
+            requireFiles = { "test/**/test_helper.exs", "test/**/*_test.exs" },
+        },
+        {
+            type = "elixir",
+            name = "mix test (single file)",
+            request = "launch",
+            task = "test",
+            taskArgs = function()
+                local testFile = vim.fn.input("Test file: ", "test/", "file")
+                return { testFile }
+            end,
+            startApps = true,
+            projectDir = "${workspaceFolder}",
+            requireFiles = { "test/**/test_helper.exs" },
+        },
+        {
+            type = "elixir",
+            name = "phx.server",
+            request = "launch",
+            task = "phx.server",
+            projectDir = "${workspaceFolder}",
+            debugAutoInterpretAllModules = false,
+            debugInterpretModulesPatterns = { "MyApp*", "MyAppWeb*" },
+            exitAfterTaskReturns = false,
+        },
+        {
+            type = "elixir",
+            name = "mix run",
+            request = "launch",
+            task = "run",
+            projectDir = "${workspaceFolder}",
+            program = function()
+                return vim.fn.input("File to run: ", "", "file")
+            end,
+        },
+        {
+            type = "elixir",
+            name = "Launch Current File",
+            request = "launch",
+            program = "${file}",
+            cwd = "${workspaceFolder}",
+        },
+    }
+end
+
 -- TODO: comeback to this later
 --
 -- configure the adapters for elixir
 function M.setup_elixir()
-    print("Setting up elixir debugger")
+    setup_elixir_adapter()
+    setup_elixir_configurations()
 end
 
 --- configures the adapters for python
@@ -174,6 +253,7 @@ local function setup_debuggers()
     M.setup_dotnet()
     M.setup_js()
     M.setup_go()
+    M.setup_elixir()
 end
 
 local function setup_dap_keymaps()
