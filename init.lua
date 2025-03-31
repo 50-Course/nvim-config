@@ -79,7 +79,7 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use("github/copilot.vim", { cond = false})
+    use("github/copilot.vim", { cond = false })
 
     -- Codemium (Free and sleeky)
     -- use 'Exafunction/codeium.vim'
@@ -133,7 +133,7 @@ require("packer").startup(function(use)
     -- Flutter
     -- Lsp integraton
     -- https://github.ocm/akinsho/flutter-tools.nvim
-    use("akinsho/flutter-tools.nvim")
+    use("akinsho/flutter-tools.nvim", { cond = false} )
 
     -- Snippets
     use({ "L3MON4D3/LuaSnip" })
@@ -217,12 +217,18 @@ require("packer").startup(function(use)
     -- Gruvbox
     use({ "ellisonleao/gruvbox.nvim" })
 
+    -- Tokyonight colorscheme
     use({
         "folke/tokyonight.nvim",
         lazy = true,
         priority = 1000,
         opts = {},
     })
+
+    -- Catappuccin colorscheme
+    --
+    -- Ref: https://github.com/catppuccin/nvim#Compile
+    use({ "catppuccin/nvim", as = "catppuccin" })
 
     -- Vim Surround
     use({
