@@ -60,6 +60,23 @@ function _G.set_win_binds()
     vim.keymap.set("n", ";vs", ":vsp<CR>")
 end
 
+function _G.set_buf_binds()
+    local keymap = vim.keymap
+
+    -- Use system clipboards instead of Vim's built-in clipboard
+    keymap.set({ "n", "v" }, "<leader>y", '"+Y')
+    keymap.set({ "v" }, "<localleader>y", '"+y')
+    keymap.set({ "n", "v" }, "<leader>d", '"_d')
+    keymap.set("n", "<leader>p", '"+P')
+
+    -- Search-replace
+    vim.keymap.set(
+        "n",
+        "<leader>s",
+        [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]
+    )
+end
+
 function _G.set_terminal_bindings()
     local opts = { buffer = 0 }
     vim.keymap.set("t", "<C-q>", [[<C-\><C-n>]], opts)

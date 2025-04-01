@@ -267,12 +267,6 @@ keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 -- getting used to Ctrl+c is not my thing
 keymap.set("i", "<C-c>", "<Nop>")
 
--- Use system clipboards instead of Vim's built-in clipboard
-keymap.set({ "n", "v" }, "<leader>y", '"+Y')
-keymap.set({ "v" }, "<localleader>y", '"+y')
-keymap.set({ "n", "v" }, "<leader>d", '"_d')
-keymap.set("n", "<leader>p", '"+P')
-
 vim.api.nvim_set_keymap(
     "n",
     "<Leader>fc",
@@ -287,13 +281,6 @@ vim.keymap.set(
     "<leader>pmf",
     ":Glow<CR>",
     { desc = "[p]review [m]arkdown [f]ile" }
-)
-
--- Search-replace
-vim.keymap.set(
-    "n",
-    "<leader>s",
-    [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]]
 )
 
 -- Undo tree for the Win!
