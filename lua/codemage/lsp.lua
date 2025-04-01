@@ -1,3 +1,15 @@
+local cmp = require("cmp")
+local capabalities = vim.lsp.protocol.make_client_capabilities()
+
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabalities)
+local luasnip = require("luasnip")
+require("luasnip.loaders.from_vscode").lazy_load()
+
+local mason = require("mason")
+local lspconfig = require("lspconfig")
+local mason_lspconfig = require("mason-lspconfig")
+local mason_registry = require("mason-registry")
+
 local servers = {
     "pyright",       -- Python
     "rust_analyzer", -- Rust
@@ -67,17 +79,6 @@ local on_attach = function(client, bufnr)
     -- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 end
 
-local cmp = require("cmp")
-local capabalities = vim.lsp.protocol.make_client_capabilities()
-
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabalities)
-local luasnip = require("luasnip")
-require("luasnip.loaders.from_vscode").lazy_load()
-
-local mason = require("mason")
-local lspconfig = require("lspconfig")
-local mason_lspconfig = require("mason-lspconfig")
-
 local source_names = {
     nvim_lsp = "[LSP]",
     nvim_lsp_signature_help = "[Signature]",
@@ -92,7 +93,7 @@ cmp.setup({
         end,
     },
     completion = {
-        completeopt = "menu,menuone,popup,noinsert,fuzzy",
+        completeopt = "menu, menuone, noselect",
     },
     mapping = cmp.mapping.preset.insert({
         -- Manually trigger snippet completion from nvim-cmp
@@ -186,6 +187,7 @@ mason_lspconfig.setup_handlers({
         local opts = {
             on_attach = on_attach,
             capabilities = capabilities,
+            filetypes = { "go", "gomod", "gowork", "goimpl" },
             cmd = { "gopls" },
             settings = {
                 gopls = {
@@ -218,6 +220,9 @@ mason_lspconfig.setup_handlers({
         lspconfig["mdx_analyzer"].setup(opts)
     end,
     -- ["elixir-ls"] = function()
+    --     local elixirls_path =
+    --         mason_registry.get_package("elixir-ls"):get_install_path()
+    --
     --     local opts = {
     --         capabilities = capabilities,
     --         cmd = { "elixir-ls" },
@@ -234,13 +239,6 @@ mason_lspconfig.setup_handlers({
     --     lspconfig["elixir-ls"].setup(opts)
     -- end,
 })
-
--- require("spring_boot").init_lsp_commands()
--- require("lspconfig").jdtls.setup({
---     init_options = {
---         bundles = require("spring_boot").java_extensions(),
---     },
--- })
 
 -- vim.diagnostic.config({
 --     virtual_text = true,

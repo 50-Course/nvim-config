@@ -8,6 +8,58 @@
 
 local M = {}
 
+function _G.set_git_bindings()
+    local keymap = vim.keymap
+
+    keymap.set("n", "<leader>gs", function()
+        vim.cmd([[ Git ]])
+    end)
+    keymap.set("n", "<leader>ga", function()
+        vim.cmd([[ Git add % ]])
+    end)
+    keymap.set("n", "<leader>gc", function()
+        vim.cmd([[ Git commit ]])
+    end)
+end
+
+function _G.set_win_binds()
+    -- window management
+    vim.keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
+    vim.keymap.set("n", "<A-l>", "<cmd>vertical resize +2<cr>") -- increase width to the right
+    vim.keymap.set("n", "<A-j>", "<cmd>resize -2<cr>")          -- decrease height
+    vim.keymap.set("n", "<A-k>", "<cmd>resize +2<cr>")          -- increase height
+
+    -- Navigate up, down, left, and right between splits.
+    vim.keymap.set("n", "<C-h>", "<c-w>h")
+    vim.keymap.set("n", "<C-j>", "<c-w>j")
+    vim.keymap.set("n", "<C-k>", "<c-w>k")
+    vim.keymap.set("n", "<C-l>", "<c-w>l")
+
+    -- Better way to jump out of modes
+    vim.keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
+
+    vim.keymap.set("n", "Q", "<nop>")
+    vim.keymap.set("n", "<leader>qq", "<cmd>q!<cr>")
+    vim.keymap.set("n", "<leader>wq", "<cmd>wq<cr>")
+    vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", { desc = "[q]uit [b]uffer" })
+
+    -- Fast way to save and exit a file
+    vim.keymap.set(
+        "n",
+        "<leader>w",
+        "<cmd>w<cr>",
+        { desc = "[w]rite [b]uffer" }
+    )
+
+    -- Navigation is better with `project-view`
+    vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+
+    -- SPLITS WITH MAPPING
+    --
+    vim.keymap.set("n", ";sp", ":sp<CR>")
+    vim.keymap.set("n", ";vs", ":vsp<CR>")
+end
+
 function _G.set_terminal_bindings()
     local opts = { buffer = 0 }
     vim.keymap.set("t", "<C-q>", [[<C-\><C-n>]], opts)
