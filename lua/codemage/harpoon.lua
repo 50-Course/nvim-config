@@ -1,0 +1,23 @@
+-- ******************************** Harpoon ********************************
+local mark = require("harpoon.mark")
+local ui = require("harpoon.ui")
+
+vim.keymap.set("n", "<leader>ha", function()
+    mark.add_file()
+end)
+vim.keymap.set("n", "<leader>hh", function()
+    ui.toggle_quick_menu()
+end)
+
+vim.keymap.set("n", "<leader>haa", function()
+    ui.nav_file(1)
+end, { desc = "[h]arpoon [s]witch [f]irst" })
+vim.keymap.set("n", "<leader>hss", function()
+    ui.nav_file(2)
+end, { desc = "[h]arpoon [s]witch [s]econd" })
+vim.keymap.set("n", "<leader>hdd", function()
+    ui.nav_file(3)
+end, { desc = "[h]arpoon [s]witch [t]hird" })
+vim.keymap.set("n", "<leader>hff", function()
+    ui.nav_file(4)
+end, { desc = "[h]arpoon [s]witch [l]ast" })
