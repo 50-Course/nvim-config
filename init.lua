@@ -82,7 +82,7 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use({ "github/copilot.vim", disable = true })
+    use("github/copilot.vim", { cond = false })
 
     -- Glow for markdown preview
     use({
@@ -142,7 +142,7 @@ require("packer").startup(function(use)
     -- Formatter
     --
     -- TODO: remove when i comback to fix none-ls
-    use("mhartington/formatter.nvim")
+    use("mhartington/formatter.nvim", { cond = true })
 
     -- Tests with Nvim-test
     use("klen/nvim-test")

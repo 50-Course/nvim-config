@@ -16,6 +16,8 @@ local servers = {
     "ts_ls",         -- TypeScript/JavaScript
     "gopls",         -- Go
     "lua_ls",        -- Lua
+    "mdx_analyzer",  -- MDX
+    "elixirls",      -- Elixir
 }
 
 -- Diagonistics signs
@@ -212,32 +214,6 @@ mason_lspconfig.setup_handlers({
         }
         lspconfig["ruff"].setup(opts)
     end,
-    ["mdx_analyzer"] = function()
-        local opts = {
-            capabilities = capabilities,
-            filetypes = { "markdown.mdx", "mdx" },
-        }
-        lspconfig["mdx_analyzer"].setup(opts)
-    end,
-    -- ["elixir-ls"] = function()
-    --     local elixirls_path =
-    --         mason_registry.get_package("elixir-ls"):get_install_path()
-    --
-    --     local opts = {
-    --         capabilities = capabilities,
-    --         cmd = { "elixir-ls" },
-    --         on_attach = on_attach,
-    --         settings = {
-    --             elixirLS = {
-    --                 dialyzerEnabled = true,
-    --                 fetchDeps = true,
-    --                 enableTestLenses = true,
-    --                 suggestSpecs = true,
-    --             },
-    --         },
-    --     }
-    --     lspconfig["elixir-ls"].setup(opts)
-    -- end,
 })
 
 -- vim.diagnostic.config({

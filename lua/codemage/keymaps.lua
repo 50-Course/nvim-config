@@ -8,7 +8,7 @@
 
 local M = {}
 
-function _G.set_git_bindings()
+function M.set_git_bindings()
     local keymap = vim.keymap
 
     keymap.set("n", "<leader>gs", function()
@@ -22,7 +22,7 @@ function _G.set_git_bindings()
     end)
 end
 
-function _G.set_win_binds()
+function M.set_win_binds()
     -- window management
     vim.keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
     vim.keymap.set("n", "<A-l>", "<cmd>vertical resize +2<cr>") -- increase width to the right
@@ -60,7 +60,7 @@ function _G.set_win_binds()
     vim.keymap.set("n", ";vs", ":vsp<CR>")
 end
 
-function _G.set_buf_binds()
+function M.set_buf_binds()
     local keymap = vim.keymap
 
     -- Use system clipboards instead of Vim's built-in clipboard
@@ -77,7 +77,7 @@ function _G.set_buf_binds()
     )
 end
 
-function _G.set_terminal_bindings()
+function M.set_terminal_bindings()
     local opts = { buffer = 0 }
     vim.keymap.set("t", "<C-q>", [[<C-\><C-n>]], opts)
     vim.keymap.set("t", "jk", [[<C-\><C-n>]], opts)
@@ -88,7 +88,13 @@ function _G.set_terminal_bindings()
     vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]], opts)
 end
 
-vim.cmd("autocmd! TermOpen term://* lua set_terminal_bindings()")
+-- vim.cmd("autocmd! TermOpen term://* lua M.set_terminal_bindings()")
+vim.api.nvim_create_autocmd("TermOpen", {
+    pattern = "term://*",
+    callback = function()
+        M.set_terminal_bindings()
+    end,
+})
 
 --- Keybinds for Formatting
 ---
@@ -112,5 +118,9 @@ end
 
 M.set_format_bindings()
 M.setup_test_keymaps()
+M.set_win_binds()
+M.set_buf_binds()
+M.set_git_bindings()
+M.set_terminal_bindings()
 
 return M
