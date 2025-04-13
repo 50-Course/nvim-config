@@ -41,7 +41,7 @@ local options = {
     -- its what it is
     updatetime = 100,
 
-    hidden = false,
+    hidden = true,
 
     backspace = { "start", "eol", "indent" },
     signcolumn = "yes",

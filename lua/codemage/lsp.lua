@@ -54,7 +54,9 @@ local on_attach = function(client, bufnr)
     map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
     map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
     map("n", "K", vim.lsp.buf.hover, opts)
-    map("n", "<leader>D", vim.lsp.buf.type_definition, opts)
+    map("n", "<leader>D", function()
+        vim.lsp.buf.type_definition()
+    end, opts)
     map(
         "n",
         "<leader>wa",
@@ -134,11 +136,11 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = "nvim_lsp",               keyword_length = 3 }, -- LSP
-        { name = "nvim_lsp_signature_help" },      -- display function signature with current param emphasized
+        { name = "nvim_lsp_signature_help" },                    -- display function signature with current param emphasized
         { name = "nvim_lua",               keyword_length = 2 }, -- lua runtime API
-        { name = "luasnip" },                      -- nvim-cmp for snippets
+        { name = "luasnip" },                                    -- nvim-cmp for snippets
         { name = "buffer",                 keyword_length = 2 }, -- completion from current buffer
-        { name = "path" },                         -- file paths
+        { name = "path" },                                       -- file paths
     }),
     formatting = {
         fields = { "menu", "abbr", "kind" },
