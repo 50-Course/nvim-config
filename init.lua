@@ -82,7 +82,9 @@ require("packer").startup(function(use)
     })
 
     -- GitHub Co-pilot
-    use("github/copilot.vim", { cond = false })
+    --
+    -- So i finally found a way to disable this stuff - setting `opt` to true lol
+    use {"github/copilot.vim", opt = true }
 
     -- Glow for markdown preview
     use({

@@ -50,7 +50,7 @@ local sources = {
     }),
     null_ls.builtins.diagnostics.cppcheck,
     null_ls.builtins.diagnostics.hadolint,
-    null_ls.builtins.diagnostics.markdownlint,
+    -- null_ls.builtins.diagnostics.markdownlint,
     null_ls.builtins.diagnostics.golangci_lint,
     null_ls.builtins.formatting.clang_format.with({
         filetypes = { "c", "cpp", "objc", "objcpp", "java" },
@@ -65,13 +65,13 @@ local sources = {
             return { PYTHONPATH = params.root }
         end,
     }),
-    null_ls.builtins.diagnostics.semgrep.with({
-        filetypes = { "java", "typescript", "go" },
-    }),
+    -- null_ls.builtins.diagnostics.semgrep.with({
+    --     filetypes = { "java", "typescript", "go" },
+    -- }),
     null_ls.builtins.hover.dictionary,
     null_ls.builtins.formatting.remark,
     -- null_ls.builtins.formatting.isort,
-    diagnostics.mypy,
+    -- diagnostics.mypy,
     -- null_ls.builtins.diagnostics.mypy.with({
     --     extra_args = function(params)
     --         -- dynamically find the root directory
