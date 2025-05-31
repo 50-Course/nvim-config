@@ -193,26 +193,73 @@ function M.setup_dotnet()
     }
 end
 
+local js_languages = {
+    "vue",
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact",
+}
 --- configure the adapters for JavaScript/Node.js debugging
 function M.setup_js()
-    dap.configurations.javascript = {
-        {
-            name = "Launch Node",
-            type = "node",
-            request = "launch",
-            program = "${file}",
-            cwd = vim.fn.getcwd(),
-            sourceMaps = true,
-            protocol = "inspector",
-            console = "integratedTerminal",
-        },
-        {
-            name = "Attach to Process",
-            type = "node",
-            request = "attach",
-            processId = require("dap.utils").pick_process,
-        },
-    }
+    for _, language in ipairs(js_languages) do
+        -- debug single node.js files
+        dap.configurations[language] = {
+            {
+                type = "pwa-node",
+                request = "launch",
+                name = "Launch",
+                program = "${file}",
+                cwd = "${workspaceFolder}",
+                sourceMaps = true,
+            },
+
+            -- debug node.js processes (make sure to add the --inspect when you run the process)
+            {
+                type = "pwa-node",
+                request = "attach",
+                name = "Attach",
+                processId = require("dap.utils").pickProcess,
+                cwd = "${workspaceFolder}",
+                sourceMaps = true,
+            },
+
+            -- debug web applications (client side apps)
+            -- using Chrome, TODO: make firefox the defualt)
+            {
+                type = "pwa-web",
+                request = "Launch",
+                name = "Debug and Launch Chrome",
+                url = function()
+                    local co = coroutine.running()
+                    return coroutine.create(function()
+                        vim.ui.input({
+                            prompt = "Enter URL: ",
+                            default = "http://localhost:3000",
+                        }, function(url)
+                            if url == nil or url == "" then
+                                return
+                            else
+                                coroutine.resume(co, url)
+                            end
+                        end)
+                    end)
+                end,
+                webRoot = "${workspaceFolder}",
+                protocol = "inspector",
+                skipFiles = { "<node_internals>/* */*.js" },
+                sourceMaps = true,
+                userDataDir = false,
+            },
+
+            -- placeholder divider to sepearte built-in configs from custom configs
+            {
+                type = "",
+                name = "---- * launch.json configs * ----",
+                request = "launch",
+            },
+        }
+    end
 end
 
 --- Setup the low level configurations for the debugger
