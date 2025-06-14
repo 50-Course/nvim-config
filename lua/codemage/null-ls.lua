@@ -30,8 +30,7 @@ local sources = {
             "typescript",
             "go",
             "lua",
-        },
-    }),
+        }, }),
     null_ls.builtins.formatting.prettierd.with({
         filetypes = {
             "html",
@@ -53,24 +52,24 @@ local sources = {
     -- null_ls.builtins.diagnostics.markdownlint,
     null_ls.builtins.diagnostics.golangci_lint,
     null_ls.builtins.formatting.clang_format.with({
-        filetypes = { "c", "cpp", "objc", "objcpp", "java" },
+        filetypes = { "c", "cpp", "objc", "objcpp" },
     }),
     null_ls.builtins.formatting.djlint,
-    null_ls.builtins.diagnostics.pylint.with({
-        -- method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
-        -- diagnostics_postprocess = function(diagnostic)
-        --     diagnostic.code = diagnostic.message_id
-        -- end,
-        env = function(params)
-            return { PYTHONPATH = params.root }
-        end,
-    }),
+    -- null_ls.builtins.diagnostics.pylint.with({
+    --     -- method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+    --     -- diagnostics_postprocess = function(diagnostic)
+    --     --     diagnostic.code = diagnostic.message_id
+    --     -- end,
+    --     env = function(params)
+    --         return { PYTHONPATH = params.root }
+    --     end,
+    -- }),
     -- null_ls.builtins.diagnostics.semgrep.with({
     --     filetypes = { "java", "typescript", "go" },
     -- }),
     null_ls.builtins.hover.dictionary,
-    null_ls.builtins.formatting.remark,
-    -- null_ls.builtins.formatting.isort,
+    -- null_ls.builtins.formatting.remark,
+    null_ls.builtins.formatting.isort,
     -- diagnostics.mypy,
     -- null_ls.builtins.diagnostics.mypy.with({
     --     extra_args = function(params)
