@@ -11,14 +11,21 @@ local mason_lspconfig = require("mason-lspconfig")
 local mason_registry = require("mason-registry")
 
 local servers = {
-    "pyright",       -- Python
+    "pyright", -- Python
     "rust_analyzer", -- Rust
-    "ts_ls",         -- TypeScript/JavaScript
-    "gopls",         -- Go
-    "lua_ls",        -- Lua
-    "mdx_analyzer",  -- MDX
-    "elixirls",      -- Elixir
+    "ts_ls", -- TypeScript/JavaScript
+    "gopls", -- Go
+    "lua_ls", -- Lua
+    "mdx_analyzer", -- MDX
+    "elixirls", -- Elixir
 }
+
+-- fetch and update the servers table with those from mason
+local mason_servers = mason_lspconfig.get_installed_servers()
+
+if mason_servers and type(mason_servers) == "table" then
+    servers = vim.tbl_deep_extend("force", servers, mason_servers)
+end
 
 -- Diagonistics signs
 --
@@ -135,12 +142,12 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = "nvim_lsp",               keyword_length = 3 }, -- LSP
-        { name = "nvim_lsp_signature_help" },                    -- display function signature with current param emphasized
-        { name = "nvim_lua",               keyword_length = 2 }, -- lua runtime API
-        { name = "luasnip" },                                    -- nvim-cmp for snippets
-        { name = "buffer",                 keyword_length = 2 }, -- completion from current buffer
-        { name = "path" },                                       -- file paths
+        { name = "nvim_lsp", keyword_length = 3 }, -- LSP
+        { name = "nvim_lsp_signature_help" }, -- display function signature with current param emphasized
+        { name = "nvim_lua", keyword_length = 2 }, -- lua runtime API
+        { name = "luasnip" }, -- nvim-cmp for snippets
+        { name = "buffer", keyword_length = 2 }, -- completion from current buffer
+        { name = "path" }, -- file paths
     }),
     formatting = {
         fields = { "menu", "abbr", "kind" },
@@ -157,68 +164,35 @@ mason_lspconfig.setup({
     automatic_installation = true,
 })
 
-mason_lspconfig.setup_handlers({
-    -- Automatically configure servers installed via `:MasonInstall or :Mason `
-    function(server_name)
-        require("lspconfig")[server_name].setup({
-            on_attach = on_attach,
-            capabilities = capabilities,
-        })
-    end,
+local server_opts = {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = {
+        debounce_text_changes = 150,
+    },
+}
 
-    ["lua_ls"] = function()
-        local settings = {
-            runtime = {
-                version = "LuaJIT",
-            },
-            Lua = {
-                diagnostics = {
-                    globals = { "vim" },
-                },
-                telemetry = {
-                    enable = false,
+for _, server in ipairs(servers) do
+    local opts = vim.tbl_deep_extend("force", server_opts, {
+        ["lua_ls"] = {
+            settings = {
+                Lua = {
+                    diagnostics = {
+                        globals = { "vim" },
+                    },
                 },
             },
-        }
-        local opts = {
-            capabilities = capabilities,
-            on_attach = on_attach,
-            settings = settings,
-        }
-        lspconfig["lua_ls"].setup(opts)
-    end,
-    ["gopls"] = function()
-        local opts = {
-            on_attach = on_attach,
-            capabilities = capabilities,
-            filetypes = { "go", "gomod", "gowork", "goimpl" },
-            cmd = { "gopls" },
+        },
+        ["gopls"] = {
             settings = {
                 gopls = {
                     analyses = {
                         unusedparams = true,
                     },
                     staticcheck = true,
-                    gofumpt = true,
                 },
             },
-        }
-        lspconfig["gopls"].setup(opts)
-    end,
-    ["ruff"] = function()
-        local opts = {
-            cmd = {
-                "ruff",
-                "server",
-            },
-            on_attach = on_attach,
-            capabilities = capabilities,
-        }
-        lspconfig["ruff"].setup(opts)
-    end,
-})
-
--- vim.diagnostic.config({
---     virtual_text = true,
---     update_on_insert = true,
--- })
+        },
+    })
+    lspconfig[server].setup(opts)
+end
