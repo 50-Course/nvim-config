@@ -312,25 +312,25 @@ function M.setup_dap_keymaps()
     local map = vim.keymap.set
     map(
         "n",
-        "<localleader>b",
+        "<localleader>db",
         dap.toggle_breakpoint,
         { desc = "Debug: [T]oggle breakpoint" }
     )
-    map("n", "<localleader>B", function()
+    map("n", "<localleader>dB", function()
         dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
     end, { desc = "Debug: [S]et breakpoint ('conditional')" })
-    map("n", "<localleader>sn", dap.step_over, { desc = "Debug: Step [N]ext" })
-    map("n", "<localleader>si", dap.step_into, { desc = "Debug: Step [I]nto" })
-    map("n", "<localleader>so", dap.step_out, { desc = "Debug: Step [O]ut" })
+    map("n", "<localleader>dsn", dap.step_over, { desc = "Debug: Step [N]ext" })
+    map("n", "<localleader>dsi", dap.step_into, { desc = "Debug: Step [I]nto" })
+    map("n", "<localleader>dso", dap.step_out, { desc = "Debug: Step [O]ut" })
     map(
         "n",
         "<localleader>dc",
         dap.continue,
         { desc = "Debug: Start/[C]ontinue" }
     )
-    map("n", "<localleader>dr", dap.repl.open, { desc = "Debug: Open [R]epl" })
-    map("n", "<localleader>lp", dap.run_last, { desc = "Debug: Run [L]ast" })
-    map("n", "<localleader>dx", dap.terminate, { desc = "Debug: [XT]erminate" })
+    map("n", "<localleader>dr", dap.repl.open, { desc = "Debug: [R]epl" })
+    map("n", "<localleader>dlp", dap.run_last, { desc = "Debug: Run [L]ast" })
+    map("n", "<localleader>dx", dap.terminate, { desc = "Debug: [T]erminate" })
 end
 
 --- Setup all debugger configurations

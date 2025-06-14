@@ -43,10 +43,10 @@ require("nvim-treesitter.configs").setup({
     incremental_selection = {
         enable = true,
         keymaps = {
-            init_selection = "gnn",    -- maps in normal mode to init the node/scope selection
-            node_incremental = "gni",  -- increment to the upper named parent
+            init_selection = "gnn", -- maps in normal mode to init the node/scope selection
+            node_incremental = "gni", -- increment to the upper named parent
             scope_incremental = "gsi", -- increment to the upper scope (as defined in locals.scm)
-            node_decremental = "gnd",  -- decrement to the previous node
+            node_decremental = "gnd", -- decrement to the previous node
         },
     },
     -- Configuration for the nvim-treesitter-textobjects plugin

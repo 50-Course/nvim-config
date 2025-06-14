@@ -10,8 +10,8 @@ end
 
 local _, rose_pine = pcall(require, "rose-pine")
 
--- vim.cmd("colorscheme tokyonight-moon")
-vim.cmd("colorscheme catppuccin")
+vim.cmd("colorscheme tokyonight")
+-- vim.cmd("colorscheme catppuccin")
 
 vim.keymap.set("n", "<leader>nbg", function()
     vim.cmd([[hi Normal guibg=None ctermbg=None]])
