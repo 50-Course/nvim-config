@@ -17,8 +17,8 @@ require("mason").setup({
     },
 })
 
--- print("Loaded custom Mason config!")
+--print("Loaded custom Mason config!")
 
 -- setup nvim java and lspconfig
-require("java").setup({})
+--require("java").setup()
 require("lspconfig").jdtls.setup({})
