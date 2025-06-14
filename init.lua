@@ -84,7 +84,7 @@ require("packer").startup(function(use)
     -- GitHub Co-pilot
     --
     -- So i finally found a way to disable this stuff - setting `opt` to true lol
-    use {"github/copilot.vim", opt = true }
+    -- use({ "github/copilot.vim", opt = true })
 
     -- Glow for markdown preview
     use({
@@ -243,11 +243,12 @@ require("packer").startup(function(use)
 
     -- Diffview
     -- Link: https://github.com/sindrets/diffview.nvim
-    use("sindrets/diffview.nvim")
+    use( "sindrets/diffview.nvim")
 end)
 
 -- ======================== MODULES ========================
 require("codemage.mason")
+require("codemage.diffview")
 require("codemage.lsp")
 require("codemage.options")
 require("codemage.telescope")
