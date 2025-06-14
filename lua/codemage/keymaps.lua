@@ -56,8 +56,8 @@ function M.set_win_binds()
 
     -- SPLITS WITH MAPPING
     --
-    vim.keymap.set("n", ";sp", ":sp<CR>")
-    vim.keymap.set("n", ";vs", ":vsp<CR>")
+    vim.keymap.set("n", ",sp", ":sp<CR>")
+    vim.keymap.set("n", ",vs", ":vsp<CR>")
 end
 
 function M.set_buf_binds()
