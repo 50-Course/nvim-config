@@ -53,7 +53,11 @@ require("packer").startup(function(use)
 
     -- Treesitter
     use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
-    use("nvim-treesitter/nvim-treesitter-textobjects")
+    use(
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        -- only load after treesitter
+        { after = "nvim-treesitter/nvim-treesitter" }
+    )
 
     use({
         "lewis6991/gitsigns.nvim",
@@ -89,6 +93,8 @@ require("packer").startup(function(use)
     -- Glow for markdown preview
     use({
         "ellisonleao/glow.nvim",
+        cmd = "Glow",
+        ft = "markdown",
         config = function()
             require("glow").setup()
         end,
@@ -135,19 +141,14 @@ require("packer").startup(function(use)
     -- Flutter
     -- Lsp integraton
     -- https://github.ocm/akinsho/flutter-tools.nvim
-    use("akinsho/flutter-tools.nvim", { cond = false })
+    use("akinsho/flutter-tools.nvim", { cond = true, ft = "dart" })
 
     -- Snippets
-    use({ "L3MON4D3/LuaSnip" })
-    use("rafamadriz/friendly-snippets")
-
-    -- Formatter
-    --
-    -- TODO: remove when i comback to fix none-ls
-    use("mhartington/formatter.nvim", { cond = true })
-
-    -- Tests with Nvim-test
-    use("klen/nvim-test")
+    use({ "L3MON4D3/LuaSnip", event = "InsertCharPre" })
+    use("rafamadriz/friendly-snippets", {
+        -- only load after LuaSnip
+        event = "L3MON4D3/LuaSnip",
+    })
 
     -- Java LSP
     --
@@ -169,6 +170,8 @@ require("packer").startup(function(use)
             "nvim-java/lua-async-await",
             "JavaHello/spring-boot.nvim",
         },
+        -- only load when java files are open
+        ft = { "java" },
     })
     --
     -- SpringBoot nvim
@@ -185,13 +188,29 @@ require("packer").startup(function(use)
     --
     -- The plugin allows granular control over how vim interacts
     -- with test suites and how tests are run.
-    use("vim-test/vim-test")
+    use({
+        "vim-test/vim-test",
+        cmd = {
+            "TestFile",
+            "TestNearest",
+            "TestLast",
+            "TestSuite",
+            "TestVisit",
+        },
+    })
+
+    use({
+        "klen/nvim-test",
+    })
 
     -- Fuzzy-matching with Telesecope
     --
     -- File explorer sucks, just fuzzy bro@
     use({ "nvim-telescope/telescope.nvim", tag = "0.1.5" })
-    use("nvim-telescope/telescope-fzf-native.nvim", { run = "make" })
+    use(
+        "nvim-telescope/telescope-fzf-native.nvim",
+        { run = "make", after = "nvim-telescope/telescope.nvim" }
+    )
 
     -- UndoTree
     --
@@ -204,6 +223,7 @@ require("packer").startup(function(use)
     -- Autopairs
     use({
         "windwp/nvim-autopairs",
+        event = "InsertEnter",
         config = function()
             require("nvim-autopairs").setup()
         end,
@@ -243,7 +263,7 @@ require("packer").startup(function(use)
 
     -- Diffview
     -- Link: https://github.com/sindrets/diffview.nvim
-    use( "sindrets/diffview.nvim")
+    use("sindrets/diffview.nvim")
 end)
 
 -- ======================== MODULES ========================
