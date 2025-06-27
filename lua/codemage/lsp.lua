@@ -1,7 +1,7 @@
 local cmp = require("cmp")
-local capabalities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabalities)
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 local luasnip = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -9,6 +9,7 @@ local mason = require("mason")
 local lspconfig = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
 local mason_registry = require("mason-registry")
+local utils = require("codemage.utils")
 
 local servers = {
     "pyright", -- Python
@@ -23,9 +24,8 @@ local servers = {
 -- fetch and update the servers table with those from mason
 local mason_servers = mason_lspconfig.get_installed_servers()
 
-if mason_servers and type(mason_servers) == "table" then
-    servers = vim.tbl_deep_extend("force", servers, mason_servers)
-end
+-- strip off duplicate lsps
+servers = utils.unified_set(servers, mason_servers)
 
 -- Diagonistics signs
 --
@@ -57,7 +57,7 @@ local on_attach = function(client, bufnr)
     map("n", "<leader>rr", function()
         vim.lsp.buf.references()
     end, opts)
-    map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+    map("n", "<localleader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
     map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
     map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
     map("n", "K", vim.lsp.buf.hover, opts)
@@ -159,12 +159,8 @@ cmp.setup({
 })
 
 mason.setup()
-mason_lspconfig.setup({
-    ensure_installed = servers,
-    automatic_installation = true,
-})
 
-local server_opts = {
+local server_default_opts = {
     on_attach = on_attach,
     capabilities = capabilities,
     flags = {
@@ -172,27 +168,49 @@ local server_opts = {
     },
 }
 
-for _, server in ipairs(servers) do
-    local opts = vim.tbl_deep_extend("force", server_opts, {
-        ["lua_ls"] = {
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        globals = { "vim" },
-                    },
+local server_custom_opts = {
+    lua_ls = {
+        settings = {
+            Lua = {
+                diagnostics = {
+                    globals = { "vim" },
                 },
+                workspace = {
+                    library = vim.api.nvim_get_runtime_file("", true),
+                    checkThirdParty = false,
+                },
+                telemetry = { enable = false },
             },
         },
-        ["gopls"] = {
-            settings = {
-                gopls = {
-                    analyses = {
-                        unusedparams = true,
-                    },
-                    staticcheck = true,
+    },
+    gopls = {
+        settings = {
+            gopls = {
+                analyses = {
+                    unusedparams = true,
                 },
+                staticcheck = true,
             },
         },
-    })
-    lspconfig[server].setup(opts)
-end
+    },
+}
+
+local lsp_handlers = {
+    ["_"] = function(server_name)
+        local opts = vim.tbl_deep_extend("force", {}, server_default_opts)
+
+        -- merge server options if they exist in our custom table
+        if server_custom_opts[server_name] then
+            vim.tbl_deep_extend("force", opts, server_custom_opts[server_name])
+        end
+
+        -- do manual configuration via native lsp adapters
+        lspconfig[server_name].setup(opts)
+    end,
+}
+
+mason_lspconfig.setup({
+    ensure_installed = servers,
+    automatic_installation = true,
+    handlers = lsp_handlers,
+})
