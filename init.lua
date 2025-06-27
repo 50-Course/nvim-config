@@ -117,7 +117,7 @@ require("packer").startup(function(use)
     --- LSP Config
     --- Langugue server management
     use({ "williamboman/mason.nvim", tag = "v1.*" })
-    use({ "williamboman/mason-lspconfig.nvim" })
+    use({ "williamboman/mason-lspconfig.nvim", tag= 'v1.*' })
 
     -- LSP Support
     use({ "neovim/nvim-lspconfig" })
