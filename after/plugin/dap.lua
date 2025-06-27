@@ -111,7 +111,7 @@ end
 
 --- Configures the Java adapter
 function M.setup_java()
-    if not is_dap_installed() then
+    if not is_dap_installed("java-debug-adapter") then
         vim.notify(
             "Java Debug Adapter not installed via Mason.",
             vim.log.levels.WARN,
@@ -134,7 +134,7 @@ end
 
 --- Configures the .NET Core adapter
 function M.setup_dotnet()
-    if not is_dap_installed() then
+    if not is_dap_installed("netcoredbg") then
         vim.notify(
             ".NET Core Debugger not installed via Mason.",
             vim.log.levels.WARN,
