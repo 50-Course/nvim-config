@@ -35,7 +35,21 @@ vim.g.maplocalleader = ";"
 --
 -- This is only possible because `install.sh` is bootsrapping my Vim
 -- distro with packer installation
-vim.cmd([[packadd packer.nvim ]])
+-- vim.cmd([[packadd packer.nvim ]])
+
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
+end
+
+local bootstrap_packer = ensure_packer()
+
 
 -- ======================== PLUGINS MANAGEMENT ========================
 require("packer").startup(function(use)
@@ -88,7 +102,7 @@ require("packer").startup(function(use)
     -- GitHub Co-pilot
     --
     -- So i finally found a way to disable this stuff - setting `opt` to true lol
-    -- use({ "github/copilot.vim", opt = true })
+    use({ "github/copilot.vim", opt = false })
 
     -- Glow for markdown preview
     use({
@@ -102,7 +116,7 @@ require("packer").startup(function(use)
 
     --- LSP Config
     --- Langugue server management
-    use({ "williamboman/mason.nvim" })
+    use({ "williamboman/mason.nvim", tag = "v1.*" })
     use({ "williamboman/mason-lspconfig.nvim" })
 
     -- LSP Support
@@ -144,7 +158,7 @@ require("packer").startup(function(use)
     use("akinsho/flutter-tools.nvim", { cond = true, ft = "dart" })
 
     -- Snippets
-    use({ "L3MON4D3/LuaSnip", event = "InsertCharPre" })
+    use({ "L3MON4D3/LuaSnip", })--event = "InsertCharPre" })
     use("rafamadriz/friendly-snippets", {
         -- only load after LuaSnip
         event = "L3MON4D3/LuaSnip",
@@ -171,7 +185,7 @@ require("packer").startup(function(use)
             "JavaHello/spring-boot.nvim",
         },
         -- only load when java files are open
-        ft = { "java" },
+        -- ft = { "java" },
     })
     --
     -- SpringBoot nvim
@@ -264,6 +278,11 @@ require("packer").startup(function(use)
     -- Diffview
     -- Link: https://github.com/sindrets/diffview.nvim
     use("sindrets/diffview.nvim")
+
+    if bootstrap_packer then
+		require("packer").sync()
+
+end
 end)
 
 -- ======================== MODULES ========================
@@ -278,6 +297,7 @@ require("codemage.toggleterm")
 require("codemage.refactor")
 require("codemage.commands")
 require("codemage.harpoon")
+require("codemage.utils")
 require("codemage.colorscheme.gruvbox")
 require("codemage.colorscheme.catappucin")
 
@@ -292,7 +312,7 @@ keymap.set("i", "<C-c>", "<Nop>")
 
 vim.api.nvim_set_keymap(
     "n",
-    "<Leader>fc",
+    "<leader>fc",
     ":q<CR>",
     { noremap = true, silent = true }
 )
@@ -328,7 +348,7 @@ keymap.set("n", "<C-u>", "<C-u>zz")
 keymap.set("n", "<leader>nc", ":cnext<cr>")
 keymap.set("n", "<leader>pc", ":cprev<cr>")
 keymap.set("n", "<leader>nb", ":bnext<cr>")
-keymap.set("n", "<leader>pb", ":bprev<cr>")
+keymap.set("n", "<leader>bp", ":bprev<cr>")
 keymap.set("n", "<leader>nl", ":lnext<cr>")
 keymap.set("n", "<leader>pl", ":lprev<cr>")
 
