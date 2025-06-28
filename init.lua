@@ -38,18 +38,25 @@ vim.g.maplocalleader = ";"
 -- vim.cmd([[packadd packer.nvim ]])
 
 local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
-    vim.cmd [[packadd packer.nvim]]
-    return true
-  end
-  return false
+    local fn = vim.fn
+    local install_path = fn.stdpath("data")
+        .. "/site/pack/packer/start/packer.nvim"
+    if fn.empty(fn.glob(install_path)) > 0 then
+        fn.system({
+            "git",
+            "clone",
+            "--depth",
+            "1",
+            "https://github.com/wbthomason/packer.nvim",
+            install_path,
+        })
+        vim.cmd([[packadd packer.nvim]])
+        return true
+    end
+    return false
 end
 
 local bootstrap_packer = ensure_packer()
-
 
 -- ======================== PLUGINS MANAGEMENT ========================
 require("packer").startup(function(use)
@@ -66,11 +73,18 @@ require("packer").startup(function(use)
     use({ "ThePrimeagen/refactoring.nvim" })
 
     -- Treesitter
-    use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
+    use({
+        "nvim-treesitter/nvim-treesitter",
+        run = ":TSUpdate",
+        config = function()
+            require("codemage.treesitter")
+        end,
+    })
+
     use(
         "nvim-treesitter/nvim-treesitter-textobjects",
         -- only load after treesitter
-        { after = "nvim-treesitter/nvim-treesitter" }
+        { after = "nvim-treesitter" }
     )
 
     use({
@@ -102,7 +116,7 @@ require("packer").startup(function(use)
     -- GitHub Co-pilot
     --
     -- So i finally found a way to disable this stuff - setting `opt` to true lol
-    use({ "github/copilot.vim", opt = false })
+    use({ "github/copilot.vim", opt = true })
 
     -- Glow for markdown preview
     use({
@@ -117,7 +131,7 @@ require("packer").startup(function(use)
     --- LSP Config
     --- Langugue server management
     use({ "williamboman/mason.nvim", tag = "v1.*" })
-    use({ "williamboman/mason-lspconfig.nvim", tag= 'v1.*' })
+    use({ "williamboman/mason-lspconfig.nvim", tag = "v1.*" })
 
     -- LSP Support
     use({ "neovim/nvim-lspconfig" })
@@ -136,8 +150,15 @@ require("packer").startup(function(use)
 
     -- Debugger Support
     use({
+        "mfussenegger/nvim-dap",
+        config = function()
+            require("codemage.dap")
+        end,
+    })
+
+    use({
         "rcarriga/nvim-dap-ui",
-        requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+        requires = { "nvim-neotest/nvim-nio" },
     })
 
     use("theHamsta/nvim-dap-virtual-text")
@@ -155,10 +176,10 @@ require("packer").startup(function(use)
     -- Flutter
     -- Lsp integraton
     -- https://github.ocm/akinsho/flutter-tools.nvim
-    use("akinsho/flutter-tools.nvim", { cond = true, ft = "dart" })
+    use({ "akinsho/flutter-tools.nvim", opt = true, ft = "dart" })
 
     -- Snippets
-    use({ "L3MON4D3/LuaSnip", })--event = "InsertCharPre" })
+    use({ "L3MON4D3/LuaSnip" }) --event = "InsertCharPre" })
     use("rafamadriz/friendly-snippets", {
         -- only load after LuaSnip
         event = "L3MON4D3/LuaSnip",
@@ -256,6 +277,7 @@ require("packer").startup(function(use)
     -- Tokyonight colorscheme
     use({
         "folke/tokyonight.nvim",
+        opt = true,
         lazy = true,
         priority = 1000,
         opts = {},
@@ -264,7 +286,7 @@ require("packer").startup(function(use)
     -- Catappuccin colorscheme
     --
     -- Ref: https://github.com/catppuccin/nvim#Compile
-    use({ "catppuccin/nvim", as = "catppuccin" })
+    use({ "catppuccin/nvim", as = "catppuccin", opt = true })
 
     -- Vim Surround
     use({
@@ -280,9 +302,8 @@ require("packer").startup(function(use)
     use("sindrets/diffview.nvim")
 
     if bootstrap_packer then
-		require("packer").sync()
-
-end
+        require("packer").sync()
+    end
 end)
 
 -- ======================== MODULES ========================
@@ -298,6 +319,7 @@ require("codemage.refactor")
 require("codemage.commands")
 require("codemage.harpoon")
 require("codemage.utils")
+require("codemage.theme")
 require("codemage.colorscheme.gruvbox")
 require("codemage.colorscheme.catappucin")
 
@@ -312,7 +334,7 @@ keymap.set("i", "<C-c>", "<Nop>")
 
 vim.api.nvim_set_keymap(
     "n",
-    "<leader>fc",
+    "<leader>qq",
     ":q<CR>",
     { noremap = true, silent = true }
 )

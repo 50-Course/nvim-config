@@ -28,7 +28,14 @@ local mason_servers = mason_lspconfig.get_installed_servers()
 servers = utils.unified_set(servers, mason_servers)
 
 -- Diagonistics signs
---
+vim.diagnostic.config({
+    virtual_text = {
+        enable = true,
+        -- prefix = "●", -- Could be '●', '▎', 'x'
+        spacing = 4,
+    },
+    update_in_insert = false,
+})
 
 local on_attach = function(client, bufnr)
     local map = vim.keymap.set
@@ -38,6 +45,11 @@ local on_attach = function(client, bufnr)
     for type, text_icon in pairs(signs) do
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = text_icon, texthl = hl, numhl = "" })
+    end
+
+    -- dynamic inlay hints
+    if client.server_capabilities.inlayHintProvider then
+        vim.lsp.inlay_hint.enable(true)
     end
 
     -- Mappings
@@ -186,31 +198,59 @@ local server_custom_opts = {
     gopls = {
         settings = {
             gopls = {
+                -- static analysis
                 analyses = {
                     unusedparams = true,
+                    unreachable = true,
+                    nilness = true,
+                    fieldalignment = true,
                 },
                 staticcheck = true,
+
+                -- code lens
+                codelenses = {
+                    generate = true, -- show code lens for `go generate`
+                    gc_details = true, -- show GC optimization details
+                    test = true, -- show lens to run tests
+                    tidy = true, -- show `go mod tidy`
+                    upgrade_dependency = true,
+                    regenerate_cgo = true,
+                },
+
+                -- experimential features
+                directoryFilters = { "-.git", "-node_modules" }, -- exclude noisy dirs
+                experimentialWorkspaceModule = true, -- speeds up indexing on large repos
             },
         },
     },
 }
 
-local lsp_handlers = {
-    ["_"] = function(server_name)
-        local opts = vim.tbl_deep_extend("force", {}, server_default_opts)
+local function default_handler(server_name)
+    local opts = vim.tbl_deep_extend("force", {}, server_default_opts)
 
-        -- merge server options if they exist in our custom table
-        if server_custom_opts[server_name] then
-            vim.tbl_deep_extend("force", opts, server_custom_opts[server_name])
-        end
+    -- merge server options if they exist in our custom table
+    if server_custom_opts[server_name] then
+        vim.tbl_deep_extend("force", opts, server_custom_opts[server_name])
+    end
 
-        -- do manual configuration via native lsp adapters
-        lspconfig[server_name].setup(opts)
-    end,
-}
+    -- do manual configuration via native lsp adapters
+    lspconfig[server_name].setup(opts)
+end
 
 mason_lspconfig.setup({
     ensure_installed = servers,
     automatic_installation = true,
-    handlers = lsp_handlers,
+    handlers = {
+        ["lua_ls"] = function()
+            local opts = vim.tbl_deep_extend(
+                "force",
+                {},
+                server_default_opts,
+                server_custom_opts.lua_ls
+            )
+            lspconfig.lua_ls.setup(opts)
+        end,
+        -- default handler fallback
+        default_handler,
+    },
 })
