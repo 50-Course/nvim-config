@@ -8,6 +8,9 @@
 
 local M = {}
 
+--- Disable default tmux navigator keybindings
+vim.g.tmux_navigator_no_mappings = 1
+
 function M.set_git_bindings()
     local keymap = vim.keymap
 
@@ -26,14 +29,24 @@ function M.set_win_binds()
     -- window management
     vim.keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
     vim.keymap.set("n", "<A-l>", "<cmd>vertical resize +2<cr>") -- increase width to the right
-    vim.keymap.set("n", "<A-j>", "<cmd>resize -2<cr>")          -- decrease height
-    vim.keymap.set("n", "<A-k>", "<cmd>resize +2<cr>")          -- increase height
+    vim.keymap.set("n", "<A-j>", "<cmd>resize -2<cr>") -- decrease height
+    vim.keymap.set("n", "<A-k>", "<cmd>resize +2<cr>") -- increase height
 
     -- Navigate up, down, left, and right between splits.
-    vim.keymap.set("n", "<C-h>", "<c-w>h")
-    vim.keymap.set("n", "<C-j>", "<c-w>j")
-    vim.keymap.set("n", "<C-k>", "<c-w>k")
-    vim.keymap.set("n", "<C-l>", "<c-w>l")
+    -- vim.keymap.set("n", "<C-h>", "<c-w>h")
+    -- vim.keymap.set("n", "<C-j>", "<c-w>j")
+    -- vim.keymap.set("n", "<C-k>", "<c-w>k")
+    -- vim.keymap.set("n", "<C-l>", "<c-w>l")
+
+    vim.keymap.set("n", "<C-h>", "<cmd>TmuxNavigateLeft<CR>", { silent = true })
+    vim.keymap.set("n", "<C-j>", "<cmd>TmuxNavigateDown<CR>", { silent = true })
+    vim.keymap.set("n", "<C-k>", "<cmd>TmuxNavigateUp<CR>", { silent = true })
+    vim.keymap.set(
+        "n",
+        "<C-l>",
+        "<cmd>TmuxNavigateRight<CR>",
+        { silent = true }
+    )
 
     -- Better way to jump out of modes
     vim.keymap.set({ "i", "v", "x" }, "jk", "<Esc>")
@@ -93,6 +106,13 @@ vim.api.nvim_create_autocmd("TermOpen", {
     pattern = "term://*",
     callback = function()
         M.set_terminal_bindings()
+
+        vim.keymap.set(
+            "t",
+            "<C-c>",
+            "<C-\\><C-n><C-c>",
+            { buffer = 0, desc = "Send SIGINT to terminal" }
+        )
     end,
 })
 

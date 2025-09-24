@@ -10,27 +10,19 @@ local root_files = {
     "build.gradle",
 }
 
--- Sources
-local formatting = null_ls.builtins.formatting
-local code_actions = null_ls.builtins.code_actions
-local diagnostics = null_ls.builtins.diagnostics
-local hover = null_ls.builtins.hover
-local completion = null_ls.builtins.completion
-
 local sources = {
     null_ls.builtins.formatting.stylua,
-    -- null_ls.builtins.formatting.black,
     null_ls.builtins.formatting.shfmt,
     null_ls.builtins.diagnostics.commitlint,
     null_ls.builtins.code_actions.gitsigns,
     null_ls.builtins.code_actions.refactoring.with({
         filetypes = {
-            "python",
             "javascript",
             "typescript",
             "go",
             "lua",
-        }, }),
+        },
+    }),
     null_ls.builtins.formatting.prettierd.with({
         filetypes = {
             "html",
@@ -49,12 +41,12 @@ local sources = {
     }),
     null_ls.builtins.diagnostics.cppcheck,
     null_ls.builtins.diagnostics.hadolint,
-    -- null_ls.builtins.diagnostics.markdownlint,
+    null_ls.builtins.diagnostics.markdownlint,
     null_ls.builtins.diagnostics.golangci_lint,
     null_ls.builtins.formatting.clang_format.with({
         filetypes = { "c", "cpp", "objc", "objcpp" },
     }),
-    null_ls.builtins.formatting.djlint,
+    null_ls.builtins.diagnostics.pylint,
     -- null_ls.builtins.diagnostics.pylint.with({
     --     -- method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
     --     -- diagnostics_postprocess = function(diagnostic)
@@ -64,13 +56,8 @@ local sources = {
     --         return { PYTHONPATH = params.root }
     --     end,
     -- }),
-    -- null_ls.builtins.diagnostics.semgrep.with({
-    --     filetypes = { "java", "typescript", "go" },
-    -- }),
     null_ls.builtins.hover.dictionary,
-    -- null_ls.builtins.formatting.remark,
-    null_ls.builtins.formatting.isort,
-    -- diagnostics.mypy,
+    null_ls.builtins.diagnostics.mypy,
     -- null_ls.builtins.diagnostics.mypy.with({
     --     extra_args = function(params)
     --         -- dynamically find the root directory
@@ -87,20 +74,31 @@ local sources = {
     --         end
     --     end,
     -- }),
-    -- null_ls.builtins.formatting.dart_format,
-    -- null_ls.builtins.formatting.npm_groovy_lint.with({
-    --     filetypes = { "groovy", "jenkinsfile" },
-    -- }),
 }
 
-local attach_to_lsp = function(client)
-    if client.server_capabilities.documentFormattingProvider then
-        vim.cmd([[augroup Format]])
-        vim.cmd([[autocmd! * <buffer>]])
-        vim.cmd(
-            [[autocmd BufWritePost <buffer> lua vim.lsp.buf.format({timeout_ms = 2000})]]
-        )
-        vim.cmd([[augroup END]])
+local attach_to_lsp = function(client, bufnr)
+    local ignore_formatting_for_filetypes = { "python" }
+    local filetype = vim.bo[bufnr].filetype
+
+    if
+        client.server_capabilities.documentFormattingProvider
+        and not vim.tbl_contains(ignore_formatting_for_filetypes, filetype)
+    then
+        vim.api.nvim_create_augroup("Format", { clear = true })
+        vim.api.nvim_clear_autocmds({ group = "Format", buffer = bufnr })
+        vim.api.nvim_create_autocmd("BufWritePost", {
+            group = "Format",
+            buffer = bufnr,
+            callback = function()
+                vim.lsp.buf.format({ timeout_ms = 2000, bufnr = bufnr })
+            end,
+        })
+        -- vim.cmd([[augroup Format]])
+        -- vim.cmd([[autocmd! * <buffer>]])
+        -- vim.cmd(
+        --     [[autocmd BufWritePost <buffer> lua vim.lsp.buf.format({timeout_ms = 2000})]]
+        -- )
+        -- vim.cmd([[augroup END]])
     end
 end
 

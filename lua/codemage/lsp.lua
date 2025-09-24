@@ -116,7 +116,7 @@ cmp.setup({
         end,
     },
     completion = {
-        completeopt = "menu, menuone, noselect",
+        completeopt = "menu, menuone, noselect, fuzzy, preview",
     },
     mapping = cmp.mapping.preset.insert({
         -- Manually trigger snippet completion from nvim-cmp
@@ -254,3 +254,7 @@ mason_lspconfig.setup({
         default_handler,
     },
 })
+
+return {
+    on_attach = on_attach,
+}

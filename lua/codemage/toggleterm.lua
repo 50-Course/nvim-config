@@ -14,7 +14,8 @@ toggleterm.setup({
     open_mapping = [[<leader>vt]],
     direction = "vertical",
     close_on_exit = true,
+    insert_mappings = false,
 })
 
-vim.keymap.set('n', '<leader>vth', [[:ToggleTerm direction=horizontal<CR>]])
-vim.keymap.set('n', '<leader>vt', [[:ToggleTerm direction=vertical<CR>]])
+vim.keymap.set("n", "<leader>vth", [[:ToggleTerm direction=horizontal<CR>]])
+vim.keymap.set("n", "<leader>vt", [[:ToggleTerm direction=vertical<CR>]])
