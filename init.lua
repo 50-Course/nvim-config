@@ -116,7 +116,7 @@ require("packer").startup(function(use)
     -- GitHub Co-pilot
     --
     -- So i finally found a way to disable this stuff - setting `opt` to true lol
-    use({ "github/copilot.vim", opt = true })
+    use({ "github/copilot.vim", opt = false })
 
     -- Glow for markdown preview
     use({
@@ -176,7 +176,13 @@ require("packer").startup(function(use)
     -- Flutter
     -- Lsp integraton
     -- https://github.ocm/akinsho/flutter-tools.nvim
-    use({ "akinsho/flutter-tools.nvim", opt = true, ft = "dart" })
+    use({
+        "nvim-flutter/flutter-tools.nvim",
+        opt = false,
+        config = function()
+            require("codemage.dart")
+        end,
+    })
 
     -- Snippets
     use({ "L3MON4D3/LuaSnip" }) --event = "InsertCharPre" })
@@ -258,7 +264,7 @@ require("packer").startup(function(use)
     -- Autopairs
     use({
         "windwp/nvim-autopairs",
-        event = "InsertEnter",
+        -- event = "InsertEnter",
         config = function()
             require("nvim-autopairs").setup()
         end,
@@ -286,7 +292,7 @@ require("packer").startup(function(use)
     -- Catappuccin colorscheme
     --
     -- Ref: https://github.com/catppuccin/nvim#Compile
-    use({ "catppuccin/nvim", as = "catppuccin", opt = true })
+    use({ "catppuccin/nvim", as = "catppuccin", opt = false })
 
     -- Vim Surround
     use({
@@ -300,6 +306,9 @@ require("packer").startup(function(use)
     -- Diffview
     -- Link: https://github.com/sindrets/diffview.nvim
     use("sindrets/diffview.nvim")
+
+    -- Vim tmux navigator
+    use("christoomey/vim-tmux-navigator")
 
     if bootstrap_packer then
         require("packer").sync()
