@@ -11,13 +11,6 @@ autocmd("BufWritePre", {
                 apply = true,
             })
         end
-
-        -- if vim.bo.ft == "python" then
-        --     vim.lsp.buf.code_action({
-        --         context = { only = { "source.organizeImports" } },
-        --         apply = true,
-        --     })
-        -- end
     end,
 })
 

@@ -317,11 +317,11 @@ end)
 
 -- ======================== MODULES ========================
 require("codemage.mason")
-require("codemage.diffview")
 require("codemage.lsp")
 require("codemage.options")
-require("codemage.telescope")
 require("codemage.keymaps")
+require("codemage.diffview")
+require("codemage.telescope")
 require("codemage.null-ls")
 require("codemage.toggleterm")
 require("codemage.refactor")

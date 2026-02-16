@@ -7,7 +7,7 @@ pcall(require("telescope").load_extension, "fzf")
 
 local M = {}
 
-local test = require("nvim-test")
+-- local test = require("nvim-test")
 local builtin = require("telescope.builtin")
 local telescope = require("telescope")
 local picka = require("telescope.pickers")

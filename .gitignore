@@ -4,4 +4,5 @@
 # for profiling
 nvim.log
 # Packer
+plugin
 packer_compiled.lua

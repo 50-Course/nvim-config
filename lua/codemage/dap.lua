@@ -336,9 +336,9 @@ end
 --- Setup all debugger configurations
 function M.setup_debuggers()
     M.setup_python()
-    M.setup_java()
-    M.setup_dotnet()
-    M.setup_js()
+    -- M.setup_java()
+    -- M.setup_dotnet()
+    -- M.setup_js()
     M.setup_go()
     M.setup_elixir()
 end
