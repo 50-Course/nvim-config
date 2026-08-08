@@ -29,8 +29,8 @@ function M.set_win_binds()
     -- window management
     vim.keymap.set("n", "<A-h>", "<cmd>vertical resize -2<cr>") -- descreses width
     vim.keymap.set("n", "<A-l>", "<cmd>vertical resize +2<cr>") -- increase width to the right
-    vim.keymap.set("n", "<A-j>", "<cmd>resize -2<cr>") -- decrease height
-    vim.keymap.set("n", "<A-k>", "<cmd>resize +2<cr>") -- increase height
+    vim.keymap.set("n", "<A-j>", "<cmd>resize -2<cr>")          -- decrease height
+    vim.keymap.set("n", "<A-k>", "<cmd>resize +2<cr>")          -- increase height
 
     -- Navigate up, down, left, and right between splits.
     -- vim.keymap.set("n", "<C-h>", "<c-w>h")
@@ -124,6 +124,14 @@ vim.api.nvim_create_autocmd("TermOpen", {
 function M.set_format_bindings()
     vim.keymap.set("n", "<localleader>f", ":Format<CR>")
     vim.keymap.set("n", "<localleader>F", ":FormatWrite<CR>")
+end
+
+-- Pretty diagnositics with trobule
+function M.setup_trouble_keymaps()
+    opts = { silent = true, noremap = true }
+
+    vim.keymap.set('n', '<leader>xx', '<cmd>TroubleToggle<cr>', opts)
+    vim.keymap.set('n', '<leader>xQ', '<cmd>TroubleToggle quickfix<cr>', opts)
 end
 
 -- - Keybinds for Testing

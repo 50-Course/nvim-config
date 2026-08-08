@@ -12,13 +12,13 @@ local mason_registry = require("mason-registry")
 local utils = require("codemage.utils")
 
 local servers = {
-    "pyright", -- Python
+    "pyright",       -- Python
     "rust_analyzer", -- Rust
-    "ts_ls", -- TypeScript/JavaScript
-    "gopls", -- Go
-    "lua_ls", -- Lua
-    "mdx_analyzer", -- MDX
-    "elixirls", -- Elixir
+    "ts_ls",         -- TypeScript/JavaScript
+    "gopls",         -- Go
+    "lua_ls",        -- Lua
+    "mdx_analyzer",  -- MDX
+    "elixirls",      -- Elixir
 }
 
 -- fetch and update the servers table with those from mason
@@ -154,12 +154,12 @@ cmp.setup({
         end, { "i", "s" }),
     }),
     sources = cmp.config.sources({
-        { name = "nvim_lsp", keyword_length = 3 }, -- LSP
-        { name = "nvim_lsp_signature_help" }, -- display function signature with current param emphasized
-        { name = "nvim_lua", keyword_length = 2 }, -- lua runtime API
-        { name = "luasnip" }, -- nvim-cmp for snippets
-        { name = "buffer", keyword_length = 2 }, -- completion from current buffer
-        { name = "path" }, -- file paths
+        { name = "nvim_lsp",               keyword_length = 3 }, -- LSP
+        { name = "nvim_lsp_signature_help" },      -- display function signature with current param emphasized
+        { name = "nvim_lua",               keyword_length = 2 }, -- lua runtime API
+        { name = "luasnip" },                      -- nvim-cmp for snippets
+        { name = "buffer",                 keyword_length = 2 }, -- completion from current buffer
+        { name = "path" },                         -- file paths
     }),
     formatting = {
         fields = { "menu", "abbr", "kind" },
@@ -209,17 +209,17 @@ local server_custom_opts = {
 
                 -- code lens
                 codelenses = {
-                    generate = true, -- show code lens for `go generate`
+                    generate = true,   -- show code lens for `go generate`
                     gc_details = true, -- show GC optimization details
-                    test = true, -- show lens to run tests
-                    tidy = true, -- show `go mod tidy`
+                    test = true,       -- show lens to run tests
+                    tidy = true,       -- show `go mod tidy`
                     upgrade_dependency = true,
                     regenerate_cgo = true,
                 },
 
                 -- experimential features
                 directoryFilters = { "-.git", "-node_modules" }, -- exclude noisy dirs
-                experimentialWorkspaceModule = true, -- speeds up indexing on large repos
+                experimentialWorkspaceModule = true,             -- speeds up indexing on large repos
             },
         },
     },

@@ -67,7 +67,7 @@ require("packer").startup(function(use)
     use({ "wbthomason/packer.nvim" })
 
     -- Pass me the harpoon for swift buffer navigation
-    use("ThePrimeagen/harpoon")
+    use("ThePrimeagen/harpoon", { branch = 'harpoon2' })
 
     -- Refactoring
     use({ "ThePrimeagen/refactoring.nvim" })
@@ -271,7 +271,7 @@ require("packer").startup(function(use)
     })
 
     -- Wakatime
-    use("wakatime/vim-wakatime")
+    -- use("wakatime/vim-wakatime", { opt = true })
 
     -- Fomatting with None-ls
     -- Drop-in replacement for null-ls
@@ -309,6 +309,9 @@ require("packer").startup(function(use)
 
     -- Vim tmux navigator
     use("christoomey/vim-tmux-navigator")
+
+    -- Pretty diagnostics interface with trouble.nvim
+    use('folke/trouble.nvim')
 
     if bootstrap_packer then
         require("packer").sync()

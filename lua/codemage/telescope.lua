@@ -22,7 +22,7 @@ telescope.setup({
             previewer = false,
         },
         live_grep = {
-            previewer = false,
+            previewer = true,
         },
     },
     extensions = {

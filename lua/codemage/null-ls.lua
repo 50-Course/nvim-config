@@ -86,7 +86,7 @@ local attach_to_lsp = function(client, bufnr)
     then
         vim.api.nvim_create_augroup("Format", { clear = true })
         vim.api.nvim_clear_autocmds({ group = "Format", buffer = bufnr })
-        vim.api.nvim_create_autocmd("BufWritePost", {
+        vim.api.nvim_create_autocmd("BufWritePre", {
             group = "Format",
             buffer = bufnr,
             callback = function()

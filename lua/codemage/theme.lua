@@ -1,4 +1,4 @@
-function no_bg_color()
+local function enable_transparency()
     -- essentially, we set the background, full transparency
     --
     -- Vim refers to the current window as `Normal` and floating windows as `NormalFloat`
