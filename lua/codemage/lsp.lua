@@ -110,6 +110,17 @@ local source_names = {
     buffer = "[Buffer]",
 }
 
+-- COMPLETION SETTINGS
+--
+-- better cmp case matching
+vim.opt.infercase = true
+
+-- Maximum number of completion entries.
+vim.opt.pumheight = 15
+
+-- Minimum popup width.
+vim.opt.pumwidth = 20
+
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -117,7 +128,24 @@ cmp.setup({
         end,
     },
     completion = {
-        completeopt = "menu, menuone, noselect, fuzzy, preview",
+        completeopt = "menu,menuone,noselect",
+    },
+    -- controls the appearance of nvim-cmp's completion and documentation windows
+    --
+    -- window = {
+    --     -- completion = {
+    --     --     border = "rounded",
+    --     --     winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
+    --     -- },
+    --     documentation = {
+    --         border = "rounded",
+    --         winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder",
+    --     },
+    -- },
+    view = {
+        docs = {
+            auto_open = true,
+        },
     },
     mapping = cmp.mapping.preset.insert({
         -- Manually trigger snippet completion from nvim-cmp
@@ -141,7 +169,7 @@ cmp.setup({
             behavior = cmp.SelectBehavior.Insert,
         }),
         ["<C-p>"] = cmp.mapping.select_prev_item({
-            behavior = cmp.SelectBehavior.Insert,
+            behavior = cmp.SelectBehavior.Insert, -- Select,Insert
         }),
         ["<C-l>"] = cmp.mapping(function()
             if luasnip.expand_or_locally_jumpable() then
