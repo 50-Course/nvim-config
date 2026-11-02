@@ -7,7 +7,6 @@
 ------------------------------------------
 
 -- ******************************** SPEED UP LOAD TIME ********************************
-vim.loader.enable()
 
 --- Disable VIM defaults
 -- Nobody likes the top banner on NetRW -- I don't!
@@ -116,7 +115,7 @@ require("packer").startup(function(use)
     -- GitHub Co-pilot
     --
     -- So i finally found a way to disable this stuff - setting `opt` to true lol
-    use({ "github/copilot.vim", opt = false })
+    use({ "github/copilot.vim", opt = true })
 
     -- Glow for markdown preview
     use({
@@ -247,7 +246,7 @@ require("packer").startup(function(use)
     -- Fuzzy-matching with Telesecope
     --
     -- File explorer sucks, just fuzzy bro@
-    use({ "nvim-telescope/telescope.nvim", tag = "0.1.5" })
+    use({ "nvim-telescope/telescope.nvim", tag = 'v0.2.1', requires = { "nvim-lua/plenary.nvim" } })
     use(
         "nvim-telescope/telescope-fzf-native.nvim",
         { run = "make", after = "nvim-telescope/telescope.nvim" }
@@ -312,6 +311,12 @@ require("packer").startup(function(use)
 
     -- Pretty diagnostics interface with trouble.nvim
     use('folke/trouble.nvim')
+
+    -- Cmake
+    use('cdelledonne/vim-cmake')
+
+    -- GTest
+    use({ 'alepez/vim-gtest', config = function() require('codemage.gtest') end })
 
     if bootstrap_packer then
         require("packer").sync()
@@ -399,3 +404,7 @@ vim.g["test#strategy"] = "neovim"
 vim.g["test#strategy#suite"] = "vimux"
 vim.g["test#neovim#term_position"] = "vert"
 vim.g["test#neovim#term_repl_command"] = "vsplit"
+
+--
+-- ************************* CMake ********************************
+vim.g["cmake_link_compile_commands"] = 1

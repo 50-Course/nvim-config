@@ -18,7 +18,8 @@ local servers = {
     "gopls",         -- Go
     "lua_ls",        -- Lua
     "mdx_analyzer",  -- MDX
-    "elixirls",      -- Elixir
+    -- "elixirls",      -- Elixir
+    "lemminx",       -- XML
 }
 
 -- fetch and update the servers table with those from mason
@@ -155,11 +156,11 @@ cmp.setup({
     }),
     sources = cmp.config.sources({
         { name = "nvim_lsp",               keyword_length = 3 }, -- LSP
-        { name = "nvim_lsp_signature_help" },      -- display function signature with current param emphasized
+        { name = "nvim_lsp_signature_help" },                    -- display function signature with current param emphasized
         { name = "nvim_lua",               keyword_length = 2 }, -- lua runtime API
-        { name = "luasnip" },                      -- nvim-cmp for snippets
+        { name = "luasnip" },                                    -- nvim-cmp for snippets
         { name = "buffer",                 keyword_length = 2 }, -- completion from current buffer
-        { name = "path" },                         -- file paths
+        { name = "path" },                                       -- file paths
     }),
     formatting = {
         fields = { "menu", "abbr", "kind" },
@@ -223,17 +224,35 @@ local server_custom_opts = {
             },
         },
     },
+    lemminx = {
+        init_options = {
+            settings = {
+                xml = {
+                    format = {
+                        enabled = true,
+                        splitAttributes = "preserve",
+                        maxLineWidth = 200,
+                    },
+                },
+                xslt = {
+                    format = {
+                        enabled = true,
+                        splitAttributes = "preserve",
+                        maxLineWidth = 200,
+                    },
+                },
+            },
+        },
+    },
 }
 
 local function default_handler(server_name)
-    local opts = vim.tbl_deep_extend("force", {}, server_default_opts)
-
-    -- merge server options if they exist in our custom table
-    if server_custom_opts[server_name] then
-        vim.tbl_deep_extend("force", opts, server_custom_opts[server_name])
-    end
-
-    -- do manual configuration via native lsp adapters
+    local opts = vim.tbl_deep_extend(
+        "force",
+        {},
+        server_default_opts,
+        server_custom_opts[server_name] or {}
+    )
     lspconfig[server_name].setup(opts)
 end
 

@@ -19,4 +19,5 @@ require("mason").setup({
 
 -- setup nvim java and lspconfig
 require("java").setup()
-require("lspconfig").jdtls.setup({})
+vim.lsp.enable('jdtls')
+-- require("lspconfig").jdtls.setup({})
