@@ -6,7 +6,6 @@ local luasnip = require("luasnip")
 require("luasnip.loaders.from_vscode").lazy_load()
 
 local mason = require("mason")
-local lspconfig = require("lspconfig")
 local mason_lspconfig = require("mason-lspconfig")
 local mason_registry = require("mason-registry")
 local utils = require("codemage.utils")
@@ -217,7 +216,7 @@ local server_custom_opts = {
                     globals = { "vim" },
                 },
                 workspace = {
-                    library = vim.api.nvim_get_runtime_file("", true),
+                    library = { vim.env.VIMRUNTIME },
                     checkThirdParty = false,
                 },
                 telemetry = { enable = false },
@@ -281,23 +280,15 @@ local function default_handler(server_name)
         server_default_opts,
         server_custom_opts[server_name] or {}
     )
-    lspconfig[server_name].setup(opts)
+
+    vim.lsp.config(server_name, opts)
+    vim.lsp.enable(server_name)
 end
 
 mason_lspconfig.setup({
     ensure_installed = servers,
     automatic_installation = true,
     handlers = {
-        ["lua_ls"] = function()
-            local opts = vim.tbl_deep_extend(
-                "force",
-                {},
-                server_default_opts,
-                server_custom_opts.lua_ls
-            )
-            lspconfig.lua_ls.setup(opts)
-        end,
-        -- default handler fallback
         default_handler,
     },
 })
