@@ -198,8 +198,6 @@ cmp.setup({
     },
 })
 
-mason.setup()
-
 local server_default_opts = {
     on_attach = on_attach,
     capabilities = capabilities,
@@ -247,7 +245,7 @@ local server_custom_opts = {
 
                 -- experimential features
                 directoryFilters = { "-.git", "-node_modules" }, -- exclude noisy dirs
-                experimentialWorkspaceModule = true,             -- speeds up indexing on large repos
+                -- experimentialWorkspaceModule = true,             -- speeds up indexing on large repos [Deprecated in nvim 0.12]
             },
         },
     },
